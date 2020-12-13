@@ -1,0 +1,331 @@
+[
+    {
+        "fatherId": 0,
+        "id": 3,
+        "level": 0,
+        "menu": "数据分析",
+        "roleId": 1,
+        "visible": false,
+        "m_icon":"bar-chart",
+        "url":"",
+        "childMenus": [
+            {
+                "fatherId": 0,
+                "id": 3,
+                "level": 0,
+                "menu": "实时数据",
+                "roleId": 1,
+                "visible": false,
+                "url":"/realTimeData",
+                "childMenus": [
+                    
+                ]
+            },
+            {
+                "fatherId": 0,
+                "id": 3,
+                "level": 0,
+                "menu": "历史数据",
+                "roleId": 1,
+                "visible": false,
+                "url":"/historicalData",
+                "childMenus": [
+                    
+                ]
+            }
+        ]
+    },
+    {
+        "fatherId": 0,
+        "id": 3,
+        "level": 0,
+        "menu": "设备管理",
+        "roleId": 1,
+        "m_icon":"gears",
+        "visible": false,
+        "childMenus": [
+            {
+                "fatherId": 0,
+                "id": 3,
+                "level": 0,
+                "menu": "树结构",
+                "roleId": 1,
+                "visible": false,
+                "url":"/treeStructure",
+                "childMenus": [
+                    {
+                        "fatherId": 0,
+                        "id": 3,
+                        "level": 0,
+                        "menu": "添加",
+                        "roleId": 1,
+                        "visible": false,
+                        "isDisabled": true,
+                        "childMenus": [
+                            
+                        ]
+                    },
+                    {
+                        "fatherId": 0,
+                        "id": 3,
+                        "level": 0,
+                        "menu": "删除",
+                        "roleId": 1,
+                        "visible": false,
+                        "isDisabled": true,
+                        "childMenus": [
+                            
+                        ]
+                    }
+                ]
+            },
+            {
+                "fatherId": 0,
+                "id": 3,
+                "level": 0,
+                "menu": "设备列表",
+                "roleId": 1,
+                "visible": false,
+                "url":"/equipmentList",
+                "childMenus": [
+                    {
+                        "fatherId": 0,
+                        "id": 3,
+                        "level": 0,
+                        "menu": "添加",
+                        "roleId": 1,
+                        "visible": false,
+                        "isDisabled": true,
+                        "childMenus": [
+                            
+                        ]
+                    },
+                    {
+                        "fatherId": 0,
+                        "id": 3,
+                        "level": 0,
+                        "menu": "删除",
+                        "roleId": 1,
+                        "visible": false,
+                        "isDisabled": true,
+                        "childMenus": [
+                            
+                        ]
+                    },
+                    {
+                        "fatherId": 0,
+                        "id": 3,
+                        "level": 0,
+                        "menu": "编辑",
+                        "roleId": 1,
+                        "visible": false,
+                        "isDisabled": true,
+                        "childMenus": [
+                            
+                        ]
+                    },
+                    {
+                        "fatherId": 0,
+                        "id": 3,
+                        "level": 0,
+                        "menu": "列表导入",
+                        "roleId": 1,
+                        "visible": false,
+                        "isDisabled": true,
+                        "childMenus": [
+                            
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "fatherId": 0,
+        "id": 3,
+        "level": 0,
+        "menu": "日志管理",
+        "roleId": 1,
+        "m_icon":"pencil",
+        "visible": false,
+        "childMenus": [
+            {
+                "fatherId": 0,
+                "id": 3,
+                "level": 0,
+                "menu": "设备日志",
+                "roleId": 1,
+                "visible": false,
+                "url":"/equipmentLog",
+                "childMenus": [
+                    {
+                        "fatherId": 0,
+                        "id": 3,
+                        "level": 0,
+                        "menu": "删除",
+                        "roleId": 1,
+                        "visible": false,
+                        "isDisabled": true,
+                        "childMenus": [
+                            
+                        ]
+                    },
+                    {
+                        "fatherId": 0,
+                        "id": 3,
+                        "level": 0,
+                        "menu": "列表导出",
+                        "roleId": 1,
+                        "visible": false,
+                        "isDisabled": true,
+                        "childMenus": [
+                            
+                        ]
+                    }
+                ]
+            },
+            {
+                "fatherId": 0,
+                "id": 3,
+                "level": 0,
+                "menu": "操作日志",
+                "roleId": 1,
+                "visible": false,
+                "url":"/operationLog",
+                "childMenus": [
+                    
+                ]
+            }
+        ]
+    },
+    {
+        "fatherId": 0,
+        "id": 3,
+        "level": 0,
+        "menu": "系统配置",
+        "roleId": 1,
+        "m_icon":"gear",
+        "visible": false,
+        "childMenus": [
+            {
+                "fatherId": 0,
+                "id": 3,
+                "level": 0,
+                "menu": "角色管理",
+                "roleId": 1,
+                "visible": false,
+                "url":"/roleManagement",
+                "childMenus": [
+                    {
+                        "fatherId": 0,
+                        "id": 3,
+                        "level": 0,
+                        "menu": "添加",
+                        "roleId": 1,
+                        "visible": false,
+                        "isDisabled": true,
+                        "childMenus": [
+                            
+                        ]
+                    },
+                    {
+                        "fatherId": 0,
+                        "id": 3,
+                        "level": 0,
+                        "menu": "删除",
+                        "roleId": 1,
+                        "visible": false,
+                        "isDisabled": true,
+                        "childMenus": [
+                            
+                        ]
+                    },
+                    {
+                        "fatherId": 0,
+                        "id": 3,
+                        "level": 0,
+                        "menu": "编辑",
+                        "roleId": 1,
+                        "visible": false,
+                        "isDisabled": true,
+                        "childMenus": [
+                            
+                        ]
+                    },
+                    {
+                        "fatherId": 0,
+                        "id": 3,
+                        "level": 0,
+                        "menu": "给角色分配权限",
+                        "roleId": 1,
+                        "visible": false,
+                        "isDisabled": true,
+                        "childMenus": [
+                            
+                        ]
+                    }
+                ]
+            },
+            {
+                "fatherId": 0,
+                "id": 3,
+                "level": 0,
+                "menu": "成员管理",
+                "roleId": 1,
+                "visible": false,
+                "url":"/membersManagement",
+                "childMenus": [
+                    {
+                        "fatherId": 0,
+                        "id": 3,
+                        "level": 0,
+                        "menu": "添加",
+                        "roleId": 1,
+                        "visible": false,
+                        "isDisabled": true,
+                        "childMenus": [
+                            
+                        ]
+                    },
+                    {
+                        "fatherId": 0,
+                        "id": 3,
+                        "level": 0,
+                        "menu": "删除",
+                        "roleId": 1,
+                        "visible": false,
+                        "isDisabled": true,
+                        "childMenus": [
+                            
+                        ]
+                    },
+                    {
+                        "fatherId": 0,
+                        "id": 3,
+                        "level": 0,
+                        "menu": "编辑",
+                        "roleId": 1,
+                        "visible": false,
+                        "isDisabled": true,
+                        "childMenus": [
+                            
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "fatherId": 0,
+        "id": 3,
+        "level": 0,
+        "menu": "大数据看板",
+        "roleId": 1,
+        "visible": false,
+        "m_icon":"television",
+        "url":"/bigDataVersion",
+        "childMenus": [
+            
+        ]
+    }
+]

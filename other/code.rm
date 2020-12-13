@@ -1,0 +1,9 @@
+1. # 将以下两行代码放置在 node_module/webpack-dev-server/lib/Server.js文件中的大约至77行，以下代码的下方：
+const app = this.app = new express();
+
+const systemApi = require('../systemApi/interface.js')   //自定义新增功能
+systemApi.useSystemInterface(app)                        //自定义新增功能
+
+2. # 将目录systemApi 直接拷贝放置在 node_module/webpack-dev-server 目录下
+
+即可完成webpack-dev-server的扩展功能
