@@ -2,48 +2,39 @@
     <div class="realTimeInfo">
         <div>
             <ul>
-                <li class="title">设备控制</li>
-            </ul>
-            <ul>
                 <li style="text-align:center">
-                    <el-button type="primary" size="mini" @click="deviceLogSend('deviceDeleteFiles')">清除数据文件</el-button>
-                    <el-button type="primary" size="mini" @click="deviceLogSend('deviceDirInfo')">获取文件列表 </el-button>
-                    <el-button type="primary" size="mini" @click="deviceLogSend('deviceSettings')">获取配置信息</el-button>
-                    <el-button type="primary" size="mini" @click="deviceLogSend('deviceStartSaveFile')">启动</el-button>
-                    <el-button type="primary" size="mini" @click="deviceLogSend('deviceReset')">重启</el-button>
-                    <el-button type="primary" size="mini" @click="deviceLogSend('deviceUnregister')">注销</el-button>
+                    <!-- <el-button type="primary" size="mini" @click="deviceLogSend('deviceDeleteFiles')">清除数据文件</el-button>
+                    <el-button type="primary" size="mini" @click="deviceLogSend('deviceDirInfo')">获取文件列表 </el-button> -->
+                    <el-button type="primary" size="mini" @click="deviceLogSend('deviceSettings')">获得设备参数</el-button>
+                    <!-- <el-button type="primary" size="mini" @click="deviceLogSend('deviceStartSaveFile')">启动</el-button> -->
+                    <el-button type="primary" size="mini" @click="deviceLogSend('deviceReset')">复位设备</el-button>
+                    <el-button type="primary" size="mini" @click="deviceLogSend('deviceUnregister')">注销设备</el-button>
                 </li>
             </ul>
         </div>
         <div>
             <ul>
-                <li class="title">设置设备采集配置</li>
+                <li class="title">基础信息</li>
             </ul>
             <ul>
-                <li>采样频率</li>
+                <li>设备类型</li>
                 <li><el-input v-model="info.freq" placeholder="请输入内容"></el-input></li>
-                <li>采样时长</li>
+                <li>设备编号</li>
                 <li><el-input v-model="info.length" placeholder="请输入内容"></el-input></li>
             </ul>
             <ul>
-                <li>采样次数</li>
+                <li>硬件版本</li>
                 <li><el-input v-model="info.number" placeholder="请输入内容"></el-input></li>
-                <li>数据存储阀值</li>
+                <li>软件版本</li>
                 <li><el-input v-model="info.threshold" placeholder="请输入内容"></el-input></li>
             </ul>
-            <ul>
-                <li>单个文件存储时长</li>
-                <li><el-input v-model="info.saveLong" placeholder="请输入内容"></el-input></li>
-                <li>量程选择</li>
-                <li><el-input v-model="info.freq" placeholder="请输入内容"></el-input></li>
-            </ul>
         </div>
-        <div class="btns">
+        <!-- <div class="btns">
             <el-button type="primary" size="mini" @click="sendCommand('deviceTestInfo')">设置设备采集配置</el-button>
-        </div>
+        </div> -->
         <div>
             <ul>
-                <li class="title">设置设备网络配置</li>
+                <li class="title">网络信息</li>
             </ul>
             <ul>
                 <li>服务器IP地址</li>
@@ -52,55 +43,86 @@
                 <li><el-input v-model="info.port" placeholder="请输入内容"></el-input></li>
             </ul>
             <ul>
-                <li>自动上传时间间隔</li>
+                <li>时间间隔</li>
                 <li><el-input v-model="info.postLvl" placeholder="请输入内容"></el-input></li>
                 <li></li>
-                <li></li>
+                <li><el-button type="primary" size="mini" @click="sendCommand('deviceNetInfo')">设置网络信息</el-button></li>
             </ul>
-        </div>
-        <div class="btns">
-            <el-button type="primary" size="mini" @click="sendCommand('deviceNetInfo')">设置设备网络配置</el-button>
         </div>
         <div>
             <ul>
-                <li class="title">设置设备GIS配置</li>
+                <li class="title">测试参数</li>
             </ul>
             <ul>
-                <li>测试桩号</li>
+                <li>采样频率</li>
                 <li><el-input v-model="info.stake" placeholder="请输入内容"></el-input></li>
-                <li>备注</li>
+                <li>分析需采样次数</li>
                 <li><el-input v-model="info.remarks" placeholder="请输入内容"></el-input></li>
             </ul>
             <ul>
-                <li>经度</li>
+                <li>采样次数</li>
                 <li><el-input v-model="info.lon" placeholder="请输入内容"></el-input></li>
-                <li>纬度</li>
+                <li>文件个数</li>
                 <li><el-input v-model="info.lat" placeholder="请输入内容"></el-input></li>
             </ul>
+            <ul>
+                <li>阀值</li>
+                <li><el-input v-model="info.lon" placeholder="请输入内容"></el-input></li>
+                <li></li>
+                <li><el-button type="primary" size="mini" @click="sendCommand('deviceNetInfo')">设置测试参数</el-button></li>
+            </ul>
+            
         </div>
-        <div class="btns">
-            <el-button type="primary" size="mini" @click="sendCommand('deviceGisInfo')">设置设备GIS配置</el-button>
-            <el-button type="info" size="mini" @click="goToTop">返回</el-button>
+        <div>
+            <ul>
+                <li class="title">位置信息</li>
+            </ul>
+            <ul>
+                <li>桩号</li>
+                <li><el-input v-model="info.stake" placeholder="请输入内容"></el-input></li>
+                <li>经度</li>
+                <li><el-input v-model="info.remarks" placeholder="请输入内容"></el-input></li>
+            </ul>
+            <ul>
+                <li>纬度</li>
+                <li><el-input v-model="info.lon" placeholder="请输入内容"></el-input></li>
+                <li>备注</li>
+                <li><el-input v-model="info.lat" placeholder="请输入内容"></el-input></li>
+            </ul>
+            <ul>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li><el-button type="primary" size="mini" @click="sendCommand('deviceNetInfo')">设置位置信息</el-button></li>
+            </ul>
+            
         </div>
-        <!-- <div class="listTitle">设备文件列表</div>
-            <div class="excel_list">
-                <el-table :data="fileList" style="width:100%">
-                    <el-table-column prop="fileName" label="文件名称"></el-table-column>
-                    <el-table-column label="操作" fixed="right">
-                        <template slot-scope="scope,index">
-                            {{index}}
-                            <el-upload
-                                class="upload-demo"
-                                action="https://jsonplaceholder.typicode.com/posts/"
-                                :on-change="handleChange">
-                                <el-button size="small" type="primary">上传</el-button>
-                            </el-upload>
-                            <el-button type="primary" size="small">下载</el-button>
-                            <el-button type="primary" size="small">删除</el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
-            </div> -->
+        <div>
+            <ul>
+                <li class="title"></li>
+            </ul>
+            <ul>
+                <li class="title" style="text-align:center;display:flex;justify-content: space-between;">
+                    <div style="display:flex;white-space: nowrap;font-size: 14px;">页码：<el-input v-model="info.lat" placeholder="请输入内容"></el-input></div>
+                    <div style="display:flex;white-space: nowrap;font-size: 14px;">文件数量：<el-input v-model="info.lat" placeholder="请输入内容"></el-input></div>
+                    <div><el-button type="primary" size="mini" @click="deviceLogSend('deviceSettings')">查询文件目录</el-button></div>
+                    <div><el-button type="primary" size="mini" @click="deviceLogSend('deviceStartSaveFile')">启动保存</el-button></div>
+                    <div><el-button type="primary" size="mini" @click="deviceLogSend('deviceDeleteFiles')">清空文件</el-button></div>
+                    <div><el-button type="primary" size="mini" @click="deviceLogSend('deviceDirInfo')">获取文件</el-button></div>
+                </li>
+            </ul>
+            <ul style="min-height:200px;">
+                <template>
+                    <el-table :data="fileList" border style="max-width: 80%;margin:20px 0 0 10%">
+                        <el-table-column type="selection" width="100"></el-table-column>
+                        <el-table-column prop="name" label="文件名"></el-table-column>
+                    </el-table>
+                </template>
+            </ul>
+            <ul style="min-height:200px;">
+
+            </ul>
+        </div>
     </div>
 </template>
 <script>
@@ -110,12 +132,15 @@ export default {
             isSwitch:true,
             info: {},
             newTime:'',
-            fileList:[]
+            fileList:[
+                {name:1111},
+                {name:2222}
+            ]
         };
     },
     mounted(){
         this.getDateInfo()
-        this.deviceFileList()
+        // this.deviceFileList()
     },
     methods: {
         //获取信息
@@ -204,8 +229,15 @@ export default {
             
             this.$myLoading.startLoading()
             this.$http.postHttp(this.$API.deviceLogSend,params,(data)=>{
-
-            this.$myLoading.endLoading()
+                this.$notify({
+                  title: '设置成功',
+                  message: '',
+                  type: 'success'
+                });
+                setTimeout(() => {
+                    this.goToTop()
+                },1000)
+                this.$myLoading.endLoading()
 
             })
         },

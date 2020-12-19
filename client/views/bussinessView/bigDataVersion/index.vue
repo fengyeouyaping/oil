@@ -123,18 +123,18 @@
           </div>
           <div class="right_bottom_info">
             <div v-for="(item,index) in equipmentLists" class="item" :key="index">
-              <header @click="shouitem(item,index)">
-                <i class="fontIconEl el" :class="!item.nodeList || (item.nodeList && item.nodeList.length == 0) ? 'left14' : item.isShow ? 'el-icon-caret-bottom' : 'el-icon-caret-right'"></i>
+              <header>
+                <i class="fontIconEl el" :class="!item.nodeList || (item.nodeList && item.nodeList.length == 0) ? 'left14' : item.isShow ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" @click="shouitem(item,index)"></i>
                   {{item.name}}
               </header>
               <div v-for="(ite,inde) in item.nodeList" :key="inde" v-show="item.isShow">
-                <div class="title" @click="shouitem(ite,inde)">
-                  <i class="fontIconEl el" :class="!ite.nodeList || (ite.nodeList && ite.nodeList.length == 0) ? 'left14' : ite.isShow ? 'el-icon-caret-bottom' : 'el-icon-caret-right'"></i>
+                <div class="title">
+                  <i class="fontIconEl el" :class="!ite.nodeList || (ite.nodeList && ite.nodeList.length == 0) ? 'left14' : ite.isShow ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" @click="shouitem(ite,inde)"></i>
                   {{ite.name}}
                 </div>
                 <div v-for="(son,sonIndex) in ite.nodeList" :key="sonIndex" v-show="ite.isShow">
-                  <div class="title left14" @click="shouitem(son,sonIndex)">
-                    <i class="fontIconEl el" :class="!son.devices || (son.devices && son.devices.length == 0) ? 'left14' : son.isShow ? 'el-icon-caret-bottom' : 'el-icon-caret-right'"></i>
+                  <div class="title left14" @click="newMap(son)">
+                    <i class="fontIconEl el" :class="!son.devices || (son.devices && son.devices.length == 0) ? 'left14' : son.isShow ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" @click.stop="shouitem(son,sonIndex)"></i>
                     {{son.name}}
                   </div>
                   <ul>
@@ -185,8 +185,18 @@ export default {
   },
   methods: {
       newMap(item){
-        this.pointInfo.basic = item
-        this.getDeviceWeather(this.pointInfo.basic.lat,this.pointInfo.basic.lon)
+        if(item.devices && item.devices.length > 0){
+          this.pointInfo.basic = item.devices[0]
+          this.$store.commit('HomeModule/UPDATE_POIN_INFO',item.devices)
+          this.someDigits = item.devices.length || 0
+          this.getPointInfo(item['devices'][0]['devGuid'])
+          
+        }else{
+          this.pointInfo.basic = item
+          this.getDeviceWeather(item.lat,item.lon)
+        }
+        
+        
       },
       //设备列表
       equipmentList(){
@@ -210,10 +220,10 @@ export default {
             })
           }
           forList(this.equipmentLists)
-          this.$store.commit('HomeModule/UPDATE_POIN_INFO',this.newInfo)
+          this.$store.commit('HomeModule/UPDATE_POIN_INFO',this.newInfo.devices)
           this.someDigits = this.newInfo.devices.length || 0
 
-          this.getPointInfo(this.newInfo['devices'][1]['devGuid'])
+          this.getPointInfo(this.newInfo['devices'][0]['devGuid'])
 
           this.$myLoading.endLoading()
 
@@ -249,7 +259,6 @@ export default {
       },
       //获取点的信息
       getPointInfo(devGuid){
-        
         this.$http.getHttp(this.$API.deviceGet+"?devGuid="+devGuid,(data)=>{
             this.pointInfo.basic = data.data
             this.getDeviceWeather(data.data.lat,data.data.lon)

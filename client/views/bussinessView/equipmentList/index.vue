@@ -66,18 +66,16 @@
                         <el-form-item label="设备ID" prop="name">
                             <el-input v-model="ruleForm.id"></el-input>
                         </el-form-item>
-                        <el-form-item label="测试桩号" prop="name">
+                        <el-form-item label="测试桩号">
                             <el-input v-model="ruleForm.name"></el-input>
                         </el-form-item>
-                        <el-form-item label="经纬度" prop="name">
+                        <el-form-item label="经纬度">
                             <el-input v-model="ruleForm.latitudeLlongitude" placeholder="请以英文状态下的‘,’隔开，经度在前，纬度在后"></el-input>
                         </el-form-item>
                         <el-form-item label="选择路线" prop="name">
-                            <el-select v-model="ruleForm.route" placeholder="请选择路线">
-                                <el-option v-for="(item,index) in lineList" :key="index" :label="item.label" :value="item.value" ></el-option>
-                            </el-select>
+                            <el-cascader :options="options" :multiple="false" @change="cascaderChange" :show-all-levels="false"></el-cascader>
                         </el-form-item>
-                         <el-form-item label="备注" prop="note">
+                         <el-form-item label="备注">
                             <el-input type="textarea" v-model="ruleForm.note"></el-input>
                         </el-form-item>
                         
@@ -104,6 +102,7 @@ export default {
         isCanOperate:false,
         tableData: [],
         data: [],
+        options: [],
         defaultProps: {
           children: 'nodeList',
           label: 'name'
@@ -148,7 +147,7 @@ export default {
     computed: {
         ...mapState({
             taskbars           : state => state.MenuModule.taskbars
-        })
+        }),
     },
     mounted(){
         this.company()
@@ -178,10 +177,41 @@ export default {
                     })
                 }
             })
+            
+            this.getOptions()
             this.nodeid = this.lineList[0]['id']
             this.initData()
 
         })
+      },
+      getOptions(){
+          let result = []
+            
+            if(this.data && this.data.length > 0){
+                let menuItemsss = (froum,lists=[]) => {
+                    for(let i=0;i<froum.length;i++){
+                        lists[i] = {
+                            comment: froum[i]['comment'],
+                            devices: froum[i]['devices'],
+                            id: froum[i]['id'],
+                            level: froum[i]['level'],
+                            label: froum[i]['name'],
+                            value:froum[i]['id'],
+                            parentId: froum[i]['parentId'],
+                            $treeNodeId: froum[i]['$treeNodeId'],
+                        }
+                        if(froum[i]['nodeList'] && froum[i]['nodeList'].length > 0){
+                            lists[i]['children'] = menuItemsss(froum[i]['nodeList'])
+                        }
+                    }
+                    return lists
+                }
+                result = menuItemsss(this.data)
+            }
+            this.options =  result
+      },
+      cascaderChange(data){
+          this.ruleForm.route = data[data.length-1]
       },
         //列表数据
       initData(){

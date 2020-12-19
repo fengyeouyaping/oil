@@ -66,6 +66,7 @@ export default {
                     twoList.push(path[i])
                 }
             }
+            
              let polylineOne = new AMap.Polyline({
                 path: oneList,
                 isOutline: true,
@@ -98,8 +99,9 @@ export default {
                 lineCap: 'round',
                 zIndex: 50,
             })
-            polylineOne.setMap(maps)
-            polylineTwo.setMap(maps)
+            
+            if(oneList.length > 0) polylineOne.setMap(maps)
+            if(twoList.length > 0) polylineTwo.setMap(maps)
             // 缩放地图到合适的视野级别
             maps.setFitView([ polylineOne,polylineTwo ])
 
@@ -180,24 +182,28 @@ export default {
             })
         },
         getData(){
-            this.newInfo.devices.map((item) => {
+            this.newInfo.map((item) => {
+                
                 this.dataList.push({
                     Q:item.lat,
                     R:item.lon
                 })
                 this.lineList.push([item.lon,item.lat])
-                this.textList.push(item.stake)
+                this.textList.push(item.devGuid)
             })
         },
         init(){
+            this.dataList=[],
+            this.lineList=[],
+            this.textList=[],
             this.getData()
             
             if(!!this.maps) this.maps.destroy();
             this.isOk = true
             let self = this
             let maps = new AMap.Map('container', {
-                zoomEnable:false,
-                dragEnable: false,
+                zoomEnable:true,
+                dragEnable: true,
                 zooms: [3, 20],
                 zoom: 4,
                 center: [105.397428, 35.90923],

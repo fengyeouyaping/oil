@@ -6,7 +6,7 @@
                 <i class="el el-icon-circle-plus-outline" title="添加根群组" @click="isAddTree = 1" v-if="ifShow(0)"></i>
                 <i class="el el-icon-share" title="添加节点群组" @click="isAddTree = 2" v-if="isCanAddSonTree && ifShow(0)"></i>
                 <i class="el el-icon-delete-solid" title="删除群组" v-if="isCanAddSonTree && ifShow(1)" @click="deleteInfo()"></i>
-                <i class="el el-icon-refresh" title="校时群组" @click="initData()"></i>
+                <i class="el el-icon-edit" title="编辑群组" v-if="isCanAddSonTree" @click="editorTree()"></i>
             </div>
             <el-tree class="filter-tree" :data="data" :props="defaultProps" default-expand-all :expand-on-click-node="false" :filter-node-method="filterNode" @node-click="change" ref="tree"></el-tree>
         </div>
@@ -41,12 +41,34 @@
                         <el-form-item label="群组名称" prop="name">
                             <el-input v-model="ruleForm.name"></el-input>
                         </el-form-item>
-                         <el-form-item label="群组描述" prop="note">
+                         <el-form-item label="群组描述">
                             <el-input type="textarea" v-model="ruleForm.note"></el-input>
                         </el-form-item>
                         
                         <el-form-item class="button">
                             <el-button type="primary" @click="submitForm('ruleForm')">确认</el-button>
+                            <el-button @click="resetForm('ruleForm')">取消</el-button>
+                        </el-form-item>
+                    </el-form>
+                </div>
+            </div>
+        </div>
+        <!-- 编辑根群组 -->
+        <div class="mask" v-if="isEditorTree">
+            <div class="margin">
+                <i class="el el-icon-circle-close close" @click="isEditorTree = false"></i>
+                <div class="header">编辑群组</div>
+                <div class="from">
+                    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+                        <el-form-item label="群组名称" prop="name">
+                            <el-input v-model="ruleForm.name"></el-input>
+                        </el-form-item>
+                         <el-form-item label="群组描述">
+                            <el-input type="textarea" v-model="ruleForm.comment"></el-input>
+                        </el-form-item>
+                        
+                        <el-form-item class="button">
+                            <el-button type="primary" @click="submitEditor('ruleForm')">确认</el-button>
                             <el-button @click="resetForm('ruleForm')">取消</el-button>
                         </el-form-item>
                     </el-form>
@@ -64,6 +86,7 @@ export default {
         pageNum:1,
 
         isAddTree:false,
+        isEditorTree:false,
         isCanAddSonTree:false,
         filterText: '',
         tableData: [],
@@ -158,7 +181,7 @@ export default {
                 })
             }).catch(() => {});
         },
-
+        //添加节点
         submitForm(formName) {
             this.$refs[formName].validate((valid) => {
             if (valid) {
@@ -195,10 +218,54 @@ export default {
         },
         resetForm() {
             this.isAddTree = false
+            this.isEditorTree = false
             this.ruleForm= {
                 name: '',
                 note: '',
             }
+        },
+        //编辑群组信息
+        editorTree(){
+            this.ruleForm = {
+                id: this.newData.id,
+                name: this.newData.name,
+                comment: this.newData.comment,
+            }
+            this.isEditorTree = true
+        },
+        submitEditor(formName){
+            this.$refs[formName].validate((valid) => {
+            if (valid) {
+                var params = {
+                    comment : this.ruleForm.comment,
+                    name : this.ruleForm.name,
+                    id : this.ruleForm.id
+                }
+            
+                this.$myLoading.startLoading()
+                this.$http.postHttp(this.$API.nodeUpdate,params,(data)=>{
+                    this.$notify({
+                        title: '树结构修改成功',
+                        message: '',
+                        type: 'success'
+                        });
+                    this.isEditorTree = false
+                    this.initData()
+                    this.ruleForm= {
+                        name: '',
+                        note: '',
+                    }
+                    this.newData = {}
+                    this.isCanAddSonTree = false
+                    this.$myLoading.endLoading()
+
+                })
+                
+            } else {
+                console.log('error submit!!');
+                return false;
+            }
+            });
         }
     },
 }

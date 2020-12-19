@@ -386,7 +386,8 @@ export default {
   }
 
   .loginContent {
-    width 30%
+    width:30%
+    min-width 700px
     padding 230px 10% 0
     float right
     .loginTitleBox{

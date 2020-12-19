@@ -77,6 +77,12 @@ var routerData = [
     name:'userInfo',
     component: () => import('../../views/bussinessView/userInfo/index.vue')
   },
+  //文件浏览
+  {
+    path: '/fileBrow',
+    name:'fileBrow',
+    component: () => import('../../views/bussinessView/fileBrow/index.vue')
+  },
 ];
 
 export default routerData

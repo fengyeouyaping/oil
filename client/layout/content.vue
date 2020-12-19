@@ -155,7 +155,7 @@ export default {
   overflow auto
   background #ffffff
   &.active{
-    left 60px  
+    left 0  
   }
   &.leftActive{
     left 160px

@@ -59,16 +59,19 @@
         methods: {
             //点击以及菜单，进行二级菜单的切换
             change(key, keyPath){
-                this.$store.commit('MenuModule/changeIndex', key+'')
                 if(key != 4){
+                    this.$store.commit('MenuModule/changeIndex', key+'')
                     setTimeout(() => {
                         this.changeSon(0,0)
                     })
                 }else{
+                    this.$store.commit('MenuModule/changeIndex', key+'')
                     setTimeout(() => {
-                        this.$router.push({
-                            path: this.taskbars[key]['url']
+                        //大数据看版
+                        let link = this.$router.resolve({
+                            path: this.taskbars[key]['url'],
                         });
+                        window.open(link.href, '_blank')
                     })
                 }
                 

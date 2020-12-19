@@ -29,7 +29,7 @@
     </div>
 </template>
 <script>
-import LocalData from '../../../common/localData'
+import LocalData from '../../../localData/userData'
 export default {
     data(){
         return{
@@ -46,16 +46,13 @@ export default {
                     { required: true, message: '请输入正确的密码', trigger: 'change' }
                 ],
             },
+            myHeaders:{token:LocalData.userToken()}
         }
     },
     mounted(){
       this.initData()
     },
-    computed:{
-        myHeaders(){
-            return {token:LocalData.userToken()}
-        }
-    },
+
     methods: {
         //获取用户信息
         initData(){
@@ -93,6 +90,7 @@ export default {
                 id:this.ruleForm.id,
                 account:this.ruleForm.account,
                 password:this.ruleForm.password,
+                imagePath:this.ruleForm.imagePath,
             }
             this.$http.postHttp(this.$API.userUpdate,params,(data)=>{
                 sessionStorage.setItem("userInfo",JSON.stringify(this.ruleForm))

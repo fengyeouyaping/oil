@@ -13,9 +13,9 @@ var qs = require('qs');
  **/
 var NetTool = {}
 axios.defaults.timeout = Global.networkTimeout;
-axios.defaults.baseURL = '/api'
+axios.defaults.baseURL = Global.httpServer
+// axios.defaults.baseURL = '/api'
 axios.interceptors.request.use(function (config) {
-
   config.headers = {
     'Content-Type': 'application/json',
     'token': LocalData.userToken()
@@ -32,6 +32,11 @@ axios.interceptors.response.use(function (response) {
   if (response.data.code === 0) {
     return response.data
   } else {
+    if(response.data.code === -1){
+      CustomLoading.endLoading()
+      MyPop.alertBox("请求失败",response.data.msg)
+      return
+    }
 
     var messageStr = ""
 
