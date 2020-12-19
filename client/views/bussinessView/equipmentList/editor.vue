@@ -29,9 +29,6 @@
                 <li><el-input v-model="info.threshold" placeholder="请输入内容"></el-input></li>
             </ul>
         </div>
-        <!-- <div class="btns">
-            <el-button type="primary" size="mini" @click="sendCommand('deviceTestInfo')">设置设备采集配置</el-button>
-        </div> -->
         <div>
             <ul>
                 <li class="title">网络信息</li>

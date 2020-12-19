@@ -1,26 +1,20 @@
 <template>
     <div class="realTimeInfo">
         <div>
-            <div class="listTitle">设备采集配置</div>
+            <div class="listTitle">基础信息</div>
             <ul>
-                <li>采样频率</li>
+                <li>设备类型</li>
                 <li>{{info.freq}}</li>
-                <li>采样时长</li>
+                <li>设备编号</li>
                 <li>{{info.length}}</li>
             </ul>
             <ul>
-                <li>采样次数</li>
+                <li>硬件版本</li>
                 <li>{{info.number}}</li>
-                <li>数据存储阀值</li>
+                <li>软件版本</li>
                 <li>{{info.threshold}}</li>
             </ul>
-            <ul>
-                <li>单个文件存储时长</li>
-                <li>{{info.saveLong}}</li>
-                <li>量程选择</li>
-                <li>{{info.freq}}</li>
-            </ul>
-            <div class="listTitle">设备采集配置</div>
+            <div class="listTitle">网络信息</div>
             <ul>
                 <li>服务器IP地址</li>
                 <li>{{info.svrIp}}</li>
@@ -28,43 +22,44 @@
                 <li>{{info.svrPort}}</li>
             </ul>
             <ul>
-                <li>自动上传时间间隔</li>
+                <li>时间间隔</li>
                 <li>{{info.postLvl}}</li>
                 <li></li>
                 <li></li>
             </ul>
-            <div class="listTitle">设备网络配置</div>
+            <div class="listTitle">测试参数</div>
             <ul>
-                <li>测试桩号</li>
+                <li>采样频率</li>
                 <li>{{info.stake}}</li>
-                <li>备注</li>
+                <li>分析需采样次数</li>
                 <li>{{info.remarks}}</li>
             </ul>
             <ul>
-                <li>经度</li>
+                <li>采样次数</li>
                 <li>{{info.lon}}</li>
-                <li>纬度</li>
+                <li>文件个数</li>
                 <li>{{info.lat}}</li>
             </ul>
-            <div class="listTitle">设备文件列表</div>
-            <div class="excel_list">
-                <el-table :data="fileList" style="width:100%">
-                    <el-table-column prop="fileName" label="文件名称"></el-table-column>
-                    <el-table-column label="操作" fixed="right">
-                        <template slot-scope="scope,index">
-                            {{index}}
-                            <el-upload
-                                class="upload-demo"
-                                action="https://jsonplaceholder.typicode.com/posts/"
-                                :on-change="handleChange">
-                                <el-button size="small" type="primary">上传</el-button>
-                            </el-upload>
-                            <el-button type="primary" size="small">下载</el-button>
-                            <el-button type="primary" size="small">删除</el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
-            </div>
+             <ul>
+                <li>阀值</li>
+                <li>{{info.lon}}</li>
+                <li></li>
+                <li></li>
+            </ul>
+            <div class="listTitle">位置信息</div>
+            <ul>
+                <li>桩号</li>
+                <li>{{info.stake}}</li>
+                <li>经度</li>
+                <li>{{info.remarks}}</li>
+            </ul>
+            <ul>
+                <li>纬度</li>
+                <li>{{info.lon}}</li>
+                <li>备注</li>
+                <li>{{info.lat}}</li>
+            </ul>
+            
         </div>
     </div>
 </template>
