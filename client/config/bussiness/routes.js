@@ -41,12 +41,6 @@ var routerData = [
     name:'equipmentInfo',
     component: () => import('../../views/bussinessView/equipmentList/info.vue')
   },
-  //设备列表编辑
-  {
-    path: '/equipmentEditor',
-    name:'equipmentEditor',
-    component: () => import('../../views/bussinessView/equipmentList/editor.vue')
-  },
   //设备日志
   {
     path: '/equipmentLog',

@@ -157,7 +157,9 @@
 
 <script>
 import Map from './map/map.vue'
+import ws from '../../../config/ws'
 export default {
+  mixins:[ws],
   components:{
     Map
   },

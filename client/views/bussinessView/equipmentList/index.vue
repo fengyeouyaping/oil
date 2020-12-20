@@ -21,12 +21,12 @@
                          v-if="ifShow(3)">
                         <i class="el el-icon-upload2" title="列表导入"></i>
                     </el-upload>
-                    <i class="el el-icon-refresh" title="校时设备" @click="initData()"></i>
-                    <i class="el el-icon-circle-plus-outline" title="添加设备" @click="isAddInfo = true" v-if="ifShow(0)"></i>
+                    <i class="el el-icon-circle-plus-outline" title="添加设备" @click="isAddInfo = true;isAdd = true" v-if="ifShow(0)"></i>
                 </div>
             </div>
             <div class="figure">
                 <el-table :data="tableData" class="tableData" style="width:100%" height="100%" :stripe="true">
+                    <el-table-column prop="sortId" label="序号"></el-table-column>
                     <el-table-column prop="devGuid" label="设备ID" width=150></el-table-column>
                     <el-table-column prop="stake" label="测试桩号"></el-table-column>
                     <el-table-column label="经纬度" width="200">
@@ -60,7 +60,7 @@
         <div class="mask" v-if="isAddInfo">
             <div class="margin">
                 <i class="el el-icon-circle-close close" @click="isAddInfo = false"></i>
-                <div class="header">添加设备</div>
+                <div class="header">{{isAdd ? '添加设备' : '编辑设备'}}</div>
                 <div class="from">
                     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                         <el-form-item label="设备ID" prop="name">
@@ -68,6 +68,9 @@
                         </el-form-item>
                         <el-form-item label="测试桩号">
                             <el-input v-model="ruleForm.name"></el-input>
+                        </el-form-item>
+                        <el-form-item label="序号">
+                            <el-input v-model="ruleForm.sortId"></el-input>
                         </el-form-item>
                         <el-form-item label="经纬度">
                             <el-input v-model="ruleForm.latitudeLlongitude" placeholder="请以英文状态下的‘,’隔开，经度在前，纬度在后"></el-input>
@@ -97,6 +100,7 @@ export default {
           total:0,
           pageNum:1,
           isAddInfo:false,
+          isAdd:true,//是否是编辑
         filterText: '',
         lastFilterText:'',
         isCanOperate:false,
@@ -113,6 +117,7 @@ export default {
             latitudeLlongitude:'',
             route:'',
             note: '',
+            sortId:''
         },
         rules: {
             id: [
@@ -265,12 +270,16 @@ export default {
                 }
               });
           }else if(type === 2){
-              this.$router.push({
-                path: "/equipmentEditor",
-                query:{
-                    devGuid:data.devGuid
-                }
-              });
+            this.isAddInfo = true
+            this.isAdd = false
+            this.ruleForm = {
+                route:data.nodeId,
+                id:data.devGuid,
+                latitudeLlongitude: `${data.lon},${data.lat}`,
+                note:data.remark,
+                name:data.stake,
+                sortId:data.sortId,
+            }
           }else if(type === 3){
                 this.$confirm('确定删除此设备吗?', '提示', {
                     confirmButtonText: '确定',
@@ -301,7 +310,7 @@ export default {
       submitForm(formName) {
             this.$refs[formName].validate((valid) => {
             if (valid) {
-                if(this.ruleForm.latitudeLlongitude.split(',').length < 2){
+                if(this.ruleForm.latitudeLlongitude && this.ruleForm.latitudeLlongitude.split(',').length < 2){
                     this.$notify({
                         title: '请输入正确的经纬度',
                         message: '',
@@ -317,16 +326,25 @@ export default {
                     "remark": this.ruleForm.note,
                     "stake": this.ruleForm.name,
                 }
-            
+
+                let url =this.isAdd ? this.$API.deviceAdd : this.$API.deviceUpdate
                 this.$myLoading.startLoading()
-                this.$http.postHttp(this.$API.deviceAdd,params,(data)=>{
+                this.$http.postHttp(url,params,(data)=>{
                 this.$notify({
-                  title: '设备添加成功',
+                  title: this.isAdd ? '设备添加成功' : '设备编辑成功',
                   message: '',
                   type: 'success'
                 });
                 this.initData()
                 this.isAddInfo = false
+                this.ruleForm= {
+                    id: '',
+                    name: '',
+                    latitudeLlongitude:'',
+                    route:'',
+                    note: '',
+                    sortId:''
+                },
                 this.$myLoading.endLoading()
                 })
                 

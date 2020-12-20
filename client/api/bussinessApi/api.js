@@ -11,8 +11,6 @@ API.userLogOut = "/user/logOut"//退出登录
 API.userDetail = "/user/detail"//用户信息
 API.userDelete = "/user/delete"//删除用户
 
-
-
 //角色
 API.roleAdd = "/role/add"//添加角色
 API.roleList = "/role/list"//角色列表
@@ -43,6 +41,10 @@ API.fileUploadImport = "/file/upload/import"//导入设备列表
 API.deviceListAll = "/device/list/all"//全部设备列表
 API.deviceListDelete = "/device/delete"//删除设备
 API.deviceFileList = "/device/fileList"//设备详情--文件列表
+
+//文件
+API.fileList = "/file/list"//查询目录列表
+
 
 
 //数据

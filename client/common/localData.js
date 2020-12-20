@@ -31,7 +31,7 @@ LocalData.getUsersID = function(){
 
 //获取当前用户ID
 LocalData.userInfo = function(){
-
+  
   var userInfo = JSON.parse(sessionStorage.getItem("userInfo"))
   
   if(!userInfo){

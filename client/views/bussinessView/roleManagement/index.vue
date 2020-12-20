@@ -45,7 +45,7 @@
                         <el-form-item label="角色名称" prop="name">
                             <el-input v-model="ruleForm.name"></el-input>
                         </el-form-item>
-                         <el-form-item label="备注" prop="note">
+                         <el-form-item label="备注">
                             <el-input type="textarea" v-model="ruleForm.note"></el-input>
                         </el-form-item>
                         

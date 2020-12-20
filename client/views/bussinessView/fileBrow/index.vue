@@ -46,30 +46,12 @@ export default {
           isAddInfo:false,
         filterText: '',
         isCanOperate:false,
-        tableData: [{
-          id: 1,
-          name: 'xd123456',
-          type:'告警',
-          time:"2020.10.02 19:20:00",
-          content:'这里是备注拉'
-        }, {
-          id: 2,
-          name: 'xd123457',
-          type:'预计',
-          time:"2020.10.02 19:20:00",
-          content:'这里是备注拉'
-        }, {
-          id: 3,
-          name: 'xd123458',
-          type:'异常',
-          time:"2020.10.02 19:20:00",
-          content:'这里是备注拉'
-        }],
+        tableData: [],
       };
     },
 
     mounted(){
-      this.initData()
+    //   this.initData()
     },
     computed: {
         ...mapState({
