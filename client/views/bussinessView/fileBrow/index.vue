@@ -3,23 +3,22 @@
         <div class="content">
             <div class="header">
                 <div style="font-size:18px;cursor:pointer;">
-                    <span>返回上一级</span>/<span>全部文件</span>
+                    <span @click="getBeforeLists()">返回上一级</span>/<span @click="initData()">全部文件</span>
                 </div>
             </div>
             <div class="figure">
-                <el-table :data="tableData" class="tableData" style="width:100%" height="100%" :stripe="true">
-                    <el-table-column type="selection" width="55"></el-table-column>
+                <el-table :data="tableData" class="tableData" style="width:100%" height="100%" :stripe="true" @row-click="getNewLists">
                     <el-table-column label="文件">
                         <template slot-scope="scope">
-                            <i class="el-icon-folder"></i>
-                            <i class="el-icon-document"></i>
-                            <span>1234556</span>
+                            <i v-if="scope.row.fileType == 'dir'" class="el-icon-folder"></i>
+                            <i v-else class="el-icon-document"></i>
+                            <span>{{scope.row.fileName}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="time" label="日期"></el-table-column>
+                    <el-table-column prop="createTime" label="日期"></el-table-column>
                     <el-table-column label="操作" fixed="right">
                         <template slot-scope="scope">
-                            <el-button type="text" size="small" @click="daleteInfo(scope.row)" v-if="ifShow(0)">下载</el-button>
+                            <el-button type="text" size="small" @click.stop="fileDownload(scope.row.fileName)" v-if="scope.row.fileType != 'dir'">下载</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -47,11 +46,12 @@ export default {
         filterText: '',
         isCanOperate:false,
         tableData: [],
+        newPath:''
       };
     },
 
     mounted(){
-    //   this.initData()
+      this.initData()
     },
     computed: {
         ...mapState({
@@ -63,29 +63,31 @@ export default {
         fileExport(){
             window.location = this.$global.httpServer + this.$API.fileExport
         },
-        ifShow(index){
-            return this.taskbars[2]['childMenus'][0]['childMenus'][index]['visible']
+        //下载
+        fileDownload(fileName){
+            window.location = this.$global.httpServer + this.$API.fileDownload + "?fileName=" + fileName
         },
-        initDatas(){
-            this.pageNum = 1
-            this.initData()
+        //点击获取上一级
+        getBeforeLists(){
+            let lists = this.newPath.split('/')
+            lists.pop()
+            this.initData(lists.join('/')+'/')
+        },
+        //点击获取下一级
+        getNewLists(row){
+            if(row.fileType == 'dir'){
+                this.initData(row.filePath)
+            }
         },
         //列表数据
-      initData(){
-        var params = {
-          pageNum : this.pageNum,
-          pageSize : this.$global.pageLimit,
-          devGuid : this.filterText
-        }
+      initData(filePath = ''){
+        this.lastPath = filePath
+        let path = filePath
     
         this.$myLoading.startLoading()
-        this.$http.postHttp(this.$API.deviceLogList,params,(data)=>{
-          this.total = data.data.total
-          this.tableData = data.data.list
-          this.tableData.map((item) => {
-                item.time = this.$common.dateFormat("YYYY-MM-dd",item.time/1000)
-            })
-          this.data = this.$common.arrayOrganizationalNew(this.tableData)
+        this.$http.getHttp(this.$API.fileList+"?path=" + path,(data)=>{
+          this.tableData = data.data.files
+          this.newPath = data.data.dirPath
           this.$myLoading.endLoading()
 
         })

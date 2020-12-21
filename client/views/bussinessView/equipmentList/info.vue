@@ -51,7 +51,7 @@
                 <li>采样频率</li>
                 <li><el-input v-model="info.freq" placeholder="请输入内容"></el-input></li>
                 <li>分析需采样次数</li>
-                <li><el-input v-model="info.remarks" placeholder="请输入内容"></el-input></li>
+                <li><el-input v-model="info.aSample" placeholder="请输入内容"></el-input></li>
             </ul>
             <ul>
                 <li>采样次数</li>
@@ -63,7 +63,7 @@
                 <li>阀值</li>
                 <li><el-input v-model="info.threshold" placeholder="请输入内容"></el-input></li>
                 <li></li>
-                <li><el-button type="primary" size="mini" @click="sendCommand('DeviceTestInfo')">设置测试参数</el-button></li>
+                <li><el-button type="primary" size="mini" @click="sendCommand('deviceTestInfo')">设置测试参数</el-button></li>
             </ul>
             
         </div>
@@ -102,18 +102,22 @@
                     <div><el-button type="primary" size="mini" @click="getFileList('deviceDirInfo')">查询文件目录</el-button></div>
                     <div><el-button type="primary" size="mini" @click="deviceLogSend('deviceStartSaveFile')">启动保存</el-button></div>
                     <div><el-button type="primary" size="mini" @click="deviceLogSend('deviceDeleteFiles')">清空文件</el-button></div>
-                    <div><el-button type="primary" size="mini" @click="getFileList('deviceFileInfo')">获取文件</el-button></div>
                 </li>
             </ul>
             <ul style="min-height:200px;">
                 <template>
                     <el-table :data="fileList.dir" border style="max-width: 80%;margin:20px 0 0 10%" @selection-change="handleSelectionChange">
-                        <el-table-column type="selection" width="100"></el-table-column>
                         <el-table-column label="文件名">
                             <template slot-scope="scope">
                                 <span>{{scope.row}}</span>
                             </template>
                         </el-table-column>
+                        <el-table-column label="操作">
+                            <template slot-scope="scope">
+                                <div><el-button type="primary" size="mini" @click="getFileList('deviceFileInfo',scope.row)">获取文件</el-button></div>
+                            </template>
+                        </el-table-column>
+                        
                     </el-table>
                 </template>
             </ul>
@@ -203,30 +207,48 @@ export default {
                 }
             }
         
-            this.$http.postHttp(this.$API.deviceLogSend,params,(data)=>{})
+            this.$http.postHttp(this.$API.deviceLogSend,params,(data)=>{
+                this.$notify({
+                  title: '发送成功,请等待设备回复...',
+                  message: '',
+                  type: 'success'
+                });
+            })
         },
         //发送设置命令
         sendCommand(type){
 
             let devType = this.info.devType == '石油管道检测设备' ? 1 : 0
-            let info = 
-            {
-                DevType:devType,
-                DevGuid:this.info.devGuid,
-                hardVer:this.info.hardVer,
-                HardVer:this.info.softVer,
-                SoftVer:this.info.ip,
-                Port:this.info.port,
-                postIvl:this.info.postIvl,
-                Freq:this.info.freq,
-                ASample:this.info.aSample,
-                FSample:this.info.fSample,
-                FileNum:this.info.fileNum,
-                Threshold:this.info.threshold ? this.info.threshold.split(',') : [],
-                Stake:this.info.stake,
-                Lon:this.info.lon,
-                Lat:this.info.lat,
-                Remarks:this.info.remarks,
+            let info = {}
+            if(type == 'deviceNetInfo'){
+                info = {
+                    netInfo:{
+                        ip:this.info.ip,
+                        port:this.info.port,
+                        postIvl:this.info.postIvl,
+                    }
+                    
+                }
+            }else if(type == 'deviceTestInfo'){
+                info = {
+                    testInfo:{
+                        freq:this.info.freq,
+                        sample:this.info.fSample,
+                        fileNum:this.info.fileNum,
+                        threshold:this.info.threshold ? this.info.threshold.split(',') : [],
+
+                    }
+                }
+            }else if(type == 'deviceGisInfo'){
+                info = {
+                    gisInfo:{
+                        stake:this.info.stake,
+                        lon:this.info.lon,
+                        lat:this.info.lat,
+                        remarks:this.info.remarks,
+
+                    }
+                }
             }
 
             var params = {
@@ -238,7 +260,7 @@ export default {
             this.$myLoading.startLoading()
             this.$http.postHttp(this.$API.deviceLogSend,params,(data)=>{
                 this.$notify({
-                  title: '设置成功,请等待设备回复...',
+                  title: '发送成功,请等待设备回复...',
                   message: '',
                   type: 'success'
                 });
@@ -251,38 +273,35 @@ export default {
             this.multipleSelection = val;
         },  
         //文件列表
-        getFileList(type){
+        getFileList(type,fileName){
             var params = {}
             if(type == 'deviceDirInfo'){
                 params = {
                     cmd:type,
                     targetDevice : this.$route.query.devGuid,
                     data:{
-                        errNo:0,
-                        fileNum:this.fillInput.path,
+                        page:this.fillInput.path,
                     }
                     
                 }
             }else{
-                if(this.multipleSelection.length == 0){
-                    this.$notify({
-                        title: '请选择要获取的文件',
-                        message: '',
-                        type: 'warning'
-                    });
-                    return
-                }
                 params = {
                     cmd:type,
                     targetDevice : this.$route.query.devGuid,
                     data:{
-                        fileName:"data.txt"
+                        fileName:fileName
                     }
                     
                 }
             }
             
-            this.$http.postHttp(this.$API.deviceLogSend,params,(data)=>{})
+            this.$http.postHttp(this.$API.deviceLogSend,params,(data)=>{
+                this.$notify({
+                  title: '发送成功,请等待设备回复...',
+                  message: '',
+                  type: 'success'
+                });
+            })
         },
         goToTop(){
           this.$router.go(-1)

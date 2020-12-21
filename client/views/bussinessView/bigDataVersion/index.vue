@@ -52,31 +52,6 @@
               </ul>
             </div>
           </div>
-          <div class="item">
-            <div class="bottom_header">
-              <p class="newColorContent">运行日志</p>
-            </div>
-            <div class="bottom_content_text">
-              <ul>
-                <li class="right">
-                  <div>
-                    <p>启动监测:<span>2020.10.27 11:20:00</span></p>
-                   </div>
-                   <div> 
-                    <p>到达3#终端:<span>2020.10.27 11:20:00</span></p>
-                  </div>
-                </li>
-                <li class="right">
-                  <div>
-                    <p>启动监测:<span>2020.10.27 11:20:00</span></p>
-                   </div>
-                   <div> 
-                    <p>到达2#终端:<span>2020.10.27 11:20:00</span></p>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
         </div>
       </div>
       <div class="right_list">
@@ -396,11 +371,8 @@ export default {
         display flex
         color #ffffff
         .item{
-          width 50%
+          width 100%
           height 100%
-          &:first-child{
-            border-right 1px solid #1a38b5
-          }
           .bottom_header{
             height 25px
             line-height 25px
@@ -419,6 +391,7 @@ export default {
                 padding 5px 0
               }
               &>div{
+                padding-left 80px
                 display flex
                 font-size 12px
                 justify-content space-between

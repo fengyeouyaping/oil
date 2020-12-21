@@ -63,10 +63,10 @@
                 <div class="header">{{isAdd ? '添加设备' : '编辑设备'}}</div>
                 <div class="from">
                     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                        <el-form-item label="设备ID" prop="name">
+                        <el-form-item label="设备ID" prop="id">
                             <el-input v-model="ruleForm.id"></el-input>
                         </el-form-item>
-                        <el-form-item label="测试桩号">
+                        <el-form-item label="测试桩号" prop="name">
                             <el-input v-model="ruleForm.name"></el-input>
                         </el-form-item>
                         <el-form-item label="序号">
@@ -75,7 +75,7 @@
                         <el-form-item label="经纬度">
                             <el-input v-model="ruleForm.latitudeLlongitude" placeholder="请以英文状态下的‘,’隔开，经度在前，纬度在后"></el-input>
                         </el-form-item>
-                        <el-form-item label="选择路线" prop="name">
+                        <el-form-item label="选择路线" prop="route">
                             <el-cascader :options="options" :multiple="false" @change="cascaderChange" :show-all-levels="false"></el-cascader>
                         </el-form-item>
                          <el-form-item label="备注">
@@ -133,7 +133,7 @@ export default {
                 { min: 1, max: 14, message: '长度在 1 到 14 个字符', trigger: 'blur' }
             ],
             route: [
-                { required: true},
+                { required: true , message: '请选择路线', trigger: 'change'},
             ],
             note: [
                 { required: true, message: '请输入群组描述', trigger: 'blur' },
@@ -325,6 +325,7 @@ export default {
                     "lon": this.ruleForm.latitudeLlongitude.split(',')[0],
                     "remark": this.ruleForm.note,
                     "stake": this.ruleForm.name,
+                    "sortId": this.ruleForm.sortId
                 }
 
                 let url =this.isAdd ? this.$API.deviceAdd : this.$API.deviceUpdate
