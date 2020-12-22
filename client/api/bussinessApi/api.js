@@ -46,6 +46,14 @@ API.deviceFileList = "/device/fileList"//设备详情--文件列表
 API.fileList = "/file/list"//查询目录列表
 API.fileDownload = "/file/download"//下载文件
 
+//数据
+API.historyList = "/device/log/history/list"//历史数据
+API.historyData = "/device/log/data/list"//设备特征数据
+API.nowList = "/device/log/now/list"//实时数据
+
+
+
+
 
 
 

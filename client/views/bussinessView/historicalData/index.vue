@@ -3,10 +3,24 @@
         <div class="left">
             <el-input placeholder="输入关键字进行过滤" v-model="filterText" size="small" suffix-icon="el-icon-search"></el-input>
             <div class="left_title">公司信息</div>
-            <el-tree class="filter-tree" :data="data" :props="defaultProps" default-expand-all :filter-node-method="filterNode" ref="tree"></el-tree>
+            <el-tree class="filter-tree" :data="data" :props="defaultProps" default-expand-all :filter-node-method="filterNode" ref="tree" @node-click="nodeClick"></el-tree>
         </div>
         <div class="content">
+          <div class="seach">
+            <el-input placeholder="请输入设备编码" v-model="devGuid" size="small" suffix-icon="el-icon-search" style="width:300px"></el-input>
+            <div class="block">
+                    <el-date-picker
+                      v-model="time"
+                      type="datetimerange"
+                      range-separator="至"
+                      start-placeholder="开始日期"
+                      end-placeholder="结束日期">
+                    </el-date-picker>
+                    <el-button type="primary" size="small" style="margin-left:20px" @click="getscheat()">查询</el-button>
+                </div>
+          </div>
             <div class="figure1">
+              <div style="height:90%">
                 <el-table :data="tableData" class="tableData" height="100%" :stripe="true">
                     <el-table-column prop="id" label="终端ID"></el-table-column>
                     <el-table-column prop="devGuid" label="测试桩编号"></el-table-column>
@@ -16,23 +30,19 @@
                     <el-table-column prop="c" label="特征C"></el-table-column>
                     <el-table-column prop="d" label="特征D"></el-table-column>
                     <el-table-column prop="e" label="特征E"></el-table-column>
-                    <el-table-column prop="address" label="备注"></el-table-column>
+                    <el-table-column prop="fault" label="备注"></el-table-column>
                 </el-table>
+              </div>
+                <el-pagination
+                background
+                :current-page="pageNum"
+                :page-size="$global.pageLimit"
+                @current-change="handleCurrentChange"
+                layout="prev, pager, next"
+                :total="total">
+            </el-pagination>
             </div>
             <div class="figure2">
-                <div class="block">
-                    <el-date-picker
-                    v-model="time"
-                    type="daterange"
-                    align="right"
-                    unlink-panels
-                    range-separator="-"
-                    start-placeholder="起始时间"
-                    end-placeholder="结束时间"
-                    :picker-options="pickerOptions"
-                    @change="timeChange">
-                    </el-date-picker>
-                </div>
                 <div class="barLists">
                   <div>
                     <bar-top :id="`his1`"></bar-top>
@@ -62,34 +72,11 @@ export default {
           children: 'nodeList',
           label: 'name'
         },
-        pickerOptions: {
-          shortcuts: [{
-            text: '最近一周',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit('pick', [start, end]);
-            }
-          }, {
-            text: '最近一个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit('pick', [start, end]);
-            }
-          }, {
-            text: '最近三个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit('pick', [start, end]);
-            }
-          }]
-        },
-        time: ''
+        pageNum:1,
+        total:0,
+        time: [new Date().getTime() - 3600 * 1000 * 0.5,new Date().getTime()],
+        devGuid:'',
+        nodeId:''
       };
     },
     watch: {
@@ -101,9 +88,88 @@ export default {
         this.company()
     },
     methods: {
+      //当前页数
+      handleCurrentChange(val){
+          this.pageNum = val
+          this.getscheat()
+      },
+      //点击搜索
+      getscheat(){
+        if(this.time[1] - this.time[0] > 3600 * 1000 * 0.5){
+          this.$notify({
+              title: '选择时间范围不能超过0.5小时',
+              message: '',
+              type: 'warning'
+          });
+          return false
+        }
+        this.getListData()
+        this.getimgData()
+      },
+      //切换设备
+      nodeClick(data){
+        this.nodeId = data.id
+        this.getscheat()
+      },
       //时间变化
       timeChange(){
         this.initData()
+      },
+
+      //得到列表数据
+      getListData(){
+        var params = {
+            nodeId:this.nodeId,
+            startTime:this.time[0]/1000*1000,
+            endTime :this.time[1]/1000*1000,
+            pageNum : this.pageNum,
+            pageSize : this.$global.pageLimit,
+            devGuid:this.devGuid
+        }
+          this.$http.postHttp(this.$API.historyList,params,(rs)=>{
+            this.tableData = rs.data.list
+            this.total = rs.data.total
+          })
+      },
+      //得到图表数据
+      getimgData(){
+        var params = {
+            nodeId:this.nodeId,
+            startTime:this.time[0]/1000*1000,
+            endTime :this.time[1]/1000*1000,
+        }
+          this.$http.postHttp(this.$API.historyData,params,(rs)=>{
+              this.dealDate(rs.data)
+          })
+      },
+      //处理图表数据
+      dealDate(data){
+        // if(data && data.length > 0){
+        //   let bLists=[],cLists=[],nameLists=[],timeLists=[]
+        //   for(let i=0;i<data.length;i++){
+        //     let item = data[i]
+        //     if(nameLists.indexOf(item.devGuid) != -1){
+        //       nameLists.push(item.devGuid)
+        //       let time = this.$common.dateFormat("HH:mm:ss",item.time/1000)
+        //       if(timeLists.indexOf(time) != -1){
+        //         timeLists.push()
+
+        //       }
+        //       cLists.push({
+        //             name: item.devGuid,
+        //             type: 'line',
+        //             data: [item.c]
+        //         })
+        //       bLists.push({
+        //             name: item.devGuid,
+        //             type: 'line',
+        //             data: [item.b]
+        //         })
+        //     }
+            
+        //   }
+        // }
+        
       },
       //列表数据
       company(){
@@ -162,6 +228,12 @@ export default {
     }
     .content{
         flex 1
+        .seach{
+          margin 18px
+          display flex
+          justify-content space-around
+          align-items center
+        }
         .figure1{
             height 55%  
             padding 10px 20px

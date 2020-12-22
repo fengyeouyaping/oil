@@ -15,7 +15,7 @@
                             <span>{{scope.row.fileName}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="createTime" label="日期"></el-table-column>
+                    <el-table-column prop="updateTime" label="日期"></el-table-column>
                     <el-table-column label="操作" fixed="right">
                         <template slot-scope="scope">
                             <el-button type="text" size="small" @click.stop="fileDownload(scope.row.fileName)" v-if="scope.row.fileType != 'dir'">下载</el-button>

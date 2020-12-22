@@ -144,7 +144,7 @@
                 "level": 0,
                 "menu": "文件浏览",
                 "roleId": 1,
-                "visible": true,
+                "visible": false,
                 "url":"/fileBrow",
                 "childMenus": []
             }

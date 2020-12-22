@@ -24,7 +24,8 @@ export default {
         fileList:{
           fileNum:'',
           dir:[]
-      },
+        },
+        equipmentNewDate:[],//设备信息
       }
     },
     created() {
@@ -60,6 +61,8 @@ export default {
             this.equipmentInfoPage(e)
           }else if(JSON.parse(e.data).cmd == 'deviceDirInfo'){//文件类型
             this.getDeviceDirInfo(e)
+          }else if(JSON.parse(e.data).stakes){
+            this.getEquipmentNewDate(JSON.parse(e.data).stakes)//大数据看版，设备数据
           }
         }
         
@@ -90,7 +93,7 @@ export default {
           aSample:item.data.testInfo.ASample,
           fSample:item.data.testInfo.FSample,
           fileNum:item.data.testInfo.FileNum,
-          threshold:item.data.testInfo.Threshold.join(','),
+          threshold:item.data.testInfo.Threshold,
           stake:item.data.gisInfo.Stake,
           lon:item.data.gisInfo.Lon,
           lat:item.data.gisInfo.Lat,
@@ -103,6 +106,12 @@ export default {
         let item = JSON.parse(val.data)
         this.fileList.dir = item.data.dir
         this.fileList.fileNum = item.data.fileNum
+      },
+      //更新设备实时信息
+      getEquipmentNewDate(data){
+        this.equipmentNewDate.unshift({
+          // data[1]['stakeNo']
+        })
       }
     },
 }

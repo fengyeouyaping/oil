@@ -3,7 +3,7 @@
         <div class="left">
             <el-input placeholder="输入关键字进行过滤" v-model="filterText" size="small" suffix-icon="el-icon-search"></el-input>
             <div class="left_title">公司信息</div>
-            <el-tree class="filter-tree" :data="data" :props="defaultProps" default-expand-all :filter-node-method="filterNode" ref="tree"></el-tree>
+            <el-tree class="filter-tree" :data="data" :props="defaultProps" default-expand-all :filter-node-method="filterNode" ref="tree" @node-click="nodeClick"></el-tree>
         </div>
         <div class="content">
             <div class="figure">
@@ -12,33 +12,24 @@
             <div class="figure">
                 <bar-top :id="`bar2`"></bar-top>
             </div>
-            <div class="data">
-                <ul>
-                    <li><span>启动监控:</span>2020.10.10 15:00</li>
-                    <li v-for="(ite,index) in 15" :key="index" :class="index%2 === 0 ? 'active' : ''"><span>到达xp6-{{ite}}:</span>2020.10.10 15:00</li>
-                </ul>
-            </div>
         </div>
         <div class="right">
             <div class="margin">
-                <div class="model top">
+                <div class="model top" v-for="item in rightDate">
                     <ul>
-                        <li><span>位置:</span><p>{{right.location}}</p></li>
-                        <li><span>经纬度:</span><p>{{right.latitudeLlongitude}}</p></li>
-                        <li><span>天气:</span><p>{{right.weather}}</p></li>
-                        <li><span>风力:</span><p>{{right.wind}}</p></li>
-                        <li><span>温度:</span><p>{{right.temperature}}</p></li>
-                        <li><span>湿度:</span><p>{{right.humidity}}</p></li>
-                        <li><span>PM2.5:</span><p>{{right.PM25}}</p></li>
-                    </ul>
-                </div>
-                <div class="model" v-for="(item,index) in right['equipmentList']" :key="index" v-if="right['equipmentList'].length > 0">
-                    <ul>
-                        <li><span>设备编码:</span><p>{{item.coding}}</p></li>
-                        <li><span>设备状态:</span><p>{{item.state}}</p></li>
-                        <li><span>预计到达时间:</span><p>{{item.planTime}}</p></li>
-                        <li><span>实际到达时间:</span><p>{{item.actualTime}}</p></li>
-                        <li><span>运行速度:</span><p>{{item.speed}}</p></li>
+                        <li><span>设备编码:</span><p>{{item.device.devGuid}}</p></li>
+                        <li><span>设备状态:</span><p>{{item.device.status}}</p></li>
+                        <li><span>位置:</span><p>{{item.device.status}}</p></li>
+                        <li><span>天气:</span><p>{{item.device.status}}</p></li>
+                        <li><span>经纬度:</span><p>{{`${item.device.lat},${item.device.lon}`}}</p></li>
+                        <li><span>风力:</span><p>{{item.device.status}}</p></li>
+                        <li><span>温度:</span><p>{{item.device.status}}</p></li>
+                        <li><span>湿度:</span><p>{{item.device.status}}</p></li>
+                        <li><span>PM2.5:</span><p>{{item.device.status}}</p></li>
+                        <li><span>启动检测时间:</span><p>{{item.device.status}}</p></li>
+                        <li><span>预计到达时间:</span><p>{{item.device.status}}</p></li>
+                        <li><span>实际到达时间:</span><p>{{item.device.status}}</p></li>
+                        <li><span>运行速度:</span><p>{{item.device.status}}</p></li>
                     </ul>
                 </div>
             </div>
@@ -54,30 +45,7 @@ export default {
     data() {
       return {
         filterText: '',
-        right:{
-            location:'富平县',
-            latitudeLlongitude:"116.39，39.91",
-            weather:"晴",
-            wind:"3级",
-            temperature:"25度",
-            humidity:"50%",
-            PM25:"50",
-            equipmentList:[{
-                id:1,
-                coding:"XS9527",
-                state:'正常',
-                planTime:"2020.10.20 15:20:00",
-                actualTime:"2020.10.20 15:20:00",
-                speed:"50 m/s"
-            },{
-                id:2,
-                coding:"XS9528",
-                state:'正常',
-                planTime:"2020.10.20 15:20:00",
-                actualTime:"2020.10.20 15:20:00",
-                speed:"50 m/s"
-            }]
-        },
+        rightDate:[],
         data: [],
         defaultProps: {
           children: 'nodeList',
@@ -95,26 +63,39 @@ export default {
     },
     methods: {
         //列表数据
-      company(){
-        this.$http.postHttp(this.$API.deviceListAll,{},(rs)=>{
-          this.data = rs.data.nodes
-          this.data.map((item) => {
-              if(item.nodeList){
-                  item.nodeList.map((itemite) => {
-                      if(itemite.nodeList){
-                          itemite.nodeList.map((childrenItem) => {
-                              this.lineList.push(childrenItem)
-                          })
-                      }
-                  })
-              }
-          })
-        })
-      },
-      filterNode(value, data) {
-        if (!value) return true;
-        return data.label.indexOf(value) !== -1;
-      }
+        company(){
+            this.$http.postHttp(this.$API.deviceListAll,{},(rs)=>{
+            this.data = rs.data.nodes
+            this.data.map((item) => {
+                if(item.nodeList){
+                    item.nodeList.map((itemite) => {
+                        if(itemite.nodeList){
+                            itemite.nodeList.map((childrenItem) => {
+                                this.lineList.push(childrenItem)
+                            })
+                        }
+                    })
+                }
+            })
+            })
+        },
+        //切换设备
+        nodeClick(data){
+            let nodeId = data.id
+            this.getNewLists(nodeId,)
+        },
+        //获取实时数据列表
+        getNewLists(nodeId,num=12){
+            let url = this.$API.nowList + "?nodeId="+nodeId+"&num="+num
+            this.$http.getHttp(url,(rs)=>{
+                console.log(rs.data.deviceAndLogs)
+                this.rightDate = rs.data.deviceAndLogs
+            })
+        },
+        filterNode(value, data) {
+            if (!value) return true;
+            return data.label.indexOf(value) !== -1;
+        }
     },
 }
 </script>
@@ -137,7 +118,7 @@ export default {
         flex 1
         .figure{
             width 100%
-            height 35%   
+            height 50%   
         }
         .data{
             height 29%   
@@ -162,7 +143,8 @@ export default {
         }
     }
     .right{
-        width 200px
+        width 400px
+        min-width 400px
         height 100%
         background #f5f2f2
         .margin{
@@ -173,13 +155,19 @@ export default {
                 border-bottom 1px solid #ddd
                 font-weight bold
                 padding 20px 20px 
-                li{
-                    display flex 
-                    margin-bottom 15px
-                    span{
-                        min-width 105px
+                ul{
+                    display flex
+                    flex-wrap wrap
+                    justify-content space-between
+                    li{
+                        display flex 
+                        margin-bottom 15px
+                        width 45%
+                        span{
+                            min-width 105px
+                        }
                     }
-                }   
+                }      
                 &.top li span{
                     min-width 65px
                 }

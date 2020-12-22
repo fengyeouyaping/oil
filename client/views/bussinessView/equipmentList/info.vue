@@ -61,7 +61,12 @@
             </ul>
             <ul>
                 <li>阀值</li>
-                <li><el-input v-model="info.threshold" placeholder="请输入内容"></el-input></li>
+                <li>
+                    <div><el-input v-model="info.threshold[0]" placeholder="请输入内容"></el-input></div>
+                    <div><el-input v-model="info.threshold[1]" placeholder="请输入内容"></el-input></div>
+                    <div><el-input v-model="info.threshold[2]" placeholder="请输入内容"></el-input></div>
+                    <div><el-input v-model="info.threshold[3]" placeholder="请输入内容"></el-input></div>
+                </li>
                 <li></li>
                 <li><el-button type="primary" size="mini" @click="sendCommand('deviceTestInfo')">设置测试参数</el-button></li>
             </ul>
@@ -235,7 +240,7 @@ export default {
                         freq:this.info.freq,
                         sample:this.info.fSample,
                         fileNum:this.info.fileNum,
-                        threshold:this.info.threshold ? this.info.threshold.split(',') : [],
+                        threshold:this.info.threshold ? this.info.threshold : [],
 
                     }
                 }
@@ -339,7 +344,7 @@ export default {
             li{
                 list-style none
                 flex 1
-                height 60px
+                min-height 60px
                 line-height 60px
                 padding 0 20px
                 border-right 1px solid #eeeeee

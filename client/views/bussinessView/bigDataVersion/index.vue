@@ -33,7 +33,7 @@
             </div>
             <div class="bottom_content_text">
               <ul>
-                <li>
+                <li v-for="item in equipmentNewDate">
                   <p>设备4</p>
                   <div>
                     <p>预计到达时间:<span>2020.10.27 11:20:00</span></p>
@@ -149,6 +149,7 @@ export default {
         city:{},
         condition:{}
       },//点的信息
+      equipmentNewDate:[],//设备信息
     }
   },
   watch: {
