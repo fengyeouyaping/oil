@@ -6,7 +6,8 @@ export default {
       imagePath:'',
       account:'',
       password:''
-    }
+    },
+    newLineData:[]
   },
   mutations:{
     UPDATE_POIN_INFO(state,list){
@@ -14,6 +15,9 @@ export default {
     },
     UPDATA_USER_INFO(state,list){
       state.userInfo = list
+    },
+    updata_newLineData(state,list){
+      state.newLineData = list
     }
   }
 }

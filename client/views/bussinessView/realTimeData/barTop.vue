@@ -1,5 +1,5 @@
 <template>
-    <div :id="id" class="bar">
+    <div :id="id" class="bar" v-if="lineData.length>0">
         
     </div>
 </template>
@@ -12,6 +12,7 @@ require('echarts/lib/chart/line');
 // 引入提示框和标题组件
 require('echarts/lib/component/tooltip');
 require('echarts/lib/component/title');
+import {mapState} from 'vuex'
 
 export default {
     props: {
@@ -19,29 +20,89 @@ export default {
             type : String,
             required : ''
         },
+        name:{
+            type : String,
+            required : ''
+        },
     },
     data(){
         return{
-
+            bLists:[],
+            cLists:[],
+            timeLists:[],
+            nameLists:[],
+            lineData:[],
+            myChart:''
+        }
+    },
+    computed: {
+        ...mapState({
+            newLineData : state => state.HomeModule.newLineData,
+        })
+    },
+    watch:{
+        newLineData(val){
+            this.lineData = val
+            if(this.lineData.length > 0){
+                this.dealDate(this.lineData)
+            }else{
+                this.myChart = ''
+            }
+            
         }
     },
     mounted(){
-        // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById(this.id));
-        // 绘制图表
-        myChart.setOption(this.options());
+        
     },
     methods:{
+        //处理图表数据
+      dealDate(data){
+        this.bLists=[]
+        this.cLists=[]
+        this.nameLists=[]
+        this.timeLists=[]
+        if(data && data.length > 0){
+        this.nameLists=[data[0]['devGuid']]
+          for(let i=0;i<data.length;i++){
+            let item = data[i]
+            this.timeLists.push(this.$common.dateFormat("hh:mm:ss",item.time/1000))
+            this.bLists.push(item.b)
+            this.cLists.push(item.c)
+          }
+        }
+        setTimeout(() => {
+            if(!!this.myChart){
+                this.refreshData(this.name=='B特征'? this.bLists : this.cLists)
+            }else{
+                // 基于准备好的dom，初始化echarts实例
+                
+                this.myChart = echarts.init(document.getElementById(this.id));
+                // 绘制图表
+                this.myChart.setOption(this.options());
+            }
+        })
+        
+ 
+      },
+ 
+        refreshData(data){
+            //刷新数据
+            var option = this.myChart.getOption();
+            option.series[0].data = data;
+            this.myChart.setOption(option);    
+        },
          options(){
+             let _self = this
+             
             let option = {
             title: {
-                text: '特征B'
+                text: _self.name
             },
             tooltip: {
                 trigger: 'axis'
             },
             legend: {
-                data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
+                data: _self.nameLists
             },
             grid: {
                 left: '3%',
@@ -56,39 +117,16 @@ export default {
             },
             xAxis: {
                 type: 'category',
-                boundaryGap: false,
-                data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                data: _self.timeLists
             },
             yAxis: {
                 type: 'value'
             },
-            series: [
-                {
-                    name: '邮件营销',
-                    type: 'line',
-                    data: [1220, 1132, 1011, 1134, 1190,500,300,100,90, 2130, 2101]
-                },
-                {
-                    name: '联盟广告',
-                    type: 'line',
-                    data: [2112, 182, 191, 234, 290, 330, 310]
-                },
-                {
-                    name: '视频广告',
-                    type: 'line',
-                    data: [1510, 232, 201, 154, 190, 330, 410]
-                },
-                {
-                    name: '直接访问',
-                    type: 'line',
-                    data: [320, 332, 301, 334, 390, 330, 320]
-                },
-                {
-                    name: '搜索引擎',
-                    type: 'line',
-                    data: [820, 932, 901, 934, 1290, 1330, 1320]
-                }
-            ]
+            series: [{
+                data: _self.name=='B特征'? _self.bLists : _self.cLists ,
+                type: 'line',
+                smooth: true
+            }]
         }
         return option
         }

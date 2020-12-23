@@ -7,29 +7,29 @@
         </div>
         <div class="content">
             <div class="figure">
-                <bar-top :id="`bar1`"></bar-top>
+                <bar-top :id="`bar1`" :name="name1"></bar-top>
             </div>
             <div class="figure">
-                <bar-top :id="`bar2`"></bar-top>
+                <bar-top :id="`bar2`" :name="name2"></bar-top>
             </div>
         </div>
-        <div class="right">
+        <div class="right" v-if="rightDate && rightDate.length > 0">
             <div class="margin">
-                <div class="model top" v-for="item in rightDate">
+                <div class="model top" v-for="item in rightDate" @click="getNewLists(item.devGuid)">
                     <ul>
-                        <li><span>设备编码:</span><p>{{item.device.devGuid}}</p></li>
-                        <li><span>设备状态:</span><p>{{item.device.status}}</p></li>
-                        <li><span>位置:</span><p>{{item.device.status}}</p></li>
-                        <li><span>天气:</span><p>{{item.device.status}}</p></li>
-                        <li><span>经纬度:</span><p>{{`${item.device.lat},${item.device.lon}`}}</p></li>
-                        <li><span>风力:</span><p>{{item.device.status}}</p></li>
-                        <li><span>温度:</span><p>{{item.device.status}}</p></li>
-                        <li><span>湿度:</span><p>{{item.device.status}}</p></li>
-                        <li><span>PM2.5:</span><p>{{item.device.status}}</p></li>
-                        <li><span>启动检测时间:</span><p>{{item.device.status}}</p></li>
-                        <li><span>预计到达时间:</span><p>{{item.device.status}}</p></li>
-                        <li><span>实际到达时间:</span><p>{{item.device.status}}</p></li>
-                        <li><span>运行速度:</span><p>{{item.device.status}}</p></li>
+                        <li><span>设备编码:</span><p>{{item.devGuid}}</p></li>
+                        <li><span>设备状态:</span><p>{{item.status}}</p></li>
+                        <li><span>位置:</span><p>{{item.info ? item.info.city.name : ''}}</p></li>
+                        <li><span>天气:</span><p>{{item.info ? item.info.condition.condition : ''}}</p></li>
+                        <li><span>经纬度:</span><p>{{`${item.lat},${item.lon}`}}</p></li>
+                        <li><span>风力:</span><p>{{item.info ? item.info.condition.windLevel : ''}}</p></li>
+                        <li><span>温度:</span><p>{{item.info ? item.info.condition.temp : ''}}</p></li>
+                        <li><span>湿度:</span><p>{{item.info ? item.info.condition.humidity : ''}}</p></li>
+                        <!-- <li><span>PM2.5:</span><p>{{item.status}}</p></li> -->
+                        <li><span>启动检测时间:</span><p>{{item.bigData ? item.bigData.startTime : ''}}</p></li>
+                        <li><span>预计到达时间:</span><p>{{item.bigData ? item.bigData.evalArrivedTime : ''}}</p></li>
+                        <li><span>实际到达时间:</span><p>{{item.bigData ? item.bigData.actArrivedTime : ''}}</p></li>
+                        <li><span>运行速度:</span><p>{{item.bigData ? item.bigData.dblVelocity  : ''}}</p></li>
                     </ul>
                 </div>
             </div>
@@ -50,12 +50,20 @@ export default {
         defaultProps: {
           children: 'nodeList',
           label: 'name'
-        }
+        },
+        lineData:[],
+        name1:"B特征",
+        name2:"C特征",
+        getNum:'',
+        nodeId:''
       };
     },
     watch: {
       filterText(val) {
         this.$refs.tree.filter(val);
+      },
+      lineData(val){
+          this.$store.commit('HomeModule/updata_newLineData',val)
       }
     },
     mounted(){
@@ -71,7 +79,9 @@ export default {
                     item.nodeList.map((itemite) => {
                         if(itemite.nodeList){
                             itemite.nodeList.map((childrenItem) => {
-                                this.lineList.push(childrenItem)
+                                if(childrenItem && childrenItem.devices && childrenItem.devices.length > 0 && this.rightDate.length == 0){
+                                    this.nodeClick(childrenItem)
+                                }
                             })
                         }
                     })
@@ -81,22 +91,81 @@ export default {
         },
         //切换设备
         nodeClick(data){
-            let nodeId = data.id
-            this.getNewLists(nodeId,)
+            this.nodeId = data.id
+            this.rightDate = data.devices
+            if(data.devices.length > 0){
+                let devGuid = data['devices'][0].devGuid
+                this.getNewLists(devGuid)
+                if(this.rightDate && this.rightDate.length > 0){
+                    this.rightDate.map((item) => {
+                        this.getDeviceWeather(item.lat,item.lon,(list) => {
+                            item.info = list
+                            this.$forceUpdate()
+                        })
+                    })
+                }
+                this.bigDataLists(this.nodeId)
+            }
+            
         },
         //获取实时数据列表
-        getNewLists(nodeId,num=12){
-            let url = this.$API.nowList + "?nodeId="+nodeId+"&num="+num
+        getNewLists(devGuid){
+            
+            this.lineData = []
+            let url = this.$API.nowList + "?devGuid="+devGuid+"&num=12"
             this.$http.getHttp(url,(rs)=>{
-                console.log(rs.data.deviceAndLogs)
-                this.rightDate = rs.data.deviceAndLogs
+                if(rs.data && rs.data.length > 0){
+                    rs.data.map((item) => {
+                        item.devGuid = devGuid
+                    })
+                    this.lineData = rs.data
+                    this.getNumDate(devGuid)
+                }else{
+                    clearInterval(this.getNum)
+                }
+                
             })
+        },
+        
+        //获取城市、天气信息
+        getDeviceWeather(lat,lon,cb){
+            this.$http.getHttp(this.$API.deviceWeather+"?lat="+lat+"&lon="+lon,(data)=>{
+                cb(data.data)
+            }) 
+        },
+        //查询大数据数据
+        bigDataLists(nodeId){
+            this.$http.getHttp(this.$API.bigData+"?nodeId="+nodeId,(data)=>{
+                if(data.data && data.data.length > 0){
+                    for(let i=0;i<data.data.length;i++){
+                        this.rightDate[i]['bigData'] = data.data[i]
+                    }
+                    this.$forceUpdate()
+                }
+            })
+        },
+        getNumDate(devGuid){
+            clearInterval(this.getNum)
+            this.getNum = setInterval(() => {
+                let url = this.$API.nowList + "?devGuid="+devGuid+"&num=12"
+                this.$http.getHttp(url,(rs)=>{
+                    if(rs.data && rs.data.length > 0){
+                        rs.data.map((item) => {
+                            item.devGuid = devGuid
+                        })
+                        this.lineData = rs.data
+                    }
+                })
+            },5000)
         },
         filterNode(value, data) {
             if (!value) return true;
             return data.label.indexOf(value) !== -1;
         }
     },
+    destroyed(){
+        clearInterval(this.getNum)
+    }
 }
 </script>
 <style lang="stylus" scoped>
@@ -155,6 +224,7 @@ export default {
                 border-bottom 1px solid #ddd
                 font-weight bold
                 padding 20px 20px 
+                cursor pointer
                 ul{
                     display flex
                     flex-wrap wrap

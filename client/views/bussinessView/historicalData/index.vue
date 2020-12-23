@@ -45,10 +45,10 @@
             <div class="figure2">
                 <div class="barLists">
                   <div>
-                    <bar-top :id="`his1`"></bar-top>
+                    <bar-top :id="`his1`" :lineData="lineData" :name="name1" v-if="lineData.length > 0"></bar-top>
                   </div>
                   <div>
-                    <bar-top :id="`his2`"></bar-top>
+                    <bar-top :id="`his2`" :lineData="lineData" :name="name2" v-if="lineData.length > 0"></bar-top>
                   </div>
                 </div>
             </div>
@@ -76,7 +76,10 @@ export default {
         total:0,
         time: [new Date().getTime() - 3600 * 1000 * 0.5,new Date().getTime()],
         devGuid:'',
-        nodeId:''
+        nodeId:'',
+        lineData:[],
+        name1:"B特征",
+        name2:"C特征",
       };
     },
     watch: {
@@ -104,7 +107,6 @@ export default {
           return false
         }
         this.getListData()
-        this.getimgData()
       },
       //切换设备
       nodeClick(data){
@@ -118,6 +120,7 @@ export default {
 
       //得到列表数据
       getListData(){
+        this.lineData = []
         var params = {
             nodeId:this.nodeId,
             startTime:this.time[0]/1000*1000,
@@ -129,47 +132,20 @@ export default {
           this.$http.postHttp(this.$API.historyList,params,(rs)=>{
             this.tableData = rs.data.list
             this.total = rs.data.total
+            this.getimgData(this.tableData[0]['devGuid'])
           })
       },
       //得到图表数据
-      getimgData(){
+      getimgData(devGuid){
         var params = {
+            // devGuids:[devGuid],
             nodeId:this.nodeId,
             startTime:this.time[0]/1000*1000,
             endTime :this.time[1]/1000*1000,
         }
           this.$http.postHttp(this.$API.historyData,params,(rs)=>{
-              this.dealDate(rs.data)
+            this.lineData = rs.data
           })
-      },
-      //处理图表数据
-      dealDate(data){
-        // if(data && data.length > 0){
-        //   let bLists=[],cLists=[],nameLists=[],timeLists=[]
-        //   for(let i=0;i<data.length;i++){
-        //     let item = data[i]
-        //     if(nameLists.indexOf(item.devGuid) != -1){
-        //       nameLists.push(item.devGuid)
-        //       let time = this.$common.dateFormat("HH:mm:ss",item.time/1000)
-        //       if(timeLists.indexOf(time) != -1){
-        //         timeLists.push()
-
-        //       }
-        //       cLists.push({
-        //             name: item.devGuid,
-        //             type: 'line',
-        //             data: [item.c]
-        //         })
-        //       bLists.push({
-        //             name: item.devGuid,
-        //             type: 'line',
-        //             data: [item.b]
-        //         })
-        //     }
-            
-        //   }
-        // }
-        
       },
       //列表数据
       company(){

@@ -14,7 +14,12 @@ export default {
             dataList:[],
             lineList:[],
             textList:[],
-            maps:''
+            maps:'',
+            visitFlag:0,
+            text:[],
+            polylineOne:'',
+            polylineTwo:'',
+            customLayer:''
         };
     },
     mounted() {
@@ -51,13 +56,14 @@ export default {
                 });
 
                 text.setMap(maps);
+                this.text.push(text)
             }
         },
         configLineData(maps){
             let path = this.lineList
             let oneList = [],twoList = []
             for(let i=0;i<path.length;i++){
-                if(i<3){
+                if(i<=this.visitFlag){
                     oneList.push(path[i])
                 }else{
                     if(i != 0){
@@ -67,7 +73,7 @@ export default {
                 }
             }
             
-             let polylineOne = new AMap.Polyline({
+            this.polylineOne = new AMap.Polyline({
                 path: oneList,
                 isOutline: true,
                 outlineColor: '#f9d334',
@@ -83,7 +89,7 @@ export default {
                 lineCap: 'round',
                 zIndex: 50,
             })
-            let polylineTwo = new AMap.Polyline({
+            this.polylineTwo = new AMap.Polyline({
                 path: twoList,
                 isOutline: true,
                 outlineColor: '#04a0e9',
@@ -100,14 +106,14 @@ export default {
                 zIndex: 50,
             })
             
-            if(oneList.length > 0) polylineOne.setMap(maps)
-            if(twoList.length > 0) polylineTwo.setMap(maps)
+            if(oneList.length > 0) this.polylineOne.setMap(maps)
+            if(twoList.length > 0) this.polylineTwo.setMap(maps)
             // 缩放地图到合适的视野级别
-            maps.setFitView([ polylineOne,polylineTwo ])
+            maps.setFitView([ this.polylineOne,this.polylineTwo ])
 
 
         },
-        getData(maps,callback){
+        getDatas(maps,callback){
             // AMap.plugin('AMap.DistrictSearch', function() {
             //     let search = new AMap.DistrictSearch();
             //     search.search('中国', function(status, data) {
@@ -128,9 +134,10 @@ export default {
         },
         
         addLayer(maps,positions) {
+            let _self = this
             AMap.plugin('AMap.CustomLayer', () => {
 	            let canvas = document.createElement('canvas');
-                let customLayer = new AMap.CustomLayer(canvas, {
+                this.customLayer = new AMap.CustomLayer(canvas, {
                     zooms: [3, 10],
                     alwaysRender:true,//缩放过程中是否重绘，复杂绘制建议设为false
                     zIndex: 120
@@ -152,7 +159,7 @@ export default {
 			    for (let i = 0; i < positions.length; i += 1) {
                     let ctx = canvas.getContext("2d");
                     ctx.beginPath();
-                    if(i < 3){
+                    if(i <= _self.visitFlag){
                         ctx.fillStyle = '#f9d334';
         		        ctx.strokeStyle = 'rgba(249,211,52,0.5)';
                     }else{
@@ -177,53 +184,72 @@ export default {
         		}
         		
 			}
-			customLayer.render = onRender;
-            customLayer.setMap(maps);
+			this.customLayer.render = onRender;
+            this.customLayer.setMap(maps);
             })
         },
         getData(){
-            this.newInfo.map((item) => {
-                
-                this.dataList.push({
-                    Q:item.lat,
-                    R:item.lon
-                })
-                this.lineList.push([item.lon,item.lat])
-                this.textList.push(item.devGuid)
+            this.newInfo.map((item,key) => {
+                if(item.visitFlag){
+                    this.visitFlag = key
+                }
+                if(item.lat && item.lon){
+                    this.dataList.push({
+                        Q:item.lat,
+                        R:item.lon
+                    })
+                    this.lineList.push([item.lon,item.lat])
+                    this.textList.push(item.devGuid)
+                }
             })
+            
         },
         init(){
             this.dataList=[],
             this.lineList=[],
             this.textList=[],
             this.getData()
-            
-            if(!!this.maps) this.maps.destroy();
-            this.isOk = true
             let self = this
-            let maps = new AMap.Map('container', {
-                zoomEnable:true,
-                dragEnable: true,
-                zooms: [3, 20],
-                zoom: 4,
-                center: [105.397428, 35.90923],
-                mapStyle:'amap://styles/1efb475da4687bb48c752ca6db690e75',
-                viewMode: '3D',
-                resizeEnable: true
-            })
-            this.maps = maps
-            maps.on('complete', function(){
+            if(!this.maps){
+                this.isOk = true
+                
+                this.maps = new AMap.Map('container', {
+                    zoomEnable:true,
+                    dragEnable: true,
+                    zooms: [3, 20],
+                    zoom: 4,
+                    center: [105.397428, 35.90923],
+                    mapStyle:'amap://styles/1efb475da4687bb48c752ca6db690e75',
+                    viewMode: '3D',
+                    resizeEnable: true
+                })
+            }else{
+                if(this.text && this.text.length > 0){
+                    for(let i=0;i<this.text.length;i++){
+                        this.maps.remove(this.text[i])
+                    }
+                }
+                this.maps.remove(this.polylineOne)
+                this.maps.remove(this.polylineTwo)
+                this.maps.remove(this.customLayer)
+                this.text = []
+                this.polylineOne = ''
+                this.polylineTwo = ''
+                this.customLayer = ''
+            }
+            
+            this.maps.on('complete', function(){
                 self.isOk = false
                 // 地图图块加载完成后触发
             });
             //点
-            this.getData(maps,(maps,positions) => {
+            this.getDatas(this.maps,(maps,positions) => {
                 this.addLayer(maps,positions)
             })
             //线
-            this.configLineData(maps)
+            this.configLineData(this.maps)
             //字
-            this.configTest(maps)
+            this.configTest(this.maps)
         },
     }
 };

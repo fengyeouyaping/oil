@@ -34,19 +34,11 @@
             <div class="bottom_content_text">
               <ul>
                 <li v-for="item in equipmentNewDate">
-                  <p>设备4</p>
+                  <p>{{item.stakeNo}}</p>
                   <div>
-                    <p>预计到达时间:<span>2020.10.27 11:20:00</span></p>
-                    <p>实际到达时间:<span>2020.10.27 11:20:00</span></p>
-                    <p>运行速度:<span>10m/s</span></p>
-                  </div>
-                </li>
-                <li>
-                  <p>设备3</p>
-                  <div>
-                    <p>预计到达时间:<span>2020.10.27 11:20:00</span></p>
-                    <p>实际到达时间:<span>2020.10.27 11:20:00</span></p>
-                    <p>运行速度:<span>10m/s</span></p>
+                    <p>预计到达时间:<span>{{item.evalArrivedTime}}</span></p>
+                    <p>实际到达时间:<span>{{item.actArrivedTime}}</span></p>
+                    <p>运行速度:<span>{{item.dblVelocity}}m/s</span></p>
                   </div>
                 </li>
               </ul>
@@ -156,6 +148,21 @@ export default {
     '$route': function() {
       // 监听路由变化
       this.reportUrl = this.$route.meta.pathUrl
+    },
+    equipmentNewDate(val){
+      if(val && val.length > 0){
+          for(let i=0;i<val.length;i++){
+            for(let j=0;j<this.newInfo.devices.length;j++){
+              if(val[i]['stakeNo'] == this.newInfo.devices[j]['devGuid']){
+                this.newInfo.devices[j]['visitFlag'] = val[i]['visitFlag'] ? val[i]['visitFlag'] : false 
+              }
+            }
+          }
+      }
+      setTimeout(() => {
+        this.$store.commit('HomeModule/UPDATE_POIN_INFO',this.newInfo.devices ? this.newInfo.devices : [])
+        this.$refs.maps.init()
+      },500)
     }
   },
   mounted() {
@@ -164,8 +171,9 @@ export default {
   methods: {
       newMap(item){
         if(item.devices && item.devices.length > 0){
+          this.newInfo = item
+          this.bigDataLists(this.newInfo.id)
           this.pointInfo.basic = item.devices[0]
-          this.$store.commit('HomeModule/UPDATE_POIN_INFO',item.devices)
           this.someDigits = item.devices.length || 0
           this.getPointInfo(item['devices'][0]['devGuid'])
           
@@ -181,6 +189,7 @@ export default {
     
         this.$myLoading.startLoading()
         this.$http.postHttp(this.$API.deviceListAll,{},(data)=>{
+          
           this.newInfo = false
           this.equipmentLists = data.data.nodes
           let forList = (list) => {
@@ -197,8 +206,9 @@ export default {
               }
             })
           }
+          
           forList(this.equipmentLists)
-          this.$store.commit('HomeModule/UPDATE_POIN_INFO',this.newInfo.devices)
+          this.bigDataLists(this.newInfo.id)
           this.someDigits = this.newInfo.devices.length || 0
 
           this.getPointInfo(this.newInfo['devices'][0]['devGuid'])
@@ -237,20 +247,28 @@ export default {
       },
       //获取点的信息
       getPointInfo(devGuid){
+        
         this.$http.getHttp(this.$API.deviceGet+"?devGuid="+devGuid,(data)=>{
+
             this.pointInfo.basic = data.data
             this.getDeviceWeather(data.data.lat,data.data.lon)
         })
       },
+      //查询大数据数据
+      bigDataLists(nodeId){
+          this.$http.getHttp(this.$API.bigData+"?nodeId="+nodeId,(data)=>{
+            this.equipmentNewDate = data.data ? data.data : []
+          })
+      },
       //获取城市、天气信息
       getDeviceWeather(lat,lon){
-
-        this.$http.getHttp(this.$API.deviceWeather+"?lat="+lat+"&lon="+lon,(data)=>{
+        if(lat && lon){
+          this.$http.getHttp(this.$API.deviceWeather+"?lat="+lat+"&lon="+lon,(data)=>{
             this.pointInfo.city = data.data.city
             this.pointInfo.condition = data.data.condition || []
-            this.$refs.maps.init()
             this.$myLoading.endLoading()
-        })
+          })
+        } 
         
       }
   }
@@ -384,6 +402,8 @@ export default {
             background:linear-gradient(to right,#1349ad,rgba(0,0,0,0))
           }
           .bottom_content_text{
+            height 147px
+            overflow auto
             padding 20px 20px 0 20px
             li{
               margin-bottom 10px

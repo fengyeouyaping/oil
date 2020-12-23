@@ -172,19 +172,10 @@ export default {
     },
     methods: {
         //保存
-        submitForm(){
-            var params = this.info
+        submitForm(params){
         
-            this.$myLoading.startLoading()
             this.$http.postHttp(this.$API.deviceUpdate,params,(data)=>{
-                this.$notify({
-                  title: '设备编辑成功',
-                  message: '',
-                  type: 'success'
-                });
 
-                setTimeout(()=>this.goToTop(),1000)
-                this.$myLoading.endLoading()
             })
         },
                     // 命令字名称 含义 
@@ -254,6 +245,14 @@ export default {
 
                     }
                 }
+                let data = {
+                    devGuid:this.$route.query.devGuid,
+                    lat:this.info.lat,
+                    lon:this.info.lon,
+                    remarks:this.info.remarks,
+                    stake:this.info.stake
+                }
+                this.submitForm(data)
             }
 
             var params = {

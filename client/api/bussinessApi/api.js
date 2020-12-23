@@ -51,6 +51,8 @@ API.historyList = "/device/log/history/list"//历史数据
 API.historyData = "/device/log/data/list"//设备特征数据
 API.nowList = "/device/log/now/list"//实时数据
 
+//大数据看版
+API.bigData = "/device/log/bigData/detail"//大数据看版
 
 
 

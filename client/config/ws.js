@@ -109,9 +109,7 @@ export default {
       },
       //更新设备实时信息
       getEquipmentNewDate(data){
-        this.equipmentNewDate.unshift({
-          // data[1]['stakeNo']
-        })
+        this.equipmentNewDate = data
       }
     },
 }
