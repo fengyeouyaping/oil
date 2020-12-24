@@ -9,7 +9,7 @@ GLOBAL.httpServer = "http://123.56.97.235:8080"
 GLOBAL.httpServerImg = "http://123.56.97.235:8082"
 
 //列表页每页显示的默认条数
-GLOBAL.pageLimit  = 13
+GLOBAL.pageLimit  = 10
 
 //是否记录操作日志
 GLOBAL.isRecordLogs = false

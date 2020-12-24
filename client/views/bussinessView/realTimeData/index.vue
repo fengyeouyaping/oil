@@ -3,7 +3,7 @@
         <div class="left">
             <el-input placeholder="输入关键字进行过滤" v-model="filterText" size="small" suffix-icon="el-icon-search"></el-input>
             <div class="left_title">公司信息</div>
-            <el-tree class="filter-tree" :data="data" :props="defaultProps" default-expand-all :filter-node-method="filterNode" ref="tree" @node-click="nodeClick"></el-tree>
+            <el-tree class="filter-tree" :data="data" :props="defaultProps" default-expand-all :filter-node-method="filterNode" :expand-on-click-node="false" ref="tree" @node-click="nodeClick"></el-tree>
         </div>
         <div class="content">
             <div class="figure">

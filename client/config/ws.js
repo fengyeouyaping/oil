@@ -62,7 +62,7 @@ export default {
           }else if(JSON.parse(e.data).cmd == 'deviceDirInfo'){//文件类型
             this.getDeviceDirInfo(e)
           }else if(JSON.parse(e.data).stakes){
-            this.getEquipmentNewDate(JSON.parse(e.data).stakes)//大数据看版，设备数据
+            this.getEquipmentNewDate(JSON.parse(e.data))//大数据看版，设备数据
           }
         }
         
@@ -109,7 +109,10 @@ export default {
       },
       //更新设备实时信息
       getEquipmentNewDate(data){
-        this.equipmentNewDate = data
+        if(data.nodeId == this.newInfo.id){
+          this.equipmentNewDate = data.stakes
+        }
+        
       }
     },
 }

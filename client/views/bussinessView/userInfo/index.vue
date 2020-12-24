@@ -37,6 +37,7 @@ export default {
             ruleForm: {
                 account: '',
                 password: '',
+                imagePath:'',
             },
             rules: {
                 account: [
@@ -57,9 +58,15 @@ export default {
         //获取用户信息
         initData(){
             this.ruleForm = JSON.parse(sessionStorage.getItem("userInfo"))
+            this.ruleForm.imagePath = this.$global.httpServerImg + this.ruleForm.imagePath
         },
         handleAvatarSuccess(res, file) {
             this.ruleForm.imagePath = URL.createObjectURL(file.raw);
+
+            this.$http.getHttp(this.$API.userDetail+"?id="+this.ruleForm.id+"&time="+new Date().getTime()*1000/1000,(rs)=>{
+                sessionStorage.setItem("userInfo",JSON.stringify(rs.data))
+                this.$store.commit('HomeModule/UPDATA_USER_INFO',rs.data)
+            })
         },
         beforeAvatarUpload(file) {
             const isJPG = file.type == 'image/jpeg' || file.type == 'image/png';

@@ -38,7 +38,7 @@
                     <el-table-column prop="batt" label="电量"></el-table-column>
                     <el-table-column prop="time" label="最后一次通信时间" width="180"></el-table-column>
                     <el-table-column prop="remark" label="备注"></el-table-column>
-                    <el-table-column label="操作" fixed="right">
+                    <el-table-column label="操作" fixed="right" width="200">
                         <template slot-scope="scope">
                             <el-button @click="handleClick(scope.row,2)" type="text" size="small" v-if="ifShow(2)">编辑</el-button>
                             <el-button @click="handleClick(scope.row,1)" type="text" size="small" v-if="ifShow(2)">详情</el-button>
@@ -259,7 +259,7 @@ export default {
         },
       filterNode(value, data) {
         if (!value) return true;
-        return data.label.indexOf(value) !== -1;
+        return data.name.indexOf(value) !== -1;
       },
       handleClick(data,type){
           if(type == 1){
@@ -302,10 +302,10 @@ export default {
       },
       //切换线路
       nodeClick(data){
-          if(this.lineList.indexOf(data) != -1){
+        //   if(this.lineList.indexOf(data) != -1){
               this.nodeid = data.id
               this.initData()
-          }
+        //   }
       },
       submitForm(formName) {
             this.$refs[formName].validate((valid) => {

@@ -1,8 +1,8 @@
 <template>
   <div class="header header_default_style">
     <div class="logo" @mouseenter="showMoreLanguage" @mouseleave="hideMoreLanguage">
-      <img :src="$global.httpServerImg + userInfo.imagePath" class="image_center" v-if="userInfo.imagePath">
-      <img src="~SYSTEM_IMAGE/test/test_header.jpeg" class="image_center" v-else>
+      <img :src="$global.httpServerImg + userInfo.imagePath" class="image_center" v-if="userInfo.imagePath" @click="updatePass">
+      <img src="~SYSTEM_IMAGE/test/test_header.jpeg" class="image_center" v-else @click="updatePass">
       <div class="more_menu_box" v-if="isShowMoreLanguage">
         <div class="more_menu_box_item" @click="updatePass">
           <i class="fa fa-key fa-lg"></i>修改信息

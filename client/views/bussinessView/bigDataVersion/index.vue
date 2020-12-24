@@ -34,7 +34,7 @@
             <div class="bottom_content_text">
               <ul>
                 <li v-for="item in equipmentNewDate">
-                  <p>{{item.stakeNo}}</p>
+                  <p>设备{{item.stakeNo}}</p>
                   <div>
                     <p>预计到达时间:<span>{{item.evalArrivedTime}}</span></p>
                     <p>实际到达时间:<span>{{item.actArrivedTime}}</span></p>

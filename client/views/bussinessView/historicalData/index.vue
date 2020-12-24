@@ -3,19 +3,27 @@
         <div class="left">
             <el-input placeholder="输入关键字进行过滤" v-model="filterText" size="small" suffix-icon="el-icon-search"></el-input>
             <div class="left_title">公司信息</div>
-            <el-tree class="filter-tree" :data="data" :props="defaultProps" default-expand-all :filter-node-method="filterNode" ref="tree" @node-click="nodeClick"></el-tree>
+            <el-tree class="filter-tree" :data="data" :props="defaultProps" default-expand-all :filter-node-method="filterNode" :expand-on-click-node="false" ref="tree" @node-click="nodeClick"></el-tree>
         </div>
         <div class="content">
           <div class="seach">
             <el-input placeholder="请输入设备编码" v-model="devGuid" size="small" suffix-icon="el-icon-search" style="width:300px"></el-input>
             <div class="block">
-                    <el-date-picker
-                      v-model="time"
-                      type="datetimerange"
-                      range-separator="至"
-                      start-placeholder="开始日期"
-                      end-placeholder="结束日期">
-                    </el-date-picker>
+              <el-date-picker
+               size="small"
+                v-model="time"
+                type="date"
+                placeholder="选择日期">
+              </el-date-picker>
+               <el-time-picker
+                is-range
+                size="small"
+                v-model="timeDate"
+                range-separator="至"
+                start-placeholder="开始时间"
+                end-placeholder="结束时间"
+                placeholder="选择时间范围">
+              </el-time-picker>
                     <el-button type="primary" size="small" style="margin-left:20px" @click="getscheat()">查询</el-button>
                 </div>
           </div>
@@ -74,7 +82,8 @@ export default {
         },
         pageNum:1,
         total:0,
-        time: [new Date().getTime() - 3600 * 1000 * 0.5,new Date().getTime()],
+        time: new Date(),
+        timeDate: [new Date(),new Date()],
         devGuid:'',
         nodeId:'',
         lineData:[],
@@ -85,6 +94,9 @@ export default {
     watch: {
       filterText(val) {
         this.$refs.tree.filter(val);
+      },
+      time(val){
+        this.timeDate = [val,val]
       }
     },
     mounted(){
@@ -98,7 +110,7 @@ export default {
       },
       //点击搜索
       getscheat(){
-        if(this.time[1] - this.time[0] > 3600 * 1000 * 0.5){
+        if(this.timeDate[1] - this.timeDate[0] > 3600 * 1000 * 0.5){
           this.$notify({
               title: '选择时间范围不能超过0.5小时',
               message: '',
@@ -123,8 +135,8 @@ export default {
         this.lineData = []
         var params = {
             nodeId:this.nodeId,
-            startTime:this.time[0]/1000*1000,
-            endTime :this.time[1]/1000*1000,
+            startTime:this.timeDate[0]/1000*1000,
+            endTime :this.timeDate[1]/1000*1000,
             pageNum : this.pageNum,
             pageSize : this.$global.pageLimit,
             devGuid:this.devGuid
@@ -140,8 +152,8 @@ export default {
         var params = {
             // devGuids:[devGuid],
             nodeId:this.nodeId,
-            startTime:this.time[0]/1000*1000,
-            endTime :this.time[1]/1000*1000,
+            startTime:this.timeDate[0]/1000*1000,
+            endTime :this.timeDate[1]/1000*1000,
         }
           this.$http.postHttp(this.$API.historyData,params,(rs)=>{
             this.lineData = rs.data
@@ -169,13 +181,13 @@ export default {
       },
       filterNode(value, data) {
         if (!value) return true;
-        return data.label.indexOf(value) !== -1;
+        return data.name.indexOf(value) !== -1;
       },
       initData(){
         var params = {
             devGuid:this.devGuid,
-            startTime:this.time[0]/1000*1000,
-            endTime :this.time[1]/1000*1000,
+            startTime:this.timeDate[0]/1000*1000,
+            endTime :this.timeDate[1]/1000*1000,
         }
     
         this.$myLoading.startLoading()
@@ -188,10 +200,24 @@ export default {
     },
 }
 </script>
-<style lang="stylus" scoped>
+<style lang="stylus">
 .realTimeData{
     display flex
     height 100%
+    // .el-input__icon{
+    //   height 30px
+    //   line-height 30px
+    // }
+    // .el-range-editor.el-input__inner{
+    //   border 1px solid #ced4da
+    // }
+    // .el-input__inner{
+    //   height 30px
+    //   .el-range-separator{
+    //     height 30px
+    //     line-height 30px
+    //   }
+    // }
     .left{
         width 200px
         padding 20px 10px 20px 10px
@@ -220,6 +246,8 @@ export default {
             .block{
                 margin-top 20px
                 text-align center    
+                display flex
+                align-item center
             }
             .barLists{
                 display flex

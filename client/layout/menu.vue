@@ -65,7 +65,9 @@
                         this.changeSon(0,0)
                     })
                 }else{
-                    this.$store.commit('MenuModule/changeIndex', key+'')
+                    this.$store.commit('MenuModule/changeIndex', this.taskbarsIndex+'')
+                    this.$forceUpdate()
+                    
                     setTimeout(() => {
                         //大数据看版
                         let link = this.$router.resolve({
@@ -78,8 +80,8 @@
             },
             //点击进入对应页面
             changeSon(key, keyPath){
-
                 this.$store.commit('MenuModule/changeSonIndex', key+'')
+                
                 this.$router.push({
                     path: this.taskbars[this.taskbarsIndex]['childMenus'][key]['url']
                 });
