@@ -158,10 +158,11 @@
             top 0px
             width 100px
             height 100%
-            background #ffffff
+            background #f5f2f2
             .el-menu{
                 border none
                 left 1px   
+                padding-bottom 30px
             }
             .el-menu-item{
                 margin-top 20px 

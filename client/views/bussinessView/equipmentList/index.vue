@@ -76,7 +76,7 @@
                             <el-input v-model="ruleForm.latitudeLlongitude" placeholder="请以英文状态下的‘,’隔开，经度在前，纬度在后"></el-input>
                         </el-form-item>
                         <el-form-item label="选择路线" prop="route">
-                            <el-cascader :options="options" :multiple="false" @change="cascaderChange" :show-all-levels="false"></el-cascader>
+                            <el-cascader v-model="ruleForm.route" :options="options" :multiple="false" :show-all-levels="false"></el-cascader>
                         </el-form-item>
                          <el-form-item label="备注">
                             <el-input type="textarea" v-model="ruleForm.note"></el-input>
@@ -84,7 +84,7 @@
                         
                         <el-form-item class="button">
                             <el-button type="primary" @click="submitForm('ruleForm')">确认</el-button>
-                            <el-button @click="isAddInfo = !isAddInfo">取消</el-button>
+                            <el-button @click="clearTip()">取消</el-button>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -141,13 +141,14 @@ export default {
             ],
         },
         lineList:[],
-        nodeid:''
+        nodeid:'',
+        value:[]
       };
     },
     watch: {
       filterText(val) {
         this.$refs.tree.filter(val);
-      }
+      },
     },
     computed: {
         ...mapState({
@@ -215,9 +216,6 @@ export default {
             }
             this.options =  result
       },
-      cascaderChange(data){
-          this.ruleForm.route = data[data.length-1]
-      },
         //列表数据
       initData(){
         var params = {
@@ -261,6 +259,19 @@ export default {
         if (!value) return true;
         return data.name.indexOf(value) !== -1;
       },
+      //关闭        
+        clearTip(){
+            this.isAddInfo = !this.isAddInfo
+            this.ruleForm= {
+                id: '',
+                name: '',
+                latitudeLlongitude:'',
+                route:'',
+                note: '',
+                sortId:''
+            }
+        },
+      //操作
       handleClick(data,type){
           if(type == 1){
               this.$router.push({
@@ -270,10 +281,43 @@ export default {
                 }
               });
           }else if(type === 2){
+                this.value = []
+                this.data.map((item) => {
+                    if(item.nodeList && item.nodeList.length > 0){
+                        item.nodeList.map((itemite) => {
+                            if(itemite.nodeList && itemite.nodeList.length){
+                                itemite.nodeList.map((childrenItem) => {
+                                    if(childrenItem.devices && childrenItem.devices.length > 0){
+                                        childrenItem.devices.map((devicesss) => {
+                                            if(devicesss.devGuid == data.devGuid){
+                                                this.value = [item.id,itemite.id,childrenItem.id]
+                                            }
+                                        })
+                                    }
+                                })
+                            }
+                            if(itemite.devices && itemite.devices.length > 0){
+                                itemite.devices.map((devicesss) => {
+                                    if(devicesss.devGuid == data.devGuid){
+                                        this.value = [item.id,itemite.id]
+                                    }
+                                })
+                            }
+                        })
+                    }
+                    if(item.devices && item.devices.length > 0){
+                        item.devices.map((devicesss) => {
+                            if(devicesss.devGuid == data.devGuid){
+                                this.value = [item.id]
+                            }
+                        })
+                    }
+                })
+
             this.isAddInfo = true
             this.isAdd = false
             this.ruleForm = {
-                route:data.nodeId,
+                route:this.value,
                 id:data.devGuid,
                 latitudeLlongitude: `${data.lon},${data.lat}`,
                 note:data.remark,
@@ -318,8 +362,9 @@ export default {
                     });
                     return
                 }   
+                let router = this.ruleForm.route[this.ruleForm.route.length-1]
                 var params = {
-                    'nodeId':this.ruleForm.route,
+                    'nodeId':router,
                     "devGuid": this.ruleForm.id,
                     "lat": this.ruleForm.latitudeLlongitude.split(',')[1],
                     "lon": this.ruleForm.latitudeLlongitude.split(',')[0],

@@ -10,7 +10,7 @@
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess"
                     :before-upload="beforeAvatarUpload">
-                    <img v-if="ruleForm.imagePath" :src="ruleForm.imagePath" class="avatar">
+                    <img v-if="isImagePath" :src="ruleForm.imagePath" class="avatar">
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
             </el-form-item>
@@ -47,7 +47,8 @@ export default {
                     { required: true, message: '请输入正确的密码', trigger: 'change' }
                 ],
             },
-            myHeaders:{token:LocalData.userToken()}
+            myHeaders:{token:LocalData.userToken()},
+            isImagePath:false
         }
     },
     mounted(){
@@ -58,14 +59,19 @@ export default {
         //获取用户信息
         initData(){
             this.ruleForm = JSON.parse(sessionStorage.getItem("userInfo"))
-            this.ruleForm.imagePath = this.$global.httpServerImg + this.ruleForm.imagePath
+            if(this.ruleForm.imagePath){
+                this.ruleForm.imagePath = this.$global.httpServerImg + this.ruleForm.imagePath + "?time="+new Date().getTime()*1000/1000
+                this.isImagePath = true
+            }
+            
         },
         handleAvatarSuccess(res, file) {
-            this.ruleForm.imagePath = URL.createObjectURL(file.raw);
 
-            this.$http.getHttp(this.$API.userDetail+"?id="+this.ruleForm.id+"&time="+new Date().getTime()*1000/1000,(rs)=>{
+            this.$http.getHttp(this.$API.userDetail+"?id="+this.ruleForm.id,(rs)=>{
                 sessionStorage.setItem("userInfo",JSON.stringify(rs.data))
                 this.$store.commit('HomeModule/UPDATA_USER_INFO',rs.data)
+                this.ruleForm.imagePath =  this.$global.httpServerImg + rs.data.imagePath + "?time="+new Date().getTime()*1000/1000
+                this.isImagePath = true
             })
         },
         beforeAvatarUpload(file) {
@@ -97,7 +103,6 @@ export default {
                 id:this.ruleForm.id,
                 account:this.ruleForm.account,
                 password:this.ruleForm.password,
-                imagePath:this.ruleForm.imagePath,
             }
             this.$http.postHttp(this.$API.userUpdate,params,(data)=>{
                 sessionStorage.setItem("userInfo",JSON.stringify(this.ruleForm))

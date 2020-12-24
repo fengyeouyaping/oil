@@ -75,7 +75,7 @@
                                 :props="defaultProps"
                                 accordion
                                 node-key="id"
-                                :check-strictly="true"
+                                :check-strictly="false"
                                 :default-checked-keys="cheacedIdShow"
                                 ref="tree"
                                 @check="treeChange">
@@ -144,7 +144,8 @@ export default {
             label: 'menu'
           },
           roleAuthList:[],
-          cheacedIdShow:[]
+          cheacedIdShow:[],
+          roleAuthListId:[]
 
       };
     },
@@ -206,6 +207,10 @@ export default {
         },
       treeChange(data,node){
         this.roleAuthList = node.checkedNodes
+        this.roleAuthListId = [
+            ...node.checkedKeys,
+            ...node.halfCheckedKeys,
+        ]
       },
       submitForm() {
         this.isbtn = true
@@ -213,11 +218,8 @@ export default {
         let params = {
           roleAuthList:[]
         }
-        if(this.roleAuthList.length > 0){
-          this.roleAuthList.map((item) => {
-            params.roleAuthList.push(item.id)
-          })
-        }
+
+        params.roleAuthList = this.roleAuthListId
 
         this.$http.postHttp(this.$API.roleAuthUpdate,params,(data)=>{
           this.$notify({
@@ -273,8 +275,8 @@ export default {
       getDatainfo(item){
         this.$http.getHttp(this.$API.roleDetail+"?id="+item.id,(data)=>{
           this.newUpdataInfo = data.data.role
+          this.dataBtn = data.data.roleAuthList
           this.getShowTreeId(data.data.roleAuthList)
-          this.dataBtn =  this.menuUpdata(tab,data.data.roleAuthList,false)
         })
       },
       getShowTreeId(datas){
@@ -340,51 +342,7 @@ export default {
 
         })
       },
-      menuUpdata(tab,froum,type){
-          if(froum && froum.length > 0){
-              let result = this.menuItemsss(tab,froum,type)
-              return result
-          }else{
-              return []
-          }
-      },
-      menuItemsss(tab,froum,type){
-          for(let i=0;i<tab.length;i++){
-              for(let j=0;j<froum.length;j++){
-                  if(tab[i]['menu'] == froum[j]['menu']){
-                      tab[i] = {
-                          "fatherId": froum[j]['fatherId'],
-                          "id": froum[j]['id'],
-                          "level": froum[j]['level'],
-                          "menu": froum[j]['menu'],
-                          "roleId": froum[j]['roleId'],
-                          "visible": froum[j]['visible'],
-                          "url":tab[i]['url'],
-                          "m_icon":tab[i]['m_icon'],
-                          "disabled": this.nameType(froum[j]['menu'],type),
-                          "childMenus":tab[i]['childMenus']
-                      }
-                      if(tab[i]['childMenus']){
-                          let tabItemss = tab[i]['childMenus'],froumItemss = froum[j]['childMenus']
-                          this.menuItemsss(tabItemss,froumItemss,type)
-                      }
-                  }
-              }
-          }
-          return tab
-      },
-      nameType(name,type)  {
-          if(!type){
-              return false
-          }else{
-              let names = ["编辑","删除","添加","给角色分配权限","列表导出","列表导入"]
-              if(names.indexOf(name) != -1){
-                  return true
-              }else{
-                  return false
-              }
-          }
-      }
+
     },
 }
 </script>

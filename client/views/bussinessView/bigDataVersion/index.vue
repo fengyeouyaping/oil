@@ -90,7 +90,7 @@
           </div>
           <div class="right_bottom_info">
             <div v-for="(item,index) in equipmentLists" class="item" :key="index">
-              <header>
+              <header >
                 <i class="fontIconEl el" :class="!item.nodeList || (item.nodeList && item.nodeList.length == 0) ? 'left14' : item.isShow ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" @click="shouitem(item,index)"></i>
                   {{item.name}}
               </header>
@@ -100,7 +100,7 @@
                   {{ite.name}}
                 </div>
                 <div v-for="(son,sonIndex) in ite.nodeList" :key="sonIndex" v-show="ite.isShow">
-                  <div class="title left14" @click="newMap(son)">
+                  <div class="title left14" @click="newMap(son)" :class="newInfo.id == son.id ? 'active' : ''">
                     <i class="fontIconEl el" :class="!son.devices || (son.devices && son.devices.length == 0) ? 'left14' : son.isShow ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" @click.stop="shouitem(son,sonIndex)"></i>
                     {{son.name}}
                   </div>
@@ -189,7 +189,6 @@ export default {
     
         this.$myLoading.startLoading()
         this.$http.postHttp(this.$API.deviceListAll,{},(data)=>{
-          
           this.newInfo = false
           this.equipmentLists = data.data.nodes
           let forList = (list) => {
@@ -208,6 +207,7 @@ export default {
           }
           
           forList(this.equipmentLists)
+          console.log("---",this.newInfo)
           this.bigDataLists(this.newInfo.id)
           this.someDigits = this.newInfo.devices.length || 0
 
@@ -456,7 +456,7 @@ export default {
             width 80px
             font-size 14px
             font-weight bold
-            color green
+            color: #7dedfe !important;
             text-align center
           }
           ul{
@@ -528,13 +528,11 @@ export default {
                 margin-left 22px  
               }
               header{
-                color green
+                color #7dedfe
                 font-weight bold
                 font-size 18px
                 cursor pointer
-                // position absolute
-                // top 0
-                // left 0
+                opacity 0.9
               }
               .title{
                 font-size 14px
@@ -543,6 +541,11 @@ export default {
                 padding-bottom 10px
                 color #ffffff
                 cursor pointer
+                opacity 0.7
+                &.active{
+                  opacity 1
+                  font-weight bold
+                }
               }
               ul{
                 padding-left 50px

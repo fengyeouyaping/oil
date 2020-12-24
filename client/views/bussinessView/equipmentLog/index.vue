@@ -12,7 +12,6 @@
             </div>
             <div class="figure">
                 <el-table :data="tableData" class="tableData" style="width:100%" height="100%" :stripe="true">
-                    <el-table-column type="selection" width="55"></el-table-column>
                     <el-table-column prop="id" label="序号"></el-table-column>
                     <el-table-column prop="time" label="上报时间"></el-table-column>
                     <el-table-column prop="devGuid" label="设备编码"></el-table-column>
@@ -102,7 +101,7 @@ export default {
           this.total = data.data.total
           this.tableData = data.data.list
           this.tableData.map((item) => {
-                item.time = this.$common.dateFormat("YYYY-MM-dd",item.time/1000)
+                item.time = item.time ? this.$common.dateFormat("YYYY-MM-dd",item.time/1000) : ''
             })
           this.data = this.$common.arrayOrganizationalNew(this.tableData)
           this.$myLoading.endLoading()

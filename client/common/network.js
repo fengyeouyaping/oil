@@ -29,13 +29,13 @@ axios.interceptors.request.use(function (config) {
 // 添加一个响应拦截器
 axios.interceptors.response.use(function (response) {
 
-  if (response.data.code === 0) {
+  if (response.data.code == 0) {
     return response.data
   } else {
-    if(response.data.code === -1){
+    if(response.data.code == -1){
       CustomLoading.endLoading()
       MyPop.alertBox("请求失败",response.data.msg)
-      return
+      return false
     }
 
     var messageStr = ""

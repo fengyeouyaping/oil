@@ -1,7 +1,7 @@
 <template>
   <div class="header header_default_style">
     <div class="logo" @mouseenter="showMoreLanguage" @mouseleave="hideMoreLanguage">
-      <img :src="$global.httpServerImg + userInfo.imagePath" class="image_center" v-if="userInfo.imagePath" @click="updatePass">
+      <img :src="imgSrc" class="image_center" v-if="userInfo.imagePath" @click="updatePass">
       <img src="~SYSTEM_IMAGE/test/test_header.jpeg" class="image_center" v-else @click="updatePass">
       <div class="more_menu_box" v-if="isShowMoreLanguage">
         <div class="more_menu_box_item" @click="updatePass">
@@ -75,6 +75,9 @@ export default {
       lockTimer: state => state.HeaderModule.lockTimer,
       userInfo:state => state.HomeModule.userInfo
     }),
+    imgSrc(){
+      return this.$global.httpServerImg + this.userInfo.imagePath + "?time="+new Date().getTime()*1000/1000
+    }
   },
   methods: {
 

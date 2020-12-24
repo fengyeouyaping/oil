@@ -6,10 +6,10 @@
             <el-tree class="filter-tree" :data="data" :props="defaultProps" default-expand-all :filter-node-method="filterNode" :expand-on-click-node="false" ref="tree" @node-click="nodeClick"></el-tree>
         </div>
         <div class="content">
-            <div class="figure">
+            <div class="figure" v-if="rightDate && rightDate.length > 0">
                 <bar-top :id="`bar1`" :name="name1"></bar-top>
             </div>
-            <div class="figure">
+            <div class="figure" v-if="rightDate && rightDate.length > 0">
                 <bar-top :id="`bar2`" :name="name2"></bar-top>
             </div>
         </div>
@@ -160,7 +160,7 @@ export default {
         },
         filterNode(value, data) {
             if (!value) return true;
-            return data.label.indexOf(value) !== -1;
+            return data.name.indexOf(value) !== -1;
         }
     },
     destroyed(){

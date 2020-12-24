@@ -177,6 +177,7 @@ export default {
                         message: '',
                         type: 'success'
                     });
+                    this.initData()
                     this.$myLoading.endLoading()
                 })
             }).catch(() => {});
@@ -185,10 +186,19 @@ export default {
         submitForm(formName) {
             this.$refs[formName].validate((valid) => {
             if (valid) {
+                if(this.isAddTree != 1 && this.newData.level + 1 > 2){
+                    this.$notify({
+                        title: '路线下面不可以添加节点，如想添加设备，请移步至设备列表',
+                        message: '',
+                        type: 'warning'
+                    });
+                    return false
+                }
                 var params = {
                     comment : this.ruleForm.note,
                     name : this.ruleForm.name,
-                    parentId : this.isAddTree == 1 ? 0 : this.newData.id
+                    parentId : this.isAddTree == 1 ? 0 : this.newData.id,
+                    level : this.isAddTree == 1 ? 0 : this.newData.level + 1
                 }
             
                 this.$myLoading.startLoading()
@@ -197,7 +207,7 @@ export default {
                         title: '树结构添加成功',
                         message: '',
                         type: 'success'
-                        });
+                    });
                     this.isAddTree = false
                     this.initData()
                     this.ruleForm= {

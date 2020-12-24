@@ -77,10 +77,10 @@ export default {
                 path: oneList,
                 isOutline: true,
                 outlineColor: '#f9d334',
-                borderWeight: 2,
+                borderWeight: 1,
                 strokeColor: "#f9d334", 
                 strokeOpacity: 1,
-                strokeWeight: 2,
+                strokeWeight: 1,
                 // 折线样式还支持 'dashed'
                 strokeStyle: "solid",
                 // strokeStyle是dashed时有效
@@ -93,12 +93,12 @@ export default {
                 path: twoList,
                 isOutline: true,
                 outlineColor: '#04a0e9',
-                borderWeight: 2,
+                borderWeight: 1,
                 strokeColor: "#04a0e9", 
                 strokeOpacity: 1,
-                strokeWeight: 2,
+                strokeWeight: 1,
                 // 折线样式还支持 'dashed'
-                strokeStyle: "solid",
+                strokeStyle: "dashed",
                 // strokeStyle是dashed时有效
                 strokeDasharray: [10, 5],
                 lineJoin: 'round',

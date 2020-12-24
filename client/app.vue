@@ -35,11 +35,16 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 #app {
     width 100%
     height 100%
     position relative
+    .el-table th{
+      background #f5f2f2 !important
+      color #333
+    }
+
 }
 </style>
 

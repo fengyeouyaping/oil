@@ -82,7 +82,6 @@ export default {
             }
         })
         
- 
       },
  
         refreshData(data){
