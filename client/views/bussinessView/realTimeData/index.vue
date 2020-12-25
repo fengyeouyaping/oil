@@ -20,11 +20,11 @@
                         <li><span>设备编码:</span><p>{{item.devGuid}}</p></li>
                         <li><span>设备状态:</span><p>{{item.status}}</p></li>
                         <li><span>位置:</span><p>{{item.info ? item.info.city.name : ''}}</p></li>
-                        <li><span>天气:</span><p>{{item.info ? item.info.condition.condition : ''}}</p></li>
+                        <li><span>天气:</span><p>{{item.info && item.info.condition ? item.info.condition.condition : ''}}</p></li>
                         <li><span>经纬度:</span><p>{{`${item.lat},${item.lon}`}}</p></li>
-                        <li><span>风力:</span><p>{{item.info ? item.info.condition.windLevel : ''}}</p></li>
-                        <li><span>温度:</span><p>{{item.info ? item.info.condition.temp : ''}}</p></li>
-                        <li><span>湿度:</span><p>{{item.info ? item.info.condition.humidity : ''}}</p></li>
+                        <li><span>风力:</span><p>{{item.info && item.info.condition ? item.info.condition.windLevel : ''}}</p></li>
+                        <li><span>温度:</span><p>{{item.info && item.info.condition ? item.info.condition.temp : ''}}</p></li>
+                        <li><span>湿度:</span><p>{{item.info && item.info.condition ? item.info.condition.humidity : ''}}</p></li>
                         <!-- <li><span>PM2.5:</span><p>{{item.status}}</p></li> -->
                         <li><span>启动检测时间:</span><p>{{item.bigData ? item.bigData.startTime : ''}}</p></li>
                         <li><span>预计到达时间:</span><p>{{item.bigData ? item.bigData.evalArrivedTime : ''}}</p></li>
@@ -91,21 +91,24 @@ export default {
         },
         //切换设备
         nodeClick(data){
-            this.nodeId = data.id
-            this.rightDate = data.devices
-            if(data.devices.length > 0){
-                let devGuid = data['devices'][0].devGuid
-                this.getNewLists(devGuid)
-                if(this.rightDate && this.rightDate.length > 0){
-                    this.rightDate.map((item) => {
-                        this.getDeviceWeather(item.lat,item.lon,(list) => {
-                            item.info = list
-                            this.$forceUpdate()
+            if(data.level == 2){
+                this.nodeId = data.id
+                this.rightDate = data.devices
+                if(data.devices.length > 0){
+                    let devGuid = data['devices'][0].devGuid
+                    this.getNewLists(devGuid)
+                    if(this.rightDate && this.rightDate.length > 0){
+                        this.rightDate.map((item) => {
+                            this.getDeviceWeather(item.lat,item.lon,(list) => {
+                                item.info = list
+                                this.$forceUpdate()
+                            })
                         })
-                    })
+                    }
+                    this.bigDataLists(this.nodeId)
                 }
-                this.bigDataLists(this.nodeId)
             }
+            
             
         },
         //获取实时数据列表

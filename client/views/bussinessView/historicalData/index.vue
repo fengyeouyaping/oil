@@ -47,7 +47,8 @@
                 :page-size="$global.pageLimit"
                 @current-change="handleCurrentChange"
                 layout="prev, pager, next"
-                :total="total">
+                :total="total"
+                style="float: none;text-align:center;">
             </el-pagination>
             </div>
             <div class="figure2">
@@ -83,7 +84,7 @@ export default {
         pageNum:1,
         total:0,
         time: new Date(),
-        timeDate: [new Date(),new Date()],
+        timeDate: [new Date()-3600 * 1000 * 0.5,new Date()],
         devGuid:'',
         nodeId:'',
         lineData:[],
@@ -233,7 +234,7 @@ export default {
         .seach{
           margin 18px
           display flex
-          justify-content space-around
+          justify-content space-between
           align-items center
         }
         .figure1{

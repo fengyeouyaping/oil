@@ -18,7 +18,7 @@
                     <el-table-column prop="updateTime" label="日期"></el-table-column>
                     <el-table-column label="操作" fixed="right">
                         <template slot-scope="scope">
-                            <el-button type="text" size="small" @click.stop="fileDownload(scope.row.fileName)" v-if="scope.row.fileType != 'dir'">下载</el-button>
+                            <el-button type="text" size="small" @click.stop="fileDownload(scope.row.filePath)" v-if="scope.row.fileType != 'dir'">下载</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -64,8 +64,8 @@ export default {
             window.location = this.$global.httpServer + this.$API.fileExport
         },
         //下载
-        fileDownload(fileName){
-            window.location = this.$global.httpServer + this.$API.fileDownload + "?fileName=" + fileName
+        fileDownload(filePath){
+            window.location = this.$global.httpServer + this.$API.fileListDownload + "?filePath=" + filePath
         },
         //点击获取上一级
         getBeforeLists(){

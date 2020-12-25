@@ -200,7 +200,7 @@ export default {
                     parentId : this.isAddTree == 1 ? 0 : this.newData.id,
                     level : this.isAddTree == 1 ? 0 : this.newData.level + 1
                 }
-            
+
                 this.$myLoading.startLoading()
                 this.$http.postHttp(this.$API.nodeAdd,params,(data)=>{
                     this.$notify({

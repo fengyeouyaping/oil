@@ -44,6 +44,7 @@ API.deviceFileList = "/device/fileList"//设备详情--文件列表
 
 //文件
 API.fileList = "/file/list"//查询目录列表
+API.fileListDownload = "/file/list/download"//文件系统文件下载
 API.fileDownload = "/file/download"//下载文件
 
 //数据

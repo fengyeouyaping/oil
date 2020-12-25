@@ -3,7 +3,17 @@
         <div class="content">
             <div class="header">
                 <div>
-                    <el-input placeholder="请输入设备编码" v-model="filterText" size="small" suffix-icon="el-icon-search"></el-input>
+                    <el-input placeholder="请输入设备编码" v-model="filterText" size="small" suffix-icon="el-icon-search" style="margin-right:10px"></el-input>
+                    <el-date-picker
+                        v-model="searchTime"
+                        type="daterange"
+                        size="small"
+                        range-separator="-"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期"
+                        :default-time="['00:00:00', '0:00:00']"
+                        >
+                    </el-date-picker>
                     <el-button @click="initDatas()" size="small" type="primary" style="margin-left:20px">搜索</el-button>
                 </div>
                 <div>
@@ -15,7 +25,11 @@
                     <el-table-column prop="id" label="序号"></el-table-column>
                     <el-table-column prop="time" label="上报时间"></el-table-column>
                     <el-table-column prop="devGuid" label="设备编码"></el-table-column>
-                    <el-table-column prop="status" label="告警类型"></el-table-column>
+                    <el-table-column label="告警类型">
+                        <template slot-scope="scope">
+                            <span :class="scope.row.status == 9 ? 'red' : ''">{{scope.row.status == 0 ? '待机' : scope.row.status == 1 ? '测试中' : scope.row.status == 9 ? scope.row.fault : ''}}</span>
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="fault" label="内容"></el-table-column>
                     <el-table-column label="操作" fixed="right">
                         <template slot-scope="scope">
@@ -40,31 +54,13 @@ import { mapState } from 'vuex'
 export default {
     data() {
       return {
-          total:0,
-          pageNum:1,
-
-          isAddInfo:false,
-        filterText: '',
-        isCanOperate:false,
-        tableData: [{
-          id: 1,
-          name: 'xd123456',
-          type:'告警',
-          time:"2020.10.02 19:20:00",
-          content:'这里是备注拉'
-        }, {
-          id: 2,
-          name: 'xd123457',
-          type:'预计',
-          time:"2020.10.02 19:20:00",
-          content:'这里是备注拉'
-        }, {
-          id: 3,
-          name: 'xd123458',
-          type:'异常',
-          time:"2020.10.02 19:20:00",
-          content:'这里是备注拉'
-        }],
+            total:0,
+            pageNum:1,
+            isAddInfo:false,
+            filterText: '',
+            isCanOperate:false,
+            tableData: [],
+            searchTime:[new Date()-3600*24*1000,new Date()-0]
       };
     },
 
@@ -79,7 +75,16 @@ export default {
     methods: {
         //导出
         fileExport(){
-            window.location = this.$global.httpServer + this.$API.fileExport
+            if(!this.searchTime){
+              this.searchTime = [new Date()-3600*24*1000,new Date()-0]
+            }
+            let startTime = this.searchTime[0]+0
+            let endTime =  this.searchTime[1]+0
+            let devGuid = this.filterText
+            let url = this.$global.httpServer + this.$API.fileExport
+            url += "?startTime="+startTime+"&endTime="+endTime
+            if(devGuid) url += "&devGuid="+devGuid
+            window.location = url
         },
         ifShow(index){
             return this.taskbars[2]['childMenus'][0]['childMenus'][index]['visible']
@@ -90,10 +95,15 @@ export default {
         },
         //列表数据
       initData(){
+          if(!this.searchTime){
+              this.searchTime = [new Date()-3600*24*1000,new Date()-0]
+          }
         var params = {
           pageNum : this.pageNum,
           pageSize : this.$global.pageLimit,
-          devGuid : this.filterText
+          devGuid : this.filterText,
+          startTime : this.searchTime[0]+0,
+          endTime :  this.searchTime[1]+0
         }
     
         this.$myLoading.startLoading()

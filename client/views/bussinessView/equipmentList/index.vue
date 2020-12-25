@@ -18,6 +18,8 @@
                         class="upload-demo"
                         :show-file-list="false"
                         :action="$global.httpServer + $API.fileUploadImport"
+                        :on-success="updataSuccess"
+                        :on-error="updataError"
                          v-if="ifShow(3)">
                         <i class="el el-icon-upload2" title="列表导入"></i>
                     </el-upload>
@@ -34,7 +36,11 @@
                             <span>{{`${scope.row.lon},${scope.row.lat}`}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="status" label="状态" width=80></el-table-column>
+                    <el-table-column prop="status" label="状态" width=80>
+                        <template slot-scope="scope">
+                            <span>{{scope.row.status == 0 ? '离线' : scope.row.status == 1 ? '正常' : scope.row.status == 9 ? '异常' : ''}}</span>
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="batt" label="电量"></el-table-column>
                     <el-table-column prop="time" label="最后一次通信时间" width="180"></el-table-column>
                     <el-table-column prop="remark" label="备注"></el-table-column>
@@ -160,6 +166,22 @@ export default {
     },
 
     methods: {
+        //导入成功
+        updataSuccess(){
+            this.$notify({
+                title: '文件导入成功',
+                message:'',
+                type: 'success'
+            });
+        },
+        //导入失败
+        updataError(){
+            this.$notify({
+                title: '文件导入失败',
+                message:'',
+                type: 'error'
+            });
+        },
         ifShow(index){
             return this.taskbars[1]['childMenus'][1]['childMenus'][index]['visible']
         },
@@ -363,6 +385,15 @@ export default {
                     return
                 }   
                 let router = this.ruleForm.route[this.ruleForm.route.length-1]
+                if(this.ruleForm.route.length < 3){
+                    this.$notify({
+                        title: '只能在路线下面添加设备，请重新选择路线',
+                        message: '',
+                        type: 'warning'
+                    });
+                    return false
+                }
+                
                 var params = {
                     'nodeId':router,
                     "devGuid": this.ruleForm.id,

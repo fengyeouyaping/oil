@@ -44,6 +44,9 @@ export default {
       background #f5f2f2 !important
       color #333
     }
+    .red{
+      color red 
+    }
 
 }
 </style>
