@@ -72,7 +72,7 @@ export default {
         }
         setTimeout(() => {
             if(!!this.myChart){
-                this.refreshData(this.name=='B特征'? this.bLists : this.cLists)
+                this.refreshData(this.name=='B特征'? this.bLists : this.cLists,this.timeLists)
             }else{
                 // 基于准备好的dom，初始化echarts实例
                 
@@ -84,9 +84,11 @@ export default {
         
       },
  
-        refreshData(data){
+        refreshData(data,nameData){
+            
             //刷新数据
             var option = this.myChart.getOption();
+            option.xAxis[0].data = nameData
             option.series[0].data = data;
             this.myChart.setOption(option);    
         },

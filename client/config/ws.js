@@ -109,10 +109,23 @@ export default {
       },
       //更新设备实时信息
       getEquipmentNewDate(data){
-        if(data.nodeId == this.newInfo.id){
-          this.equipmentNewDate = data.stakes
+        let datas = data
+        if(datas.nodeId == this.newInfo.id){
+          let lists = datas.stakes.filter((item)=>item.visitFlag)
+          let result = []
+          if(lists.length > 0){
+            for(let i=0;i<datas.stakes.length;i++){
+              result.push(datas.stakes[i])
+              if(datas.stakes[i]['visitFlag']){
+                break;
+              }
+            }
+          }else{
+            result = datas.stakes[0]
+          }
+          this.equipmentNewDate = result
         }
         
-      }
+      },
     },
 }

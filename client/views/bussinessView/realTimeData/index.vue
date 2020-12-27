@@ -15,7 +15,7 @@
         </div>
         <div class="right" v-if="rightDate && rightDate.length > 0">
             <div class="margin">
-                <div class="model top" v-for="item in rightDate" @click="getNewLists(item.devGuid)">
+                <div class="model top" v-for="(item,index) in rightDate" @click="getNewLists(item.devGuid,index)" :class="index == activeIndex ? 'active' : ''">
                     <ul>
                         <li><span>设备编码:</span><p>{{item.devGuid}}</p></li>
                         <li><span>设备状态:</span><p>{{item.status}}</p></li>
@@ -55,7 +55,8 @@ export default {
         name1:"B特征",
         name2:"C特征",
         getNum:'',
-        nodeId:''
+        nodeId:'',
+        activeIndex:0
       };
     },
     watch: {
@@ -96,7 +97,7 @@ export default {
                 this.rightDate = data.devices
                 if(data.devices.length > 0){
                     let devGuid = data['devices'][0].devGuid
-                    this.getNewLists(devGuid)
+                    this.getNewLists(devGuid,0)
                     if(this.rightDate && this.rightDate.length > 0){
                         this.rightDate.map((item) => {
                             this.getDeviceWeather(item.lat,item.lon,(list) => {
@@ -112,8 +113,8 @@ export default {
             
         },
         //获取实时数据列表
-        getNewLists(devGuid){
-            
+        getNewLists(devGuid,index){
+            this.activeIndex = index
             this.lineData = []
             let url = this.$API.nowList + "?devGuid="+devGuid+"&num=12"
             this.$http.getHttp(url,(rs)=>{
@@ -149,6 +150,7 @@ export default {
         },
         getNumDate(devGuid){
             clearInterval(this.getNum)
+
             this.getNum = setInterval(() => {
                 let url = this.$API.nowList + "?devGuid="+devGuid+"&num=12"
                 this.$http.getHttp(url,(rs)=>{
@@ -228,6 +230,9 @@ export default {
                 font-weight bold
                 padding 20px 20px 
                 cursor pointer
+                &.active{
+                    background #fefefe
+                }
                 ul{
                     display flex
                     flex-wrap wrap

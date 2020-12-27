@@ -159,6 +159,7 @@ export default {
             }
           }
       }
+      this.getPointInfo(val[val.length-1]['stakeNo'])
       setTimeout(() => {
         this.$store.commit('HomeModule/UPDATE_POIN_INFO',this.newInfo.devices ? this.newInfo.devices : [])
         this.$refs.maps.init()
@@ -207,7 +208,6 @@ export default {
           }
           
           forList(this.equipmentLists)
-          console.log("---",this.newInfo)
           this.bigDataLists(this.newInfo.id)
           this.someDigits = this.newInfo.devices.length || 0
 
@@ -452,6 +452,7 @@ export default {
           justify-content space-between
           align-items center
           margin-top 40px
+          height 140px
           &>p{
             width 80px
             font-size 14px
