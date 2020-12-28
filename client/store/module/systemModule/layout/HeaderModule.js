@@ -1,7 +1,8 @@
 export default {
   namespaced: true,
   state:{
-    lockTimer : null
+    lockTimer : null,
+    isShowMenu:true,
   },
   mutations:{
     clearLockTimer(state){
@@ -11,6 +12,9 @@ export default {
       state.lockTimer = setInterval(() => {
         cb();
       },2000);
+    },
+    updataIsShow(state,str){
+      state.isShowMenu = str
     }
   }
 }

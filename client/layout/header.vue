@@ -1,16 +1,22 @@
 <template>
   <div class="header header_default_style">
-    <div class="logo" @mouseenter="showMoreLanguage" @mouseleave="hideMoreLanguage">
-      <img :src="imgSrc" class="image_center" v-if="userInfo.imagePath" @click="updatePass">
-      <img src="~SYSTEM_IMAGE/test/test_header.jpeg" class="image_center" v-else @click="updatePass">
-      <div class="more_menu_box" v-if="isShowMoreLanguage">
-        <div class="more_menu_box_item" @click="updatePass">
-          <i class="fa fa-key fa-lg"></i>修改信息
-        </div>
-        <div class="more_menu_box_item" @click="logOut">
-          <i class="fa fa-sign-out fa-lg"></i>登出操作
+    <div class="logo">
+      <div @mouseenter="showMoreLanguage" @mouseleave="hideMoreLanguage" class="topImg">
+        <img :src="imgSrc" class="image_center" v-if="userInfo.imagePath" @click="updatePass">
+        <img src="~SYSTEM_IMAGE/test/test_header.jpeg" class="image_center" v-else @click="updatePass">
+        <div class="more_menu_box" v-if="isShowMoreLanguage">
+          <div class="more_menu_box_item" @click="updatePass">
+            <i class="fa fa-key fa-lg"></i>修改信息
+          </div>
+          <div class="more_menu_box_item" @click="logOut">
+            <i class="fa fa-sign-out fa-lg"></i>登出操作
+          </div>
         </div>
       </div>
+      <div class="isShow" @click.stop="updataIsShow()">
+        <i :class="isShowMenu ? 'el-icon-caret-top' : 'el-icon-caret-bottom'"></i>
+      </div>
+      
     </div>
 
   </div>
@@ -73,14 +79,17 @@ export default {
   computed: {
     ...mapState({
       lockTimer: state => state.HeaderModule.lockTimer,
-      userInfo:state => state.HomeModule.userInfo
+      userInfo:state => state.HomeModule.userInfo,
+      isShowMenu:state => state.HeaderModule.isShowMenu,
     }),
     imgSrc(){
       return this.$global.httpServerImg + this.userInfo.imagePath + "?time="+new Date().getTime()*1000/1000
-    }
+    },
   },
   methods: {
-
+    updataIsShow(){
+      this.$store.commit("HeaderModule/updataIsShow",!this.isShowMenu);
+    },
     leaveSearch(){
 
       this.searchData  = [];  
@@ -245,7 +254,7 @@ export default {
 }
 
 .header {
-  width: 160px;
+  width: 230px;
   height: 50px;
   position: absolute;
   top: 0px;
@@ -253,12 +262,27 @@ export default {
 }
 
 .logo {
-  width: 160px;
+  width: 230px;
   height: 50px;
   text-align: center;
   position: relative;
   float: left;
-
+  .topImg{
+    position: relative
+    height: 100%
+    width: 100px
+    margin-left 10px
+  }
+  .isShow{
+    position absolute
+    right 10px
+    top 0
+    height 100%
+    width 130px
+    display flex
+    align-items center
+    justify-content flex-end
+  }
   img {
     image-center(30px, 30px);
     border-radius 50px

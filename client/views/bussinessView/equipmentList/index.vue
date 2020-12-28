@@ -33,7 +33,7 @@
                     <el-table-column prop="stake" label="测试桩号"></el-table-column>
                     <el-table-column label="经纬度" width="200">
                         <template slot-scope="scope">
-                            <span>{{`${scope.row.lon},${scope.row.lat}`}}</span>
+                            <span>{{scope.row.lon && scope.row.lat ? `${scope.row.lon},${scope.row.lat}` : ''}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column prop="status" label="状态" width=80>
@@ -65,7 +65,7 @@
         <!-- 添加设备 -->
         <div class="mask" v-if="isAddInfo">
             <div class="margin">
-                <i class="el el-icon-circle-close close" @click="isAddInfo = false"></i>
+                <i class="el el-icon-circle-close close" @click="clearTip()"></i>
                 <div class="header">{{isAdd ? '添加设备' : '编辑设备'}}</div>
                 <div class="from">
                     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
@@ -212,6 +212,12 @@ export default {
 
         })
       },
+      getCompany(){
+          this.$http.postHttp(this.$API.deviceListAll,{},(rs)=>{
+            this.data = rs.data.nodes
+            this.initData()
+        })
+      },
       getOptions(){
           let result = []
             
@@ -335,13 +341,12 @@ export default {
                         })
                     }
                 })
-
             this.isAddInfo = true
             this.isAdd = false
             this.ruleForm = {
                 route:this.value,
                 id:data.devGuid,
-                latitudeLlongitude: `${data.lon},${data.lat}`,
+                latitudeLlongitude: data.lon && data.lat ? `${data.lon},${data.lat}` : '',
                 note:data.remark,
                 name:data.stake,
                 sortId:data.sortId,
@@ -412,7 +417,7 @@ export default {
                   message: '',
                   type: 'success'
                 });
-                this.initData()
+                this.getCompany()
                 this.isAddInfo = false
                 this.ruleForm= {
                     id: '',

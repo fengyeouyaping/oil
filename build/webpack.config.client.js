@@ -54,7 +54,7 @@ if(isDev){
 
                 '/api': {
 
-                    target: 'http://123.56.97.235:8080',
+                    target: 'http://47.97.66.97:8080',
 
                     changeOrigin: true,
 

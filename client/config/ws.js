@@ -38,7 +38,7 @@ export default {
       initWebSocket(){ //初始化weosocket
         let userId = JSON.parse(sessionStorage.getItem("userInfo")).id
         
-        const wsuri = "ws://123.56.97.235:8080/server/"+userId;
+        const wsuri = "ws://123.56.97.235/server/"+userId;
         this.websock = new WebSocket(wsuri);
         this.websock.onmessage = this.websocketonmessage;
         this.websock.onopen = this.websocketonopen;

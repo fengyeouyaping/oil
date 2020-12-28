@@ -10,7 +10,7 @@ export default {
       //改变taskbarsIndex的值
       changeIndex(state,index){
           state.taskbarsIndex = index
-          sessionStorage.setItem('taskbarsIndex',index)
+          sessionStorage.setItem('taskbarsIndex',index+'')
       },
       //改变taskbarsSonIndex的值
       changeSonIndex(state,index){

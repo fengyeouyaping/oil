@@ -148,7 +148,7 @@ export default {
   width auto
   height auto
   position absolute
-  left 270px
+  left 230px
   top 0
   right 0px
   bottom 0
@@ -158,7 +158,7 @@ export default {
     left 0  
   }
   &.leftActive{
-    left 160px
+    left 230px
   }
 }
 
