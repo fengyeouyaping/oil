@@ -53,15 +53,53 @@
             </div>
             <div class="figure2">
                 <div class="barLists">
-                  <div>
+                  <div @click="bigImg(1)">
                     <bar-top :id="`his1`" :lineData="lineData" :name="name1" v-if="lineData.length > 0"></bar-top>
                   </div>
-                  <div>
+                  <div @click="bigImg(2)">
                     <bar-top :id="`his2`" :lineData="lineData" :name="name2" v-if="lineData.length > 0"></bar-top>
                   </div>
                 </div>
             </div>
             
+        </div>
+        <div v-if="!!bigImgNum" class="big_img">
+            <div class="big_img_top">
+                <div class="seach">
+                  <el-input placeholder="请输入设备编码" v-model="devGuid" size="small" suffix-icon="el-icon-search" style="width:300px"></el-input>
+                  <div class="block">
+                    <el-date-picker
+                    size="small"
+                      v-model="time"
+                      type="date"
+                      placeholder="选择日期">
+                    </el-date-picker>
+                    <el-time-picker
+                      is-range
+                      size="small"
+                      v-model="timeDate"
+                      range-separator="至"
+                      start-placeholder="开始时间"
+                      end-placeholder="结束时间"
+                      placeholder="选择时间范围">
+                    </el-time-picker>
+                          <el-button type="primary" size="small" style="margin-left:20px" @click="getscheat()">查询</el-button>
+                      </div>
+                </div>
+                <i class="el-icon-circle-close big_img_i" @click="clearBigImg(0)"></i>
+            </div>
+            <div class="figure" v-if="lineData.length > 0">
+                <bar-top :id="`his3`" :lineData="lineData" :name="name1" class="bigImg" v-if="bigImgNum == 1"></bar-top>
+                <bar-top :id="`his4`" :lineData="lineData" :name="name2" class="bigImg" v-if="bigImgNum == 2"></bar-top>
+            </div>
+            <div class="figure loading" v-else 
+            v-loading="true"
+            element-loading-text="拼命加载中"
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(255, 255, 255, 0.8)"
+            >
+
+            </div>
         </div>
     </div>
 </template>
@@ -90,6 +128,7 @@ export default {
         lineData:[],
         name1:"B特征",
         name2:"C特征",
+        bigImgNum:0
       };
     },
     watch: {
@@ -104,6 +143,15 @@ export default {
         this.company()
     },
     methods: {
+      //放大图
+        bigImg(num){
+            this.bigImgNum = num
+            this.getListData()
+        },
+        clearBigImg(num){
+            this.bigImgNum = num
+            this.getListData()
+        },
       //当前页数
       handleCurrentChange(val){
           this.pageNum = val
@@ -208,20 +256,54 @@ export default {
 .realTimeData{
     display flex
     height 100%
-    // .el-input__icon{
-    //   height 30px
-    //   line-height 30px
-    // }
-    // .el-range-editor.el-input__inner{
-    //   border 1px solid #ced4da
-    // }
-    // .el-input__inner{
-    //   height 30px
-    //   .el-range-separator{
-    //     height 30px
-    //     line-height 30px
-    //   }
-    // }
+    .big_img{
+        position absolute
+        width 100%
+        height 100%
+        top 0
+        bottom 0
+        left 0
+        right 0
+        z-index 101
+        background rgba(0,0,0,0.8)
+        .loading{
+          top 121px
+          width 100%
+        }
+        .seach{
+          width 80%
+          display flex
+          margin 21px auto 0
+          justify-content space-between
+          .block{
+            display flex
+          }
+        }
+        .big_img_top{
+            position relative
+            z-index 210
+            .big_img_i{
+                position absolute
+                top 121px
+                right 15%
+                font-size 30px
+                color #000000
+                z-index 210
+            }
+        }
+        .bigImg{
+            position fixed !important
+            z-index 200
+            top 100px
+            left 10%
+            right 0
+            bottom 0
+            width 80%
+            height 70%
+            padding 15px 0 0 15px
+            background #ffffff
+        } 
+    }
     .left{
         width 200px
         padding 20px 10px 20px 10px

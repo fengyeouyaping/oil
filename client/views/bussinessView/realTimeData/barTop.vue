@@ -41,6 +41,7 @@ export default {
     computed: {
         ...mapState({
             newLineData : state => state.HomeModule.newLineData,
+            bigImgNum : state => state.HomeModule.bigImgNum,
         })
     },
     watch:{
@@ -51,8 +52,7 @@ export default {
             }else{
                 this.myChart = ''
             }
-            
-        }
+        },
     },
     mounted(){
         
@@ -79,7 +79,6 @@ export default {
                 this.refreshData(this.name=='B特征'? this.bLists : this.cLists,this.timeLists)
             }else{
                 // 基于准备好的dom，初始化echarts实例
-                
                 this.myChart = echarts.init(document.getElementById(this.id));
                 // 绘制图表
                 this.myChart.setOption(this.options());

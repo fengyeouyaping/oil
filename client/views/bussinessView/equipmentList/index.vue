@@ -18,6 +18,7 @@
                         class="upload-demo"
                         :show-file-list="false"
                         :action="$global.httpServer + $API.fileUploadImport"
+                        :data="uploadData"
                         :on-success="updataSuccess"
                         :on-error="updataError"
                          v-if="ifShow(3)">
@@ -161,6 +162,11 @@ export default {
         ...mapState({
             taskbars           : state => state.MenuModule.taskbars
         }),
+        uploadData(){
+            return {
+                lineId:this.nodeid
+            }
+        }
     },
     mounted(){
         this.company()

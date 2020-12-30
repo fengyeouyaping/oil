@@ -21,11 +21,13 @@ export default {
             polylineTwo:'',
             polylineThree:'',
             customLayer:'',
-            interval:''
+            interval:'',
+            pathSimplifierIns:'',
+            navg1:''
         };
     },
     mounted() {
-        // this.init()
+   
     },
     computed:{
         ...mapState({
@@ -61,17 +63,30 @@ export default {
                 this.text.push(text)
             }
         },
+
         configLineData(maps){
             let path = this.lineList
             let oneList = [],twoList = [],threeList = []
             for(let i=0;i<path.length;i++){
                 if(i<this.visitFlag){
                     oneList.push(path[i])
+                    if(this.visitFlag != 0 && i+1 < path.length){
+                        oneList.push(path[i+1])
+                    }
                 }else if(i==this.visitFlag){
                     twoList.push(path[i])
                     if(i+1 < path.length){
                         twoList.push(path[i+1])
+                        for(let j=i+2;j<path.length;j++){
+                            if(!this.newInfo[j]['isOnline']){
+                                twoList.push(path[j])
+                            }else{
+                                break;
+                            }
+                        }
+                        
                     }
+                    
                 }else{
                     threeList.push(path[i])
                 }
@@ -86,22 +101,6 @@ export default {
                 strokeWeight: 1,
                 // 折线样式还支持 'dashed'
                 strokeStyle: "solid",
-                // strokeStyle是dashed时有效
-                strokeDasharray: [10, 5],
-                lineJoin: 'round',
-                lineCap: 'round',
-                zIndex: 50,
-            })
-            this.polylineTwo = new AMap.Polyline({
-                path: twoList,
-                isOutline: true,
-                outlineColor: '#f9d334',
-                borderWeight: 1,
-                strokeColor: "#f9d334", 
-                strokeOpacity: 1,
-                strokeWeight: 1,
-                // 折线样式还支持 'dashed'
-                strokeStyle: "dashed",
                 // strokeStyle是dashed时有效
                 strokeDasharray: [10, 5],
                 lineJoin: 'round',
@@ -125,39 +124,43 @@ export default {
                 zIndex: 50,
             })
             if(oneList.length > 0) this.polylineOne.setMap(maps)
-            if(twoList.length > 0) this.polylineTwo.setMap(maps)
             if(threeList.length > 0) this.polylineThree.setMap(maps)
             // 缩放地图到合适的视野级别
-            maps.setFitView([ this.polylineOne,this.polylineTwo,this.polylineThree ])
-            // if(twoList.length > 0){
-            //     this.interval = setInterval(() => {
-            //         this.maps.remove(this.polylineTwo)
-            //         // maps.setFitView([this.polylineTwo])
-            //         setTimeout(() => {
-            //             this.polylineTwo.setMap(maps)
-            //             maps.setFitView([this.polylineTwo])
-            //         },500)
-            //     },1000)
-            // }
+            maps.setFitView([ this.polylineOne,this.polylineThree ])
+
+            if(twoList.length > 1 && !!this.pathSimplifierIns){
+                //设置数据
+                this.pathSimplifierIns.setData([{
+                    name: '路线0',
+                    path: twoList
+                }]);
+
+                if(!!this.navg1){
+                    this.navg1.destroy();
+                }
+
+                //对第一条线路（即索引 0）创建一个巡航器
+                this.navg1 = this.pathSimplifierIns.createPathNavigator(0, {
+                    loop: true, //循环播放
+                    speed: 200000 //巡航速度，单位千米/小时
+                });
+                
+                this.navg1.start();
+                
+            }
+            
+            
         },
         getDatas(maps,callback){
-            // AMap.plugin('AMap.DistrictSearch', function() {
-            //     let search = new AMap.DistrictSearch();
-            //     search.search('中国', function(status, data) {
-            //         if (status === 'complete') {
-                        let positions = []
-            //             let provinces = data['districtList'][0]['districtList']
-                        let provinces = this.dataList
-                        for (let i = 0; i < provinces.length; i += 1) {
-                            positions.push({
-                                center: provinces[i],
-                                radius:Math.max(2, Math.floor(Math.random() * 10))
-                            })
-                        }
-                        callback(maps,positions)
-            //         }
-            //     });
-            // });
+            let positions = []
+            let provinces = this.dataList
+            for (let i = 0; i < provinces.length; i += 1) {
+                positions.push({
+                    center: provinces[i],
+                    radius:Math.max(2, Math.floor(Math.random() * 10))
+                })
+            }
+            callback(maps,positions)
         },
         
         addLayer(maps,positions) {
@@ -182,16 +185,29 @@ export default {
                 }
                 canvas.width = width;
                 canvas.height = height;//清除画布
-                
+
 			    for (let i = 0; i < positions.length; i += 1) {
                     let ctx = canvas.getContext("2d");
                     ctx.beginPath();
+
                     if(i <= _self.visitFlag){
-                        ctx.fillStyle = '#08f373';
-        		        ctx.strokeStyle = 'rgba(8,243,115,0.5)';
+                        if(_self.newInfo[i]['isOnline']){
+                            ctx.fillStyle = '#08f373';
+        		            ctx.strokeStyle = 'rgba(8,243,115,0.5)';
+                        }else{
+                            ctx.fillStyle = '#9b9c9f';
+        		            ctx.strokeStyle = 'rgba(155,155,155,0.5)';
+                        }
+                        
                     }else{
-                        ctx.fillStyle = '#04a0e9';
-        		        ctx.strokeStyle = 'rgba(4,160,233,0.5)';
+                        if(_self.newInfo[i]['isOnline']){
+                            ctx.fillStyle = '#04a0e9';
+                            ctx.strokeStyle = 'rgba(4,160,233,0.5)';
+                        }else{
+                            ctx.fillStyle = '#9b9c9f';
+        		            ctx.strokeStyle = 'rgba(155,155,155,0.5)';
+                        }
+                        
                     }
 			        let center = positions[i].center;
         			let pos = maps.lngLatToContainer(center);
@@ -247,9 +263,52 @@ export default {
                     zoom: 4,
                     center: [105.397428, 35.90923],
                     mapStyle:'amap://styles/1efb475da4687bb48c752ca6db690e75',
-                    viewMode: '3D',
+                    viewMode: '2D',
                     resizeEnable: true
                 })
+                let _self = this
+                        // this.init()
+                AMapUI.load(['ui/misc/PathSimplifier', 'lib/$'], function(PathSimplifier, $) {
+                    if (!PathSimplifier.supportCanvas) {
+                        alert('当前环境不支持 Canvas！');
+                        return;
+                    }
+
+                    _self.pathSimplifierIns = new PathSimplifier({
+                        zIndex: 100,
+                        // autoSetFitView:true,
+                        map: _self.maps, //所属的地图实例
+
+                        getPath: function(pathData, pathIndex) {
+
+                            return pathData.path;
+                        },
+                        renderOptions: {
+                            //轨迹线的样式
+                            pathLineStyle: {
+                                fillStyle:'#f7f478',
+                                strokeStyle: '#f7f478',
+                                lineWidth: 1,
+                                dirArrowStyle: true
+                            },
+                            pathNavigatorStyle:{
+                                fillStyle:'#f7f478',
+                                strokeStyle: '#f7f478',
+                                lineWidth: 1,
+                                dirArrowStyle: true,
+                                pathLinePassedStyle:{
+                                    strokeStyle: '#f7f478',
+                                    strokeStyle: '#f7f478',
+                                    lineWidth: 1,
+                                    dirArrowStyle: true
+                                }
+                            },
+                            
+                        }
+                    })
+                    
+                })
+         
             }else{
                 // clearInterval(this.interval)
                 if(this.text && this.text.length > 0){

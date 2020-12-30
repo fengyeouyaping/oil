@@ -115,8 +115,28 @@ export default {
       },
       //更新设备实时信息
       getEquipmentNewDate(data){
+
+        data.stakes[0]['lon'] = 108.1234
+        data.stakes[0]['lat'] = 34.5678
+        // data.stakes[]['visitFlag'] = true
+        
         let datas = data
         if(datas.nodeId == this.newInfo.id){
+          if(this.newInfo.devices && this.newInfo.devices.length > 0){
+            for(let i=0;i<datas.stakes.length;i++){
+              for(let j=0;j<this.newInfo.devices.length;j++){
+                
+                if(datas.stakes[i]['stakeNo'] == this.newInfo.devices[j]['stake']){
+                  datas.stakes[i]['devGuid'] = this.newInfo.devices[j]['devGuid'] 
+                  this.newInfo.devices[j]['visitFlag'] = datas.stakes[i]['visitFlag'] ? datas.stakes[i]['visitFlag'] : false 
+                  this.newInfo.devices[j]['isOnline'] = datas.stakes[i]['isOnline'] ? datas.stakes[i]['isOnline'] : false 
+                  this.newInfo.devices[j]['actArrivedTime'] = datas.stakes[i]['actArrivedTime'] ? datas.stakes[i]['actArrivedTime'] : false 
+                  this.newInfo.devices[j]['deviceUpTime'] = datas.stakes[i]['deviceUpTime'] ? datas.stakes[i]['deviceUpTime'] : false 
+                  this.newInfo.devices[j]['velocity'] = datas.stakes[i]['velocity'] ? datas.stakes[i]['velocity'] : false 
+                }
+              }
+            }
+        }
           let lists = datas.stakes.filter((item)=>item.visitFlag)
           let result = []
           if(lists.length > 0){
@@ -129,6 +149,7 @@ export default {
           }else{
             result = datas.stakes[0]
           }
+          
           this.equipmentNewDate = result
         }
         

@@ -48,7 +48,7 @@
                   <div>
                     <p>预计到达时间:<span>{{item.evalArrivedTime}}</span></p>
                     <p>实际到达时间:<span>{{item.actArrivedTime}}</span></p>
-                    <p>运行速度:<span>{{item.dblVelocity}}m/s</span></p>
+                    <p>运行速度:<span>{{item.velocity}}m/s</span></p>
                   </div>
                 </li>
               </ul>
@@ -163,14 +163,17 @@ export default {
       if(val && val.length > 0){
           for(let i=0;i<val.length;i++){
             for(let j=0;j<this.newInfo.devices.length;j++){
-              if(val[i]['stakeNo'] == this.newInfo.devices[j]['devGuid']){
+              
+              if(val[i]['stakeNo'] == this.newInfo.devices[j]['stake']){
+                val[i]['devGuid'] = this.newInfo.devices[j]['devGuid'] 
                 this.newInfo.devices[j]['visitFlag'] = val[i]['visitFlag'] ? val[i]['visitFlag'] : false 
+                this.newInfo.devices[j]['isOnline'] = val[i]['isOnline'] ? val[i]['isOnline'] : false 
               }
             }
           }
       }
-      this.getPointInfo(val[val.length-1] ? val[val.length-1]['stakeNo'] : '')
       setTimeout(() => {
+        
         this.$store.commit('HomeModule/UPDATE_POIN_INFO',this.newInfo.devices ? this.newInfo.devices : [])
         this.$refs.maps.init()
       },500)
@@ -181,9 +184,11 @@ export default {
   },
   methods: {
       newMap(item){
+        
         if(item.devices && item.devices.length > 0){
           this.newInfo = item
           this.bigDataLists(this.newInfo.id)
+          
           this.pointInfo.basic = item.devices[0]
           this.someDigits = item.devices.length || 0
           this.getPointInfo(item['devices'][0] ? item['devices'][0]['devGuid'] : '')
@@ -216,11 +221,13 @@ export default {
               }
             })
           }
+          
           if(this.equipmentLists.length > 0){
             forList(this.equipmentLists)
             this.bigDataLists(this.newInfo.id)
+            
             this.someDigits = this.newInfo.devices.length || 0
-
+            
             this.getPointInfo(this.newInfo['devices'][0] ? this.newInfo['devices'][0]['devGuid'] : '')
           }
           
@@ -260,7 +267,7 @@ export default {
       getPointInfo(devGuid){
         
         this.$http.getHttp(this.$API.deviceGet+"?devGuid="+devGuid,(data)=>{
-
+          
             this.pointInfo.basic = data.data
             this.getDeviceWeather(data.data.lat,data.data.lon)
         })
@@ -268,8 +275,11 @@ export default {
       //查询大数据数据
       bigDataLists(nodeId){
         if(nodeId){
+          
           this.$http.getHttp(this.$API.bigData+"?nodeId="+nodeId,(data)=>{
+            
             this.equipmentNewDate = data.data ? data.data : []
+            
           })
         }
           

@@ -5,15 +5,15 @@
             <div class="left_title">公司信息</div>
             <el-tree class="filter-tree" :data="data" :props="defaultProps" default-expand-all :filter-node-method="filterNode" :expand-on-click-node="false" ref="tree" @node-click="nodeClick"></el-tree>
         </div>
-        <div class="seach">
-            <el-input type="number" placeholder="请输入要展示的点的个数" v-model="num" size="small" suffix-icon="el-icon-search" style="width:150px"></el-input>
-            <el-button type="primary" size="small" style="margin-left:20px" @click="getscheat()">查询</el-button>
-        </div>
         <div class="content">
-            <div class="figure" v-if="rightDate && rightDate.length > 0" @mousemove="clear()" @mouseleave="state()">
+            <div class="seach">
+                <el-input type="number" placeholder="请输入要展示的点的个数" v-model="num" size="small" suffix-icon="el-icon-search" style="width:150px" @mousemove="clear()" @mouseleave="state()"></el-input>
+                <el-button type="primary" size="small" style="margin-left:20px" @click="getscheat()">查询</el-button>
+            </div>
+            <div class="figure" v-if="rightDate && rightDate.length > 0" @mousemove="clear()" @mouseleave="state()" @click="bigImg(1)">
                 <bar-top :id="`bar1`" :name="name1"></bar-top>
             </div>
-            <div class="figure" v-if="rightDate && rightDate.length > 0" @mousemove="clear()" @mouseleave="state()">
+            <div class="figure" v-if="rightDate && rightDate.length > 0" @mousemove="clear()" @mouseleave="state()" @click="bigImg(2)">
                 <bar-top :id="`bar2`" :name="name2"></bar-top>
             </div>
         </div>
@@ -36,6 +36,26 @@
                         <li><span>运行速度:</span><p>{{item.bigData ? item.bigData.dblVelocity  : ''}}</p></li>
                     </ul>
                 </div>
+            </div>
+        </div>
+        <div v-if="!!bigImgNum" class="big_img">
+            <div class="big_img_top">
+                <div class="seach">
+                    <el-input type="number" placeholder="请输入要展示的点的个数" v-model="num" size="small" suffix-icon="el-icon-search" style="width:150px" @mousemove="clear()" @mouseleave="state()"></el-input>
+                    <el-button type="primary" size="small" style="margin-left:20px" @click="getscheat()">查询</el-button>
+                </div>
+                <i class="el-icon-circle-close big_img_i" @click="clearBigImg(0)"></i>
+            </div>
+            <div class="figure" v-if="rightDate && rightDate.length > 0" @mousemove="clear()" @mouseleave="state()">
+                <bar-top :id="`bar3`" :name="name1" class="bigImg" v-if="bigImgNum == 1"></bar-top>
+                <bar-top :id="`bar4`" :name="name2" class="bigImg" v-if="bigImgNum == 2"></bar-top>
+            </div>
+            <div class="figure loading" v-else 
+            v-loading="true"
+            element-loading-text="拼命加载中"
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(255, 255, 255, 0.8)"
+            >
             </div>
         </div>
     </div>
@@ -65,7 +85,7 @@ export default {
         num:12,
         time: new Date(),
         timeDate: [new Date()-3600 * 1000 * 0.5,new Date()],
-        
+        bigImgNum:0
       };
     },
     watch: {
@@ -93,6 +113,15 @@ export default {
         this.company()
     },
     methods: {
+        //放大图
+        bigImg(num){
+            this.bigImgNum = num
+            this.getNewLists(this.devGuid,this.activeIndex)
+        },
+        clearBigImg(num){
+            this.bigImgNum = num
+            this.getNewLists(this.devGuid,this.activeIndex)
+        },
         //列表数据
         company(){
             this.$http.postHttp(this.$API.deviceListAll,{},(rs)=>{
@@ -213,11 +242,49 @@ export default {
     height 100%
     overflow hidden
     position relative
+    .big_img{
+        position absolute
+        width 100%
+        height 100%
+        top 0
+        bottom 0
+        left 0
+        right 0
+        z-index 101
+        background rgba(0,0,0,0.8)
+        .loading{
+          top 121px
+          width 100%
+        }
+        .big_img_top{
+            position relative
+            z-index 210
+            .big_img_i{
+                position absolute
+                top 121px
+                right 15%
+                font-size 30px
+                color #000000
+                z-index 210
+            }
+        }
+        .bigImg{
+            position fixed !important
+            z-index 200
+            top 100px
+            left 10%
+            right 0
+            bottom 0
+            width 80%
+            height 70%
+            padding 15px 0 0 15px
+            background #ffffff
+        } 
+    }
     .seach{
         position absolute
         top 21px
-        left 215px
-        width 80%
+        right 15%
         display flex
     }
     .left{
@@ -234,9 +301,16 @@ export default {
         padding 80px 0
         flex 1
         overflow auto
+        .seach{
+            position absolute
+            top 21px
+            right 0
+            display block
+            left 210px
+        }
         .figure{
             width 100%
-            height 50%   
+            height 50%  
         }
         .data{
             height 29%   

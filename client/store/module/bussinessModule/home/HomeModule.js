@@ -9,6 +9,7 @@ export default {
     },
     newLineData:[],
     leftMenuShow:false,
+    bigImgNum:0,
   },
   mutations:{
     UPDATE_POIN_INFO(state,list){
@@ -22,6 +23,9 @@ export default {
     },
     updata_leftMenuShow(state,type){
       state.leftMenuShow = type
+    },
+    updata_bigImgNum(state,type){
+      state.bigImgNum = type
     }
   }
 }
