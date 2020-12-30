@@ -115,11 +115,6 @@ export default {
       },
       //更新设备实时信息
       getEquipmentNewDate(data){
-
-        data.stakes[0]['lon'] = 108.1234
-        data.stakes[0]['lat'] = 34.5678
-        // data.stakes[]['visitFlag'] = true
-        
         let datas = data
         if(datas.nodeId == this.newInfo.id){
           if(this.newInfo.devices && this.newInfo.devices.length > 0){
