@@ -5,11 +5,15 @@
             <div class="left_title">公司信息</div>
             <el-tree class="filter-tree" :data="data" :props="defaultProps" default-expand-all :filter-node-method="filterNode" :expand-on-click-node="false" ref="tree" @node-click="nodeClick"></el-tree>
         </div>
+        <div class="seach">
+            <el-input type="number" placeholder="请输入要展示的点的个数" v-model="num" size="small" suffix-icon="el-icon-search" style="width:150px"></el-input>
+            <el-button type="primary" size="small" style="margin-left:20px" @click="getscheat()">查询</el-button>
+        </div>
         <div class="content">
-            <div class="figure" v-if="rightDate && rightDate.length > 0">
+            <div class="figure" v-if="rightDate && rightDate.length > 0" @mousemove="clear()" @mouseleave="state()">
                 <bar-top :id="`bar1`" :name="name1"></bar-top>
             </div>
-            <div class="figure" v-if="rightDate && rightDate.length > 0">
+            <div class="figure" v-if="rightDate && rightDate.length > 0" @mousemove="clear()" @mouseleave="state()">
                 <bar-top :id="`bar2`" :name="name2"></bar-top>
             </div>
         </div>
@@ -21,7 +25,7 @@
                         <li><span>设备状态:</span><p>{{item.status}}</p></li>
                         <li><span>位置:</span><p>{{item.info ? item.info.city.name : ''}}</p></li>
                         <li><span>天气:</span><p>{{item.info && item.info.condition ? item.info.condition.condition : ''}}</p></li>
-                        <li><span>经纬度:</span><p>{{`${item.lat},${item.lon}`}}</p></li>
+                        <li><span>经纬度:</span><p>{{item.lat && item.lon ? `${item.lat},${item.lon}` : ''}}</p></li>
                         <li><span>风力:</span><p>{{item.info && item.info.condition ? item.info.condition.windLevel : ''}}</p></li>
                         <li><span>温度:</span><p>{{item.info && item.info.condition ? item.info.condition.temp : ''}}</p></li>
                         <li><span>湿度:</span><p>{{item.info && item.info.condition ? item.info.condition.humidity : ''}}</p></li>
@@ -56,7 +60,12 @@ export default {
         name2:"C特征",
         getNum:'',
         nodeId:'',
-        activeIndex:0
+        activeIndex:0,
+        devGuid:'',
+        num:12,
+        time: new Date(),
+        timeDate: [new Date()-3600 * 1000 * 0.5,new Date()],
+        
       };
     },
     watch: {
@@ -64,7 +73,20 @@ export default {
         this.$refs.tree.filter(val);
       },
       lineData(val){
-          this.$store.commit('HomeModule/updata_newLineData',val)
+          let result = []
+          if(val && val.length > 0){
+            for(let i=0;i<val.length;i++){
+                result.push(val[i])
+            }
+            result.reverse()
+          }else{
+              result = val
+          }
+          
+          this.$store.commit('HomeModule/updata_newLineData',result)
+      },
+      time(val){
+        this.timeDate = [val,val]
       }
     },
     mounted(){
@@ -112,11 +134,15 @@ export default {
             
             
         },
+        getscheat(){
+            this.getNewLists(this.devGuid,0)
+        },
         //获取实时数据列表
         getNewLists(devGuid,index){
+            this.devGuid = devGuid
             this.activeIndex = index
             this.lineData = []
-            let url = this.$API.nowList + "?devGuid="+devGuid+"&num=12"
+            let url = this.$API.nowList + "?devGuid="+devGuid+"&num="+this.num
             this.$http.getHttp(url,(rs)=>{
                 if(rs.data && rs.data.length > 0){
                     rs.data.map((item) => {
@@ -129,6 +155,14 @@ export default {
                 }
                 
             })
+        },
+        //结束轮询
+        clear(){
+            clearInterval(this.getNum)
+        },
+        //开始轮询
+        state(){
+            this.getNumDate(this.devGuid)
         },
         
         //获取城市、天气信息
@@ -152,7 +186,7 @@ export default {
             clearInterval(this.getNum)
 
             this.getNum = setInterval(() => {
-                let url = this.$API.nowList + "?devGuid="+devGuid+"&num=12"
+                let url = this.$API.nowList + "?devGuid="+devGuid+"&num="+this.num
                 this.$http.getHttp(url,(rs)=>{
                     if(rs.data && rs.data.length > 0){
                         rs.data.map((item) => {
@@ -177,6 +211,15 @@ export default {
 .realTimeData{
     display flex
     height 100%
+    overflow hidden
+    position relative
+    .seach{
+        position absolute
+        top 21px
+        left 215px
+        width 80%
+        display flex
+    }
     .left{
         width 200px
         padding 20px 10px 20px 10px
@@ -188,8 +231,9 @@ export default {
         }
     }
     .content{
-        padding 20px 0
+        padding 80px 0
         flex 1
+        overflow auto
         .figure{
             width 100%
             height 50%   

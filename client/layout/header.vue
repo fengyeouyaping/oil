@@ -1,5 +1,5 @@
 <template>
-  <div class="header header_default_style">
+  <div class="header header_default_style" :class="!leftMenuShow ? '' : 'hide'">
     <div class="logo">
       <div @mouseenter="showMoreLanguage" @mouseleave="hideMoreLanguage" class="topImg">
         <img :src="imgSrc" class="image_center" v-if="userInfo.imagePath" @click="updatePass">
@@ -81,6 +81,7 @@ export default {
       lockTimer: state => state.HeaderModule.lockTimer,
       userInfo:state => state.HomeModule.userInfo,
       isShowMenu:state => state.HeaderModule.isShowMenu,
+      leftMenuShow       : state => state.HomeModule.leftMenuShow,
     }),
     imgSrc(){
       return this.$global.httpServerImg + this.userInfo.imagePath + "?time="+new Date().getTime()*1000/1000
@@ -259,6 +260,9 @@ export default {
   position: absolute;
   top: 0px;
   left: 0px;
+  &.hide{
+    left -230px !important
+  }
 }
 
 .logo {

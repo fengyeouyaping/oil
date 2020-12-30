@@ -111,14 +111,14 @@ export default {
       },
       //点击搜索
       getscheat(){
-        if(this.timeDate[1] - this.timeDate[0] > 3600 * 1000 * 0.5){
-          this.$notify({
-              title: '选择时间范围不能超过0.5小时',
-              message: '',
-              type: 'warning'
-          });
-          return false
-        }
+        // if(this.timeDate[1] - this.timeDate[0] > 3600 * 1000 * 0.5){
+        //   this.$notify({
+        //       title: '选择时间范围不能超过0.5小时',
+        //       message: '',
+        //       type: 'warning'
+        //   });
+        //   return false
+        // }
         this.getListData()
       },
       //切换设备
@@ -133,6 +133,9 @@ export default {
 
       //得到列表数据
       getListData(){
+        if(!this.timeDate){
+          this.timeDate = [new Date()-3600 * 1000 * 0.5,new Date()]
+        }
         this.lineData = []
         var params = {
             nodeId:this.nodeId,

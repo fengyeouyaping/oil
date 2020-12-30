@@ -29,7 +29,7 @@
             <div class="figure">
                 <el-table :data="tableData" class="tableData" style="width:100%" height="100%" :stripe="true">
                     <el-table-column prop="sortId" label="序号"></el-table-column>
-                    <el-table-column prop="devGuid" label="设备ID" width=150></el-table-column>
+                    <el-table-column prop="devGuid" label="设备ID" width=120></el-table-column>
                     <el-table-column prop="stake" label="测试桩号"></el-table-column>
                     <el-table-column label="经纬度" width="200">
                         <template slot-scope="scope">
@@ -42,9 +42,10 @@
                         </template>
                     </el-table-column>
                     <el-table-column prop="batt" label="电量"></el-table-column>
+                    <el-table-column prop="temper" label="温度(℃)"></el-table-column>
                     <el-table-column prop="time" label="最后一次通信时间" width="180"></el-table-column>
                     <el-table-column prop="remark" label="备注"></el-table-column>
-                    <el-table-column label="操作" fixed="right" width="200">
+                    <el-table-column label="操作" width="200">
                         <template slot-scope="scope">
                             <el-button @click="handleClick(scope.row,2)" type="text" size="small" v-if="ifShow(2)">编辑</el-button>
                             <el-button @click="handleClick(scope.row,1)" type="text" size="small" v-if="ifShow(2)">详情</el-button>
@@ -373,6 +374,26 @@ export default {
       },
       //切换线路
       nodeClick(data){
+        this.value = []
+        this.data.map((item) => {
+            if(item.id == data.id){
+                this.value = [item.id]
+            }else if(item.nodeList && item.nodeList.length > 0){
+                item.nodeList.map((itemite) => {
+                    if(itemite.id == data.id){
+                        this.value = [item.id,itemite.id]
+                    }else if(itemite.nodeList && itemite.nodeList.length){
+                        itemite.nodeList.map((childrenItem) => {
+                            if(childrenItem.id == data.id){
+                                this.value = [item.id,itemite.id,childrenItem.id]
+                            }
+                        })
+                    }
+                })
+            }
+            
+        })
+        this.ruleForm.route = this.value
         //   if(this.lineList.indexOf(data) != -1){
               this.nodeid = data.id
               this.initData()
@@ -447,6 +468,8 @@ export default {
     margin-left -10px
     background rgba(0,0,0,0.3)
     z-index 10
+    right 0
+    overflow auto
     .margin{
         width 400px
         background #ffffff
@@ -475,6 +498,7 @@ export default {
 .realTimeData{
     display flex
     height 100%
+    overflow hidden
     .left{
         min-width 200px
         padding 20px 10px 20px 10px
@@ -487,6 +511,7 @@ export default {
     }
     .content{
         flex 1
+        overflow auto
         .header{
             padding 20px 20px 10px
             display flex

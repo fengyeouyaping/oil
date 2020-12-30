@@ -20,6 +20,16 @@
               </div>
               <div class="num_bottom">{{someDigits}}</div>
             </div>
+            <!-- <div class="numBottom">
+              <div class="top_header">
+                <p>当前设备<span></span></p>
+                <img src="~BUSSINESS_IMAGE/images/1604239617231.jpg" alt="">
+              </div>
+              <div class="num_bottom">{{pointInfo.basic.stake}}</div>
+            </div> -->
+
+
+            
             <div class="images">
               <Map ref="maps"></Map>
               <!-- <img src="~BUSSINESS_IMAGE/images/content.png" alt=""> -->
@@ -107,7 +117,7 @@
                   <ul>
                     <li v-for="(grandSon,grandSonIndex) in son.devices" @click="newMap(grandSon)" :key="grandSonIndex" v-show="son.isShow && grandSon.isShow">
                       <img src="~BUSSINESS_IMAGE/1604237298752.jpg" alt="">
-                      <span>{{grandSon.devGuid}}</span>
+                      <span :class="pointInfo.basic.devGuid == grandSon.devGuid ? 'grandSonActive' : ''">{{grandSon.stake}}</span>
                     </li>
                   </ul>
                 </div>
@@ -159,7 +169,7 @@ export default {
             }
           }
       }
-      this.getPointInfo(val[val.length-1]['stakeNo'])
+      this.getPointInfo(val[val.length-1] ? val[val.length-1]['stakeNo'] : '')
       setTimeout(() => {
         this.$store.commit('HomeModule/UPDATE_POIN_INFO',this.newInfo.devices ? this.newInfo.devices : [])
         this.$refs.maps.init()
@@ -176,7 +186,7 @@ export default {
           this.bigDataLists(this.newInfo.id)
           this.pointInfo.basic = item.devices[0]
           this.someDigits = item.devices.length || 0
-          this.getPointInfo(item['devices'][0]['devGuid'])
+          this.getPointInfo(item['devices'][0] ? item['devices'][0]['devGuid'] : '')
           
         }else{
           this.pointInfo.basic = item
@@ -206,13 +216,14 @@ export default {
               }
             })
           }
+          if(this.equipmentLists.length > 0){
+            forList(this.equipmentLists)
+            this.bigDataLists(this.newInfo.id)
+            this.someDigits = this.newInfo.devices.length || 0
+
+            this.getPointInfo(this.newInfo['devices'][0] ? this.newInfo['devices'][0]['devGuid'] : '')
+          }
           
-          forList(this.equipmentLists)
-          this.bigDataLists(this.newInfo.id)
-          this.someDigits = this.newInfo.devices.length || 0
-
-          this.getPointInfo(this.newInfo['devices'][0]['devGuid'])
-
           this.$myLoading.endLoading()
 
         })
@@ -256,9 +267,12 @@ export default {
       },
       //查询大数据数据
       bigDataLists(nodeId){
+        if(nodeId){
           this.$http.getHttp(this.$API.bigData+"?nodeId="+nodeId,(data)=>{
             this.equipmentNewDate = data.data ? data.data : []
           })
+        }
+          
       },
       //获取城市、天气信息
       getDeviceWeather(lat,lon){
@@ -275,10 +289,15 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
+.grandSonActive{
+  font-size 16px !important
+  font-weight bold !important
+}
 .top_header{
   height 50px
   width 80%
   position relative
+  
   p{
     color #FFFFFF
     font-weight bold
@@ -341,7 +360,7 @@ export default {
           width 100%
           height 100%
           overflow auto
-          .num{
+          .num,.numBottom{
             position absolute
             left 150px
             top 20px
@@ -364,7 +383,7 @@ export default {
             }
             
             .num_bottom{
-              width 80px
+              width 130px
               height 25px
               line-height 28px
               font-size 18px
@@ -373,6 +392,9 @@ export default {
               background:linear-gradient(to right,#1349ad,rgba(0,0,0,0))
               padding-left 20px
             }
+          }
+          .numBottom{
+            left 300px
           }
           .images{
             width 100%

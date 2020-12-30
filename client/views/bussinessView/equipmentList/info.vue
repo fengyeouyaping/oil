@@ -48,6 +48,18 @@
                 <li class="title">测试参数</li>
             </ul>
             <ul>
+                <li>电压范围</li>
+                <li><el-input v-model="info.Range" placeholder="请输入内容"></el-input></li>
+                <li>过彩样率</li>
+                <li><el-input v-model="info.OS" placeholder="请输入内容"></el-input></li>
+            </ul>
+            <ul>
+                <li>当前分析所用通道</li>
+                <li><el-input v-model="info.Channel" placeholder="请输入内容"></el-input></li>
+                <li>文件个数</li>
+                <li><el-input v-model="info.fileNum" placeholder="请输入内容"></el-input></li>
+            </ul>
+            <ul>
                 <li>采样频率</li>
                 <li><el-input v-model="info.freq" placeholder="请输入内容"></el-input></li>
                 <li>分析需采样次数</li>
@@ -56,8 +68,8 @@
             <ul>
                 <li>采样次数</li>
                 <li><el-input v-model="info.fSample" placeholder="请输入内容"></el-input></li>
-                <li>文件个数</li>
-                <li><el-input v-model="info.fileNum" placeholder="请输入内容"></el-input></li>
+                <li></li>
+                <li></li>
             </ul>
             <ul>
                 <li>阀值</li>
@@ -155,6 +167,9 @@ export default {
                 lon:'',
                 lat:'',
                 remarks:'',
+                Channel:'',
+                OS:'',
+                Range:''
             },
             newTime:'',
             fileList:{
@@ -232,6 +247,9 @@ export default {
                         sample:this.info.fSample,
                         fileNum:this.info.fileNum,
                         threshold:this.info.threshold ? this.info.threshold : [],
+                        Channel:this.info.Channel,
+                        OS:this.info.OS,
+                        Range:this.info.Range
 
                     }
                 }

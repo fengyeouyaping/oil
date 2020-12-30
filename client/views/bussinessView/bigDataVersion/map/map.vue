@@ -19,7 +19,9 @@ export default {
             text:[],
             polylineOne:'',
             polylineTwo:'',
-            customLayer:''
+            polylineThree:'',
+            customLayer:'',
+            interval:''
         };
     },
     mounted() {
@@ -61,24 +63,25 @@ export default {
         },
         configLineData(maps){
             let path = this.lineList
-            let oneList = [],twoList = []
+            let oneList = [],twoList = [],threeList = []
             for(let i=0;i<path.length;i++){
-                if(i<=this.visitFlag){
+                if(i<this.visitFlag){
                     oneList.push(path[i])
-                }else{
-                    if(i != 0){
-                        twoList.push(path[i-1])
-                    }
+                }else if(i==this.visitFlag){
                     twoList.push(path[i])
+                    if(i+1 < path.length){
+                        twoList.push(path[i+1])
+                    }
+                }else{
+                    threeList.push(path[i])
                 }
             }
-            
             this.polylineOne = new AMap.Polyline({
                 path: oneList,
                 isOutline: true,
-                outlineColor: '#f9d334',
+                outlineColor: '#08f373',
                 borderWeight: 1,
-                strokeColor: "#f9d334", 
+                strokeColor: "#08f373", 
                 strokeOpacity: 1,
                 strokeWeight: 1,
                 // 折线样式还支持 'dashed'
@@ -91,6 +94,22 @@ export default {
             })
             this.polylineTwo = new AMap.Polyline({
                 path: twoList,
+                isOutline: true,
+                outlineColor: '#f9d334',
+                borderWeight: 1,
+                strokeColor: "#f9d334", 
+                strokeOpacity: 1,
+                strokeWeight: 1,
+                // 折线样式还支持 'dashed'
+                strokeStyle: "dashed",
+                // strokeStyle是dashed时有效
+                strokeDasharray: [10, 5],
+                lineJoin: 'round',
+                lineCap: 'round',
+                zIndex: 50,
+            })
+            this.polylineThree = new AMap.Polyline({
+                path: threeList,
                 isOutline: true,
                 outlineColor: '#04a0e9',
                 borderWeight: 1,
@@ -105,13 +124,21 @@ export default {
                 lineCap: 'round',
                 zIndex: 50,
             })
-            
             if(oneList.length > 0) this.polylineOne.setMap(maps)
             if(twoList.length > 0) this.polylineTwo.setMap(maps)
+            if(threeList.length > 0) this.polylineThree.setMap(maps)
             // 缩放地图到合适的视野级别
-            maps.setFitView([ this.polylineOne,this.polylineTwo ])
-
-
+            maps.setFitView([ this.polylineOne,this.polylineTwo,this.polylineThree ])
+            // if(twoList.length > 0){
+            //     this.interval = setInterval(() => {
+            //         this.maps.remove(this.polylineTwo)
+            //         // maps.setFitView([this.polylineTwo])
+            //         setTimeout(() => {
+            //             this.polylineTwo.setMap(maps)
+            //             maps.setFitView([this.polylineTwo])
+            //         },500)
+            //     },1000)
+            // }
         },
         getDatas(maps,callback){
             // AMap.plugin('AMap.DistrictSearch', function() {
@@ -160,8 +187,8 @@ export default {
                     let ctx = canvas.getContext("2d");
                     ctx.beginPath();
                     if(i <= _self.visitFlag){
-                        ctx.fillStyle = '#f9d334';
-        		        ctx.strokeStyle = 'rgba(249,211,52,0.5)';
+                        ctx.fillStyle = '#08f373';
+        		        ctx.strokeStyle = 'rgba(8,243,115,0.5)';
                     }else{
                         ctx.fillStyle = '#04a0e9';
         		        ctx.strokeStyle = 'rgba(4,160,233,0.5)';
@@ -199,7 +226,7 @@ export default {
                         R:item.lon
                     })
                     this.lineList.push([item.lon,item.lat])
-                    this.textList.push(item.devGuid)
+                    this.textList.push(item.stake)
                 }
             })
             
@@ -224,6 +251,7 @@ export default {
                     resizeEnable: true
                 })
             }else{
+                // clearInterval(this.interval)
                 if(this.text && this.text.length > 0){
                     for(let i=0;i<this.text.length;i++){
                         this.maps.remove(this.text[i])
@@ -231,10 +259,12 @@ export default {
                 }
                 this.maps.remove(this.polylineOne)
                 this.maps.remove(this.polylineTwo)
+                this.maps.remove(this.polylineThree)
                 this.maps.remove(this.customLayer)
                 this.text = []
                 this.polylineOne = ''
                 this.polylineTwo = ''
+                this.polylineThree = ''
                 this.customLayer = ''
             }
             

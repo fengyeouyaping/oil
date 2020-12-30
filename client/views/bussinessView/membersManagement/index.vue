@@ -297,6 +297,8 @@ export default {
     margin-left -10px
     background rgba(0,0,0,0.3)
     z-index 10
+    right 0
+    overflow auto
     .margin{
         width 400px
         background #ffffff
@@ -356,8 +358,10 @@ export default {
 .realTimeData{
     display flex
     height 100%
+    overflow hidden
     .content{
         flex 1
+        overflow auto
         .header{
             padding 20px 20px 10px
             display flex

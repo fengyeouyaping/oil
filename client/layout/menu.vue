@@ -1,5 +1,5 @@
 <template>
-    <div class="menu">
+    <div class="menu" :class="!leftMenuShow ? '' : 'hide'">
         <el-collapse  v-model="taskbarsIndexs" accordion @change="itemChange" v-if="isShowMenu"> 
             <el-collapse-item v-for="(TwoM,index) in taskbars" :name="index" v-if="TwoM.visible" >
                 <template slot="title">
@@ -16,6 +16,9 @@
                 </div>
             </el-collapse-item>
         </el-collapse>
+        <div class="leftMenu" @click="$store.commit('HomeModule/updata_leftMenuShow',!leftMenuShow)" v-if="$route.name != 'bigDataVersion'">
+            <i :class="!leftMenuShow ? 'el-icon-arrow-left' : 'el-icon-arrow-right'"></i>
+        </div>
     </div>
 </template>
 
@@ -29,7 +32,8 @@
                 taskbars           : state => state.MenuModule.taskbars,
                 taskbarsIndex      : state => state.MenuModule.taskbarsIndex,
                 taskbarsSonIndex   : state => state.MenuModule.taskbarsSonIndex,
-                isShowMenu         :state => state.HeaderModule.isShowMenu,
+                isShowMenu         : state => state.HeaderModule.isShowMenu,
+                leftMenuShow       : state => state.HomeModule.leftMenuShow,
             }),
         },
         mounted(){
@@ -94,6 +98,23 @@
     top 50px
     left 0px
     bottom 0px
+    &.hide{
+        left -230px !important
+    }
+    .leftMenu{
+        position absolute
+        top 35%
+        left 225px
+        width 25px
+        height 50px
+        background #252a2f
+        border-radius 3px
+        font-size 25px
+        color #ffffff
+        z-index 100
+        line-height 50px
+        cursor pointer
+    }
     .el-collapse-item__header{
         color #ffffff
         background #252a2f

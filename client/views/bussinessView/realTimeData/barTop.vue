@@ -12,6 +12,9 @@ require('echarts/lib/chart/line');
 // 引入提示框和标题组件
 require('echarts/lib/component/tooltip');
 require('echarts/lib/component/title');
+
+require('echarts/lib/component/dataZoom');
+
 import {mapState} from 'vuex'
 
 export default {
@@ -62,7 +65,7 @@ export default {
         this.nameLists=[]
         this.timeLists=[]
         if(data && data.length > 0){
-        this.nameLists=[data[0]['devGuid']]
+            this.nameLists=[data[0]['devGuid']]
           for(let i=0;i<data.length;i++){
             let item = data[i]
             this.timeLists.push(this.$common.dateFormat("hh:mm:ss",item.time/1000))
@@ -71,6 +74,7 @@ export default {
           }
         }
         setTimeout(() => {
+            
             if(!!this.myChart){
                 this.refreshData(this.name=='B特征'? this.bLists : this.cLists,this.timeLists)
             }else{
@@ -90,11 +94,11 @@ export default {
             var option = this.myChart.getOption();
             option.xAxis[0].data = nameData
             option.series[0].data = data;
+
             this.myChart.setOption(option);    
         },
          options(){
              let _self = this
-             
             let option = {
             title: {
                 text: _self.name
@@ -106,10 +110,8 @@ export default {
                 data: _self.nameLists
             },
             grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true
+                left: '10%',
+                bottom: '15%',
             },
             toolbox: {
                 feature: {
@@ -118,16 +120,37 @@ export default {
             },
             xAxis: {
                 type: 'category',
-                data: _self.timeLists
+                data: _self.timeLists,
+                boundaryGap:true,
+                axisLabel:{  
+                    interval: parseInt(_self.timeLists.length/12-1 < 0 ? 0 : _self.timeLists.length/12-1),  //控制坐标轴刻度标签的显示间隔.设置成 0 强制显示所有标签。设置为 1，隔一个标签显示一个标签。设置为2，间隔2个标签。以此类推
+                    rotate:45,//倾斜度 -90 至 90 默认为0 
+                    textStyle:{ 
+                        fontWeight:"bold",  //加粗
+                        color:"#000000",   //黑色
+                        width:"30px",
+                    },                 
+                },
             },
             yAxis: {
-                type: 'value'
+                type: 'value',
             },
             series: [{
                 data: _self.name=='B特征'? _self.bLists : _self.cLists ,
                 type: 'line',
                 smooth: true
-            }]
+            }],
+            dataZoom:[
+                {
+                    type:"inside",//slider表示有滑动块的，
+                    show:false,
+                    xAxisIndex:[0],//表示x轴折叠
+                    // zoomLock:true,
+                    start:0,//数据窗口范围的起始百分比,表示1%
+                    end:100//数据窗口范围的结束百分比,表示35%坐标
+                }
+            ]
+            
         }
         return option
         }

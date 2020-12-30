@@ -7,7 +7,8 @@ export default {
       account:'',
       password:''
     },
-    newLineData:[]
+    newLineData:[],
+    leftMenuShow:false,
   },
   mutations:{
     UPDATE_POIN_INFO(state,list){
@@ -18,6 +19,9 @@ export default {
     },
     updata_newLineData(state,list){
       state.newLineData = list
+    },
+    updata_leftMenuShow(state,type){
+      state.leftMenuShow = type
     }
   }
 }

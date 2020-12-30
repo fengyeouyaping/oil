@@ -44,6 +44,7 @@ export default {
       editCodeIsShow : state => state.ContentModule.editCodeIsShow,
       editCodeText : state => state.ContentModule,
       nowSelectedMenuItem : state => state.TabsModule.nowSelectedMenuItem,
+      leftMenuShow       : state => state.HomeModule.leftMenuShow,
     })
   },
   watch:{
@@ -51,13 +52,16 @@ export default {
         if(val.name === "bigDataVersion"){
           this.isLeft = true
         }else{
-          this.isLeft = false
+          this.isLeft = this.leftMenuShow
         }
         if(val.name === "userInfo"){
           this.isUserInfo = true
         }else{
           this.isUserInfo = false
         }
+    },
+    leftMenuShow(val){
+      this.isLeft = val
     }
   },
   methods: {
@@ -154,11 +158,11 @@ export default {
   bottom 0
   overflow auto
   background #ffffff
-  &.active{
-    left 0  
-  }
   &.leftActive{
     left 230px
+  }
+  &.active{
+    left 0  
   }
 }
 

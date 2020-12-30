@@ -20,6 +20,9 @@ export default {
           lon:'',
           lat:'',
           remarks:'',
+          Channel:'',
+          OS:'',
+          Range:''
         },
         fileList:{
           fileNum:'',
@@ -38,7 +41,7 @@ export default {
       initWebSocket(){ //初始化weosocket
         let userId = JSON.parse(sessionStorage.getItem("userInfo")).id
         
-        const wsuri = "ws://123.56.97.235/server/"+userId;
+        const wsuri = "ws://47.97.66.97:8080/server/"+userId;
         this.websock = new WebSocket(wsuri);
         this.websock.onmessage = this.websocketonmessage;
         this.websock.onopen = this.websocketonopen;
@@ -94,6 +97,9 @@ export default {
           fSample:item.data.testInfo.FSample,
           fileNum:item.data.testInfo.FileNum,
           threshold:item.data.testInfo.Threshold,
+          OS:item.data.testInfo.OS,
+          Range:item.data.testInfo.Range,
+          Channel:item.data.testInfo.Channel,
           stake:item.data.gisInfo.Stake,
           lon:item.data.gisInfo.Lon,
           lat:item.data.gisInfo.Lat,
