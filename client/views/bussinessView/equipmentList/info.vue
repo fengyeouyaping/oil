@@ -254,6 +254,25 @@ export default {
                     }
                 }
             }else if(type == 'deviceGisInfo'){
+                
+                let lon = this.info.lon
+                let lat = this.info.lat
+                if(lon.split('.')[1] && lon.split('.')[1].length > 1){
+                    this.$notify({
+                        title: '经纬度请保持一位小数',
+                        message: '',
+                        type: 'warning'
+                    });
+                    return
+                }
+                if(lat.split('.')[1] && lat.split('.')[1].length > 1){
+                    this.$notify({
+                        title: '经纬度请保持一位小数',
+                        message: '',
+                        type: 'warning'
+                    });
+                    return
+                } 
                 info = {
                     gisInfo:{
                         stake:this.info.stake,

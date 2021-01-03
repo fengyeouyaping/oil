@@ -100,19 +100,22 @@
           </div>
           <div class="right_bottom_info">
             <div v-for="(item,index) in equipmentLists" class="item" :key="index">
-              <header >
+              <!-- <header >
                 <i class="fontIconEl el" :class="!item.nodeList || (item.nodeList && item.nodeList.length == 0) ? 'left14' : item.isShow ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" @click="shouitem(item,index)"></i>
                   {{item.name}}
-              </header>
+              </header> -->
               <div v-for="(ite,inde) in item.nodeList" :key="inde" v-show="item.isShow">
-                <div class="title">
+                <!-- <div class="title">
                   <i class="fontIconEl el" :class="!ite.nodeList || (ite.nodeList && ite.nodeList.length == 0) ? 'left14' : ite.isShow ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" @click="shouitem(ite,inde)"></i>
                   {{ite.name}}
-                </div>
+                </div> -->
                 <div v-for="(son,sonIndex) in ite.nodeList" :key="sonIndex" v-show="ite.isShow">
-                  <div class="title left14" @click="newMap(son)" :class="newInfo.id == son.id ? 'active' : ''">
-                    <i class="fontIconEl el" :class="!son.devices || (son.devices && son.devices.length == 0) ? 'left14' : son.isShow ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" @click.stop="shouitem(son,sonIndex)"></i>
-                    {{son.name}}
+                  <div class="title" @click="newMap(son)" :class="newInfo.id == son.id ? 'active' : ''">
+                    <div>
+                      <i class="fontIconEl el" :class="!son.devices || (son.devices && son.devices.length == 0) ? 'left14' : son.isShow ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" @click.stop="shouitem(son,sonIndex)"></i>
+                      {{son.name}}
+                    </div>
+                    <el-switch v-model="son.modelFlag" :active-value="1" :inactive-value="2" active-color="#13ce66" inactive-color="#999999" @change="getChange(son)"></el-switch>
                   </div>
                   <ul>
                     <li v-for="(grandSon,grandSonIndex) in son.devices" @click="newMap(grandSon)" :key="grandSonIndex" v-show="son.isShow && grandSon.isShow">
@@ -167,7 +170,7 @@ export default {
               if(val[i]['stakeNo'] == this.newInfo.devices[j]['stake']){
                 val[i]['devGuid'] = this.newInfo.devices[j]['devGuid'] 
                 this.newInfo.devices[j]['visitFlag'] = val[i]['visitFlag'] ? val[i]['visitFlag'] : false 
-                this.newInfo.devices[j]['isOnline'] = val[i]['isOnline'] ? val[i]['isOnline'] : false 
+                this.newInfo.devices[j]['isOnline'] = val[i]['isOnline'] ? val[i]['isOnline'] : true 
               }
             }
           }
@@ -183,9 +186,27 @@ export default {
     this.equipmentList()
   },
   methods: {
+      getChange(data){
+        var params = {
+            comment : data.comment,
+            name : data.name,
+            id : data.id,
+            modelFlag:data.modelFlag
+        }
+    
+        this.$http.postHttp(this.$API.nodeUpdate,params,(data)=>{
+            this.$notify({
+                title: '树结构修改成功',
+                message: '',
+                type: 'success'
+                });
+            this.equipmentList()
+
+        })
+      },
       newMap(item){
         
-        if(item.devices && item.devices.length > 0){
+        if(item.devices && item.devices.length > 0 && item.modelFlag == 1){
           this.newInfo = item
           this.bigDataLists(this.newInfo.id)
           
@@ -196,6 +217,8 @@ export default {
         }else{
           this.pointInfo.basic = item
           this.getDeviceWeather(item.lat,item.lon)
+          this.$store.commit('HomeModule/UPDATE_POIN_INFO',[])
+          this.$refs.maps.init()
         }
         
         
@@ -210,7 +233,7 @@ export default {
           let forList = (list) => {
             list.map((item) => {
               item.isShow = true
-              if(item.devices && item.devices.length > 0 && !this.newInfo){
+              if(item.devices && item.devices.length > 0 && item.modelFlag == 1 && !this.newInfo){
                 this.newInfo = item
               }
               if(item.nodeList){
@@ -224,11 +247,18 @@ export default {
           
           if(this.equipmentLists.length > 0){
             forList(this.equipmentLists)
-            this.bigDataLists(this.newInfo.id)
             
-            this.someDigits = this.newInfo.devices.length || 0
+            if(this.newInfo){
+              this.bigDataLists(this.newInfo.id)
             
-            this.getPointInfo(this.newInfo['devices'][0] ? this.newInfo['devices'][0]['devGuid'] : '')
+              this.someDigits = this.newInfo.devices.length || 0
+              
+              this.getPointInfo(this.newInfo['devices'][0] ? this.newInfo['devices'][0]['devGuid'] : '')
+          
+            }
+          }else{
+            this.$store.commit('HomeModule/UPDATE_POIN_INFO',[])
+            this.$refs.maps.init()
           }
           
           this.$myLoading.endLoading()
@@ -546,7 +576,7 @@ export default {
           }
         }
         .right_bottom_info{
-            padding 20px 0 0 20px
+            padding 20px 0 0 0
             overflow-y auto
             .item{
               position relative
@@ -568,13 +598,20 @@ export default {
                 opacity 0.9
               }
               .title{
-                font-size 14px
-                padding-left 25px
-                padding-top 4px
+                // font-size 14px
+                // padding-top 4px
                 padding-bottom 10px
-                color #ffffff
+                // color #ffffff
+                // cursor pointer
+                // opacity 0.7
+                padding-right 10px
+                color #7dedfe
+                font-weight bold
+                font-size 18px
                 cursor pointer
-                opacity 0.7
+                opacity 0.9
+                display flex
+                justify-content space-between
                 &.active{
                   opacity 1
                   font-weight bold

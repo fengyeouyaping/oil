@@ -91,6 +91,7 @@ export default {
                     threeList.push(path[i])
                 }
             }
+
             this.polylineOne = new AMap.Polyline({
                 path: oneList,
                 isOutline: true,
@@ -101,6 +102,22 @@ export default {
                 strokeWeight: 1,
                 // 折线样式还支持 'dashed'
                 strokeStyle: "solid",
+                // strokeStyle是dashed时有效
+                strokeDasharray: [10, 5],
+                lineJoin: 'round',
+                lineCap: 'round',
+                zIndex: 50,
+            })
+            this.polylinetwo = new AMap.Polyline({
+                path: twoList,
+                isOutline: true,
+                outlineColor: '#f7f478',
+                borderWeight: 1,
+                strokeColor: "#f7f478", 
+                strokeOpacity: 1,
+                strokeWeight: 1,
+                // 折线样式还支持 'dashed'
+                strokeStyle: "dashed",
                 // strokeStyle是dashed时有效
                 strokeDasharray: [10, 5],
                 lineJoin: 'round',
@@ -124,10 +141,13 @@ export default {
                 zIndex: 50,
             })
             if(oneList.length > 0) this.polylineOne.setMap(maps)
+            if(twoList.length > 0) this.polylinetwo.setMap(maps)
             if(threeList.length > 0) this.polylineThree.setMap(maps)
             // 缩放地图到合适的视野级别
-            maps.setFitView([ this.polylineOne,this.polylineThree ])
-
+            maps.setFitView([ this.polylineOne,this.polylinetwo,this.polylineThree ])
+            if(!!this.navg1){
+                this.navg1.destroy(); 
+            }
             if(twoList.length > 1 && !!this.pathSimplifierIns){
                 //设置数据
                 this.pathSimplifierIns.setData([{
@@ -135,18 +155,12 @@ export default {
                     path: twoList
                 }]);
 
-                if(!!this.navg1){
-                    this.navg1.destroy();
-                }
-
                 //对第一条线路（即索引 0）创建一个巡航器
                 this.navg1 = this.pathSimplifierIns.createPathNavigator(0, {
                     loop: true, //循环播放
                     speed: 200000 //巡航速度，单位千米/小时
                 });
-                
                 this.navg1.start();
-                
             }
             
             
@@ -189,7 +203,6 @@ export default {
 			    for (let i = 0; i < positions.length; i += 1) {
                     let ctx = canvas.getContext("2d");
                     ctx.beginPath();
-
                     if(i <= _self.visitFlag){
                         if(_self.newInfo[i]['isOnline']){
                             ctx.fillStyle = '#08f373';
@@ -233,6 +246,10 @@ export default {
         },
         getData(){
             this.newInfo.map((item,key) => {
+                if(item.isOnline == undefined){
+                    item.isOnline = true
+                }
+                
                 if(item.visitFlag){
                     this.visitFlag = key
                 }
@@ -253,9 +270,79 @@ export default {
             this.textList=[],
             this.getData()
             let self = this
-            if(!this.maps){
-                this.isOk = true
+            if(this.newInfo.length > 0){
+                if(!this.maps){
+                    this.isOk = true
+                    
+                    this.maps = new AMap.Map('container', {
+                        zoomEnable:true,
+                        dragEnable: true,
+                        zooms: [3, 20],
+                        zoom: 4,
+                        center: [105.397428, 35.90923],
+                        mapStyle:'amap://styles/1efb475da4687bb48c752ca6db690e75',
+                        viewMode: '2D',
+                        resizeEnable: true
+                    })
                 
+                }else{
+
+                    if(this.text && this.text.length > 0){
+                        for(let i=0;i<this.text.length;i++){
+                            this.maps.remove(this.text[i])
+                        }
+                    }
+                    this.maps.remove(this.polylineOne)
+                    this.maps.remove(this.polylineTwo)
+                    this.maps.remove(this.polylineThree)
+                    this.maps.remove(this.customLayer)
+                    this.text = []
+                    this.polylineOne = ''
+                    this.polylineTwo = ''
+                    this.polylineThree = ''
+                    this.customLayer = ''
+                }
+                let _self = this   
+            
+                AMapUI.load(['ui/misc/PathSimplifier', 'lib/$'], function(PathSimplifier, $) {
+                    if (!PathSimplifier.supportCanvas) {
+                        alert('当前环境不支持 Canvas！');
+                        return;
+                    }
+                    
+                    _self.pathSimplifierIns = new PathSimplifier({
+                        zIndex: 100,
+                        // autoSetFitView:true,
+                        map: _self.maps, //所属的地图实例
+
+                        getPath: function(pathData, pathIndex) {
+                            return pathData.path;
+                        },
+                        renderOptions: {
+                            //轨迹线的样式
+                            pathLineStyle: {
+                                fillStyle:'rgba(0,0,0,0)',
+                                strokeStyle: 'rgba(0,0,0,0)',
+                                lineWidth: 0,
+                            },
+                            pathNavigatorStyle:{
+                                fillStyle:'#f7f478',
+                                strokeStyle: '#f7f478',
+                                lineWidth: 0,
+                                pathLinePassedStyle:{
+                                    strokeStyle: 'rgba(0,0,0,0)',
+                                    strokeStyle: 'rgba(0,0,0,0)',
+                                    lineWidth: 0,
+                                }
+                            },
+                            
+                        }
+                    })
+                    
+                })
+            }else{
+                this.isOk = true
+                    
                 this.maps = new AMap.Map('container', {
                     zoomEnable:true,
                     dragEnable: true,
@@ -266,67 +353,9 @@ export default {
                     viewMode: '2D',
                     resizeEnable: true
                 })
-                let _self = this
-                        // this.init()
-                AMapUI.load(['ui/misc/PathSimplifier', 'lib/$'], function(PathSimplifier, $) {
-                    if (!PathSimplifier.supportCanvas) {
-                        alert('当前环境不支持 Canvas！');
-                        return;
-                    }
+                this.pathSimplifierIns = ''
+            }   
 
-                    _self.pathSimplifierIns = new PathSimplifier({
-                        zIndex: 100,
-                        // autoSetFitView:true,
-                        map: _self.maps, //所属的地图实例
-
-                        getPath: function(pathData, pathIndex) {
-
-                            return pathData.path;
-                        },
-                        renderOptions: {
-                            //轨迹线的样式
-                            pathLineStyle: {
-                                fillStyle:'#f7f478',
-                                strokeStyle: '#f7f478',
-                                lineWidth: 1,
-                                dirArrowStyle: true
-                            },
-                            pathNavigatorStyle:{
-                                fillStyle:'#f7f478',
-                                strokeStyle: '#f7f478',
-                                lineWidth: 1,
-                                dirArrowStyle: true,
-                                pathLinePassedStyle:{
-                                    strokeStyle: '#f7f478',
-                                    strokeStyle: '#f7f478',
-                                    lineWidth: 1,
-                                    dirArrowStyle: true
-                                }
-                            },
-                            
-                        }
-                    })
-                    
-                })
-         
-            }else{
-                // clearInterval(this.interval)
-                if(this.text && this.text.length > 0){
-                    for(let i=0;i<this.text.length;i++){
-                        this.maps.remove(this.text[i])
-                    }
-                }
-                this.maps.remove(this.polylineOne)
-                this.maps.remove(this.polylineTwo)
-                this.maps.remove(this.polylineThree)
-                this.maps.remove(this.customLayer)
-                this.text = []
-                this.polylineOne = ''
-                this.polylineTwo = ''
-                this.polylineThree = ''
-                this.customLayer = ''
-            }
-            
             this.maps.on('complete', function(){
                 self.isOk = false
                 // 地图图块加载完成后触发

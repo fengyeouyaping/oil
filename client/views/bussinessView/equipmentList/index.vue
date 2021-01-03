@@ -408,14 +408,35 @@ export default {
       submitForm(formName) {
             this.$refs[formName].validate((valid) => {
             if (valid) {
-                if(this.ruleForm.latitudeLlongitude && this.ruleForm.latitudeLlongitude.split(',').length < 2){
+                if(this.ruleForm.latitudeLlongitude && this.ruleForm.latitudeLlongitude.split(',').length != 2){
                     this.$notify({
                         title: '请输入正确的经纬度',
                         message: '',
                         type: 'warning'
                     });
                     return
-                }   
+                }  
+                if(this.ruleForm.latitudeLlongitude.split(',').length == 2){
+                    let lonlat = this.ruleForm.latitudeLlongitude.split(',')
+                    let lon = lonlat[0]
+                    let lat = lonlat[1]
+                    if(lon.split('.')[1] && lon.split('.')[1].length > 1){
+                        this.$notify({
+                            title: '经纬度请保持一位小数',
+                            message: '',
+                            type: 'warning'
+                        });
+                        return
+                    }
+                    if(lat.split('.')[1] && lat.split('.')[1].length > 1){
+                        this.$notify({
+                            title: '经纬度请保持一位小数',
+                            message: '',
+                            type: 'warning'
+                        });
+                        return
+                    }
+                } 
                 let router = this.ruleForm.route[this.ruleForm.route.length-1]
                 if(this.ruleForm.route.length < 3){
                     this.$notify({
@@ -439,6 +460,7 @@ export default {
                 let url =this.isAdd ? this.$API.deviceAdd : this.$API.deviceUpdate
                 this.$myLoading.startLoading()
                 this.$http.postHttp(url,params,(data)=>{
+                this.infoSend(params)
                 this.$notify({
                   title: this.isAdd ? '设备添加成功' : '设备编辑成功',
                   message: '',
@@ -463,6 +485,25 @@ export default {
             }
             });
         },
+        infoSend(data){
+            let info = {
+                    gisInfo:{
+                        stake:data.stake,
+                        lon:data.lon,
+                        lat:data.lat,
+                        remarks:data.remark,
+
+                    }
+                }
+            var params = {
+                cmd:'deviceGisInfo',
+                data:info,
+                targetDevice : data.devGuid,
+            }
+            this.$http.postHttp(this.$API.deviceLogSend,params,(data)=>{
+
+            })
+        }
     },
 }
 </script>

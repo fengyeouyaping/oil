@@ -20,11 +20,11 @@
                     <el-table-column prop="id" label="序号"></el-table-column>
                     <el-table-column prop="name" label="节点名称"></el-table-column>
                     <el-table-column prop="comment" label="备注"></el-table-column>
-                    <el-table-column label="操作">
+                    <!-- <el-table-column label="操作">
                         <template slot-scope="scope">
                             <el-switch v-model="scope.row.modelFlag" :active-value="1" :inactive-value="2" active-color="#13ce66" inactive-color="#999999" @change="getChange(scope.row)"></el-switch>
                         </template>
-                    </el-table-column>
+                    </el-table-column> -->
                 </el-table>
             </div>
             <el-pagination
@@ -125,31 +125,31 @@ export default {
     watch: {
       tableData(val) {
         this.total = val.length;
-      }
+      },
     },
     mounted(){
       this.initData()
     },
 
     methods: {
-        getChange(data){
-            var params = {
-                comment : data.comment,
-                name : data.name,
-                id : data.id,
-                modelFlag:data.modelFlag
-            }
+        // getChange(data){
+        //     var params = {
+        //         comment : data.comment,
+        //         name : data.name,
+        //         id : data.id,
+        //         modelFlag:data.modelFlag
+        //     }
         
-            this.$http.postHttp(this.$API.nodeUpdate,params,(data)=>{
-                this.$notify({
-                    title: '树结构修改成功',
-                    message: '',
-                    type: 'success'
-                    });
-                this.initData()
+        //     this.$http.postHttp(this.$API.nodeUpdate,params,(data)=>{
+        //         this.$notify({
+        //             title: '树结构修改成功',
+        //             message: '',
+        //             type: 'success'
+        //             });
+        //         this.initData()
 
-            })
-        },
+        //     })
+        // },
         ifShow(index){
             return this.taskbars[1]['childMenus'][0]['childMenus'][index]['visible']
         },
