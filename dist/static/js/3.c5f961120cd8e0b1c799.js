@@ -8,7 +8,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_info_vue__ = __webpack_require__(643);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_info_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_info_vue__);
 /* harmony namespace reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_info_vue__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_info_vue__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_ee4008fe_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_info_vue__ = __webpack_require__(763);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_b825cb4a_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_info_vue__ = __webpack_require__(763);
 function injectStyle (ssrContext) {
   __webpack_require__(761)
 }
@@ -23,12 +23,12 @@ var __vue_template_functional__ = false
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = "data-v-ee4008fe"
+var __vue_scopeId__ = "data-v-b825cb4a"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_info_vue___default.a,
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_ee4008fe_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_info_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_b825cb4a_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_info_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
@@ -174,6 +174,9 @@ exports.default = {
     //更新设备实时信息
     getEquipmentNewDate: function getEquipmentNewDate(data) {
       var datas = data;
+      if (!this.newInfo) {
+        return false;
+      }
       if (datas.nodeId == this.newInfo.id) {
         if (this.newInfo.devices && this.newInfo.devices.length > 0) {
           for (var i = 0; i < datas.stakes.length; i++) {
@@ -182,7 +185,7 @@ exports.default = {
               if (datas.stakes[i]['stakeNo'] == this.newInfo.devices[j]['stake']) {
                 datas.stakes[i]['devGuid'] = this.newInfo.devices[j]['devGuid'];
                 this.newInfo.devices[j]['visitFlag'] = datas.stakes[i]['visitFlag'] ? datas.stakes[i]['visitFlag'] : false;
-                this.newInfo.devices[j]['isOnline'] = datas.stakes[i]['isOnline'] ? datas.stakes[i]['isOnline'] : false;
+                this.newInfo.devices[j]['isOnline'] = datas.stakes[i]['isOnline'] ? datas.stakes[i]['isOnline'] : true;
                 this.newInfo.devices[j]['actArrivedTime'] = datas.stakes[i]['actArrivedTime'] ? datas.stakes[i]['actArrivedTime'] : false;
                 this.newInfo.devices[j]['deviceUpTime'] = datas.stakes[i]['deviceUpTime'] ? datas.stakes[i]['deviceUpTime'] : false;
                 this.newInfo.devices[j]['velocity'] = datas.stakes[i]['velocity'] ? datas.stakes[i]['velocity'] : false;
@@ -343,6 +346,25 @@ exports.default = {
                     }
                 };
             } else if (type == 'deviceGisInfo') {
+
+                var lon = this.info.lon;
+                var lat = this.info.lat;
+                if (lon.split('.')[1] && lon.split('.')[1].length > 1) {
+                    this.$notify({
+                        title: '经纬度请保持一位小数',
+                        message: '',
+                        type: 'warning'
+                    });
+                    return;
+                }
+                if (lat.split('.')[1] && lat.split('.')[1].length > 1) {
+                    this.$notify({
+                        title: '经纬度请保持一位小数',
+                        message: '',
+                        type: 'warning'
+                    });
+                    return;
+                }
                 info = {
                     gisInfo: {
                         stake: this.info.stake,
@@ -578,7 +600,7 @@ var content = __webpack_require__(762);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("7c84f455", content, true, {});
+var update = __webpack_require__(4)("2053f417", content, true, {});
 
 /***/ }),
 
@@ -590,7 +612,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, ".listTitle[data-v-ee4008fe]{border-bottom:1px solid #eee;border-left:1px solid #fff;margin-left:-1px;height:40px;line-height:40px;font-size:14px;font-weight:700;text-align:center}.excel_list[data-v-ee4008fe]{border-right:1px solid #eee}.excel_list .upload-demo[data-v-ee4008fe]{display:inline-block;margin-right:10px}.realTimeInfo[data-v-ee4008fe]{margin:20px}.realTimeInfo>div[data-v-ee4008fe]{border-top:1px solid #eee;border-left:1px solid #eee}.realTimeInfo>div ul[data-v-ee4008fe]{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between}.realTimeInfo>div ul li[data-v-ee4008fe]{list-style:none;-webkit-box-flex:1;-ms-flex:1;flex:1;min-height:60px;line-height:60px;padding:0 20px;border-right:1px solid #eee;border-bottom:1px solid #eee;font-size:14px}.realTimeInfo>div ul li.title[data-v-ee4008fe]{font-weight:700;font-size:16px;text-align:center}.realTimeInfo>div ul li[data-v-ee4008fe]:nth-child(odd){font-weight:700}.realTimeInfo>div.btns[data-v-ee4008fe]{border-left:1px solid #fff;margin:20px 0 20px -1px;border-top:none}", ""]);
+exports.push([module.i, ".listTitle[data-v-b825cb4a]{border-bottom:1px solid #eee;border-left:1px solid #fff;margin-left:-1px;height:40px;line-height:40px;font-size:14px;font-weight:700;text-align:center}.excel_list[data-v-b825cb4a]{border-right:1px solid #eee}.excel_list .upload-demo[data-v-b825cb4a]{display:inline-block;margin-right:10px}.realTimeInfo[data-v-b825cb4a]{margin:20px}.realTimeInfo>div[data-v-b825cb4a]{border-top:1px solid #eee;border-left:1px solid #eee}.realTimeInfo>div ul[data-v-b825cb4a]{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between}.realTimeInfo>div ul li[data-v-b825cb4a]{list-style:none;-webkit-box-flex:1;-ms-flex:1;flex:1;min-height:60px;line-height:60px;padding:0 20px;border-right:1px solid #eee;border-bottom:1px solid #eee;font-size:14px}.realTimeInfo>div ul li.title[data-v-b825cb4a]{font-weight:700;font-size:16px;text-align:center}.realTimeInfo>div ul li[data-v-b825cb4a]:nth-child(odd){font-weight:700}.realTimeInfo>div.btns[data-v-b825cb4a]{border-left:1px solid #fff;margin:20px 0 20px -1px;border-top:none}", ""]);
 
 // exports
 

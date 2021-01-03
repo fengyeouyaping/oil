@@ -119,37 +119,42 @@ export default {
         if(!this.newInfo){
           return false
         }
+        
         if(datas.nodeId == this.newInfo.id){
           if(this.newInfo.devices && this.newInfo.devices.length > 0){
             for(let i=0;i<datas.stakes.length;i++){
               for(let j=0;j<this.newInfo.devices.length;j++){
                 
                 if(datas.stakes[i]['stakeNo'] == this.newInfo.devices[j]['stake']){
-                  datas.stakes[i]['devGuid'] = this.newInfo.devices[j]['devGuid'] 
+                  datas.stakes[i]['devGuid'] = this.newInfo.devices[j]['devGuid']
                   this.newInfo.devices[j]['visitFlag'] = datas.stakes[i]['visitFlag'] ? datas.stakes[i]['visitFlag'] : false 
                   this.newInfo.devices[j]['isOnline'] = datas.stakes[i]['isOnline'] ? datas.stakes[i]['isOnline'] : true 
                   this.newInfo.devices[j]['actArrivedTime'] = datas.stakes[i]['actArrivedTime'] ? datas.stakes[i]['actArrivedTime'] : false 
                   this.newInfo.devices[j]['deviceUpTime'] = datas.stakes[i]['deviceUpTime'] ? datas.stakes[i]['deviceUpTime'] : false 
-                  this.newInfo.devices[j]['velocity'] = datas.stakes[i]['velocity'] ? datas.stakes[i]['velocity'] : false 
+                  this.newInfo.devices[j]['velocity'] = datas.stakes[i]['velocity'] ? datas.stakes[i]['velocity'] : false
+                  
                 }
               }
             }
-        }
-          let lists = datas.stakes.filter((item)=>item.visitFlag)
-          let result = []
-          if(lists.length > 0){
-            for(let i=0;i<datas.stakes.length;i++){
-              result.push(datas.stakes[i])
-              if(datas.stakes[i]['visitFlag']){
-                break;
-              }
-            }
-          }else{
-            result = datas.stakes[0]
           }
-          
-          this.equipmentNewDate = result
         }
+        
+        let lists = datas.stakes.filter((item)=>item.visitFlag)
+        let result = []
+        
+        if(lists.length > 0){
+          for(let i=0;i<datas.stakes.length;i++){
+            datas.stakes[i]['stake'] = datas.stakes[i]['stakeNo']
+            result.push(datas.stakes[i])
+            if(datas.stakes[i]['visitFlag']){
+              break;
+            }
+          }
+        }else{
+          datas.stakes[0]['stake'] = datas.stakes[0]['stakeNo']
+          result.push(datas.stakes[0])
+        }
+        this.equipmentNewDate = result
         
       },
     },
