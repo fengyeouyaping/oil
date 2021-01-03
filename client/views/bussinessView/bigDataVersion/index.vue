@@ -217,8 +217,11 @@ export default {
         }else{
           this.pointInfo.basic = item
           this.getDeviceWeather(item.lat,item.lon)
-          this.$store.commit('HomeModule/UPDATE_POIN_INFO',[])
-          this.$refs.maps.init()
+          if(!item.devGuid){
+            this.$store.commit('HomeModule/UPDATE_POIN_INFO',[])
+            this.$refs.maps.init()
+          }
+          
         }
         
         

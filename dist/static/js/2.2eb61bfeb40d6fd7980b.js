@@ -184,6 +184,7 @@ exports.default = {
       if (!this.newInfo) {
         return false;
       }
+
       if (datas.nodeId == this.newInfo.id) {
         if (this.newInfo.devices && this.newInfo.devices.length > 0) {
           for (var i = 0; i < datas.stakes.length; i++) {
@@ -200,23 +201,26 @@ exports.default = {
             }
           }
         }
-        var lists = datas.stakes.filter(function (item) {
-          return item.visitFlag;
-        });
-        var result = [];
-        if (lists.length > 0) {
-          for (var _i = 0; _i < datas.stakes.length; _i++) {
-            result.push(datas.stakes[_i]);
-            if (datas.stakes[_i]['visitFlag']) {
-              break;
-            }
-          }
-        } else {
-          result = datas.stakes[0];
-        }
-
-        this.equipmentNewDate = result;
       }
+
+      var lists = datas.stakes.filter(function (item) {
+        return item.visitFlag;
+      });
+      var result = [];
+
+      if (lists.length > 0) {
+        for (var _i = 0; _i < datas.stakes.length; _i++) {
+          datas.stakes[_i]['stake'] = datas.stakes[_i]['stakeNo'];
+          result.push(datas.stakes[_i]);
+          if (datas.stakes[_i]['visitFlag']) {
+            break;
+          }
+        }
+      } else {
+        datas.stakes[0]['stake'] = datas.stakes[0]['stakeNo'];
+        result.push(datas.stakes[0]);
+      }
+      this.equipmentNewDate = result;
     }
   }
 };
