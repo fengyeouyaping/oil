@@ -195,6 +195,7 @@ export default {
       return Math.floor( Number(velocity) * 10) / 10
     },
       getChange(data){
+        this.$store.commit('HomeModule/updata_isOne',true)
         var params = {
             comment : data.comment,
             name : data.name,
@@ -213,16 +214,25 @@ export default {
         })
       },
       newMap(item){
-        
+        this.newInfo = item
         if(item.devices && item.devices.length > 0 && item.modelFlag == 1){
-          this.newInfo = item
           this.bigDataLists(this.newInfo.id)
-          
+          this.$store.commit('HomeModule/updata_isOne',true)
           this.pointInfo.basic = item.devices[0]
           this.someDigits = item.devices.length || 0
           this.getPointInfo(item['devices'][0] ? item['devices'][0]['devGuid'] : '')
           
+        }else if(item.devices && item.devices.length > 0 && item.modelFlag == 2){
+          this.$store.commit('HomeModule/updata_isOne',true)
+          this.equipmentNewDate = []
+          item.devices=[]
+          this.pointInfo.basic = item
+          if(!item.devGuid){
+            this.$store.commit('HomeModule/UPDATE_POIN_INFO',[])
+            this.$refs.maps.init()
+          }
         }else{
+          this.equipmentNewDate = []
           this.pointInfo.basic = item
           this.getDeviceWeather(item.lat,item.lon)
           if(!item.devGuid){

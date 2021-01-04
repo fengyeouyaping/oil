@@ -10,6 +10,7 @@ export default {
     newLineData:[],
     leftMenuShow:false,
     bigImgNum:0,
+    isOne:true
   },
   mutations:{
     UPDATE_POIN_INFO(state,list){
@@ -26,6 +27,9 @@ export default {
     },
     updata_bigImgNum(state,type){
       state.bigImgNum = type
+    },
+    updata_isOne(state,type){
+      state.isOne = type
     }
   }
 }

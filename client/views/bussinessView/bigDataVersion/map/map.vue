@@ -24,7 +24,6 @@ export default {
             interval:'',
             pathSimplifierIns:'',
             navg1:'',
-            isOne:false
         };
     },
     mounted() {
@@ -32,7 +31,8 @@ export default {
     },
     computed:{
         ...mapState({
-            newInfo:state => state.HomeModule.newInfo
+            newInfo:state => state.HomeModule.newInfo,
+            isOne:state => state.HomeModule.isOne
         })
     },
     methods:{
@@ -144,7 +144,7 @@ export default {
             if(twoList.length > 0) this.polylinetwo.setMap(maps)
             if(threeList.length > 0) this.polylineThree.setMap(maps)
             // 缩放地图到合适的视野级别
-            if(!this.isOne){
+            if(this.isOne){
                 maps.setFitView([ this.polylineOne,this.polylinetwo,this.polylineThree ])
             }
             if(!!this.navg1){
@@ -273,7 +273,6 @@ export default {
             let self = this
             if(this.newInfo.length > 0){
                 if(!this.maps){
-                    this.isOne = false
                     this.isOk = true
                     
                     this.maps = new AMap.Map('container', {
@@ -288,7 +287,6 @@ export default {
                     })
                 
                 }else{
-                    this.isOne = true
                     if(this.text && this.text.length > 0){
                         for(let i=0;i<this.text.length;i++){
                             this.maps.remove(this.text[i])
@@ -347,7 +345,6 @@ export default {
                     
                 })
             }else{
-                this.isOne = true
                 this.isOk = true
                     
                 this.maps = new AMap.Map('container', {
