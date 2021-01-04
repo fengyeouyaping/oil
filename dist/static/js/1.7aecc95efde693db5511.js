@@ -7,7 +7,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_index_vue__ = __webpack_require__(639);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_index_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_index_vue__);
 /* harmony namespace reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_index_vue__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_index_vue__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_20fc1c29_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_index_vue__ = __webpack_require__(754);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9cf41d32_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_index_vue__ = __webpack_require__(754);
 function injectStyle (ssrContext) {
   __webpack_require__(748)
 }
@@ -27,7 +27,7 @@ var __vue_scopeId__ = null
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_index_vue___default.a,
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_20fc1c29_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_index_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_9cf41d32_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_index_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
@@ -54467,120 +54467,12 @@ var _barTop2 = _interopRequireDefault(_barTop);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; } //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
 exports.default = {
   components: {
     barTop: _barTop2.default
   },
   data: function data() {
-    var _ref;
-
-    return _ref = {
+    return {
       filterText: '',
       devGuid: '',
       tableData: [],
@@ -54592,8 +54484,13 @@ exports.default = {
       pageNum: 1,
       total: 0,
       time: new Date(),
-      timeDate: [new Date() - 3600 * 1000 * 0.5, new Date()]
-    }, _defineProperty(_ref, 'devGuid', ''), _defineProperty(_ref, 'nodeId', ''), _defineProperty(_ref, 'lineData', []), _defineProperty(_ref, 'name1', "B特征"), _defineProperty(_ref, 'name2', "C特征"), _defineProperty(_ref, 'bigImgNum', 0), _ref;
+      timeDate: [new Date() - 3600 * 1000 * 0.5, new Date()],
+      nodeId: '',
+      lineData: [],
+      name1: "B特征",
+      name2: "C特征",
+      bigImgNum: 0
+    };
   },
 
   watch: {
@@ -54664,7 +54561,7 @@ exports.default = {
         endTime: this.timeDate[1] / 1000 * 1000,
         pageNum: this.pageNum,
         pageSize: this.$global.pageLimit,
-        devGuid: this.devGuid
+        stake: this.devGuid
       };
       this.$http.postHttp(this.$API.historyList, params, function (rs) {
         _this.tableData = rs.data.list;
@@ -54729,7 +54626,111 @@ exports.default = {
       });
     }
   }
-};
+}; //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /***/ }),
 /* 640 */
@@ -54988,7 +54989,7 @@ var content = __webpack_require__(749);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("bc032eae", content, true, {});
+var update = __webpack_require__(4)("7736ca42", content, true, {});
 
 /***/ }),
 /* 749 */
@@ -55085,7 +55086,7 @@ var esExports = { render: render, staticRenderFns: staticRenderFns }
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"realTimeData"},[_c('div',{staticClass:"left"},[_c('el-input',{attrs:{"placeholder":"输入关键字进行过滤","size":"small","suffix-icon":"el-icon-search"},model:{value:(_vm.filterText),callback:function ($$v) {_vm.filterText=$$v},expression:"filterText"}}),_vm._v(" "),_c('div',{staticClass:"left_title"},[_vm._v("公司信息")]),_vm._v(" "),_c('el-tree',{ref:"tree",staticClass:"filter-tree",attrs:{"data":_vm.data,"props":_vm.defaultProps,"default-expand-all":"","filter-node-method":_vm.filterNode,"expand-on-click-node":false},on:{"node-click":_vm.nodeClick}})],1),_vm._v(" "),_c('div',{staticClass:"content"},[_c('div',{staticClass:"seach"},[_c('el-input',{staticStyle:{"width":"300px"},attrs:{"placeholder":"请输入设备编码","size":"small","suffix-icon":"el-icon-search"},model:{value:(_vm.devGuid),callback:function ($$v) {_vm.devGuid=$$v},expression:"devGuid"}}),_vm._v(" "),_c('div',{staticClass:"block"},[_c('el-date-picker',{attrs:{"size":"small","type":"date","placeholder":"选择日期"},model:{value:(_vm.time),callback:function ($$v) {_vm.time=$$v},expression:"time"}}),_vm._v(" "),_c('el-time-picker',{attrs:{"is-range":"","size":"small","range-separator":"至","start-placeholder":"开始时间","end-placeholder":"结束时间","placeholder":"选择时间范围"},model:{value:(_vm.timeDate),callback:function ($$v) {_vm.timeDate=$$v},expression:"timeDate"}}),_vm._v(" "),_c('el-button',{staticStyle:{"margin-left":"20px"},attrs:{"type":"primary","size":"small"},on:{"click":function($event){_vm.getscheat()}}},[_vm._v("查询")])],1)],1),_vm._v(" "),_c('div',{staticClass:"figure1"},[_c('div',{staticStyle:{"height":"90%"}},[_c('el-table',{staticClass:"tableData",attrs:{"data":_vm.tableData,"height":"100%","stripe":true}},[_c('el-table-column',{attrs:{"prop":"id","label":"终端ID"}}),_vm._v(" "),_c('el-table-column',{attrs:{"prop":"devGuid","label":"测试桩编号"}}),_vm._v(" "),_c('el-table-column',{attrs:{"prop":"stamp","label":"时间"}}),_vm._v(" "),_c('el-table-column',{attrs:{"prop":"a","label":"特征A"}}),_vm._v(" "),_c('el-table-column',{attrs:{"prop":"b","label":"特征B"}}),_vm._v(" "),_c('el-table-column',{attrs:{"prop":"c","label":"特征C"}}),_vm._v(" "),_c('el-table-column',{attrs:{"prop":"d","label":"特征D"}}),_vm._v(" "),_c('el-table-column',{attrs:{"prop":"e","label":"特征E"}}),_vm._v(" "),_c('el-table-column',{attrs:{"prop":"fault","label":"备注"}})],1)],1),_vm._v(" "),_c('el-pagination',{staticStyle:{"float":"none","text-align":"center"},attrs:{"background":"","current-page":_vm.pageNum,"page-size":_vm.$global.pageLimit,"layout":"prev, pager, next","total":_vm.total},on:{"current-change":_vm.handleCurrentChange}})],1),_vm._v(" "),_c('div',{staticClass:"figure2"},[_c('div',{staticClass:"barLists"},[_c('div',{on:{"click":function($event){_vm.bigImg(1)}}},[(_vm.lineData.length > 0)?_c('bar-top',{attrs:{"id":"his1","lineData":_vm.lineData,"name":_vm.name1}}):_vm._e()],1),_vm._v(" "),_c('div',{on:{"click":function($event){_vm.bigImg(2)}}},[(_vm.lineData.length > 0)?_c('bar-top',{attrs:{"id":"his2","lineData":_vm.lineData,"name":_vm.name2}}):_vm._e()],1)])])]),_vm._v(" "),(!!_vm.bigImgNum)?_c('div',{staticClass:"big_img"},[_c('div',{staticClass:"big_img_top"},[_c('div',{staticClass:"seach"},[_c('el-input',{staticStyle:{"width":"300px"},attrs:{"placeholder":"请输入设备编码","size":"small","suffix-icon":"el-icon-search"},model:{value:(_vm.devGuid),callback:function ($$v) {_vm.devGuid=$$v},expression:"devGuid"}}),_vm._v(" "),_c('div',{staticClass:"block"},[_c('el-date-picker',{attrs:{"size":"small","type":"date","placeholder":"选择日期"},model:{value:(_vm.time),callback:function ($$v) {_vm.time=$$v},expression:"time"}}),_vm._v(" "),_c('el-time-picker',{attrs:{"is-range":"","size":"small","range-separator":"至","start-placeholder":"开始时间","end-placeholder":"结束时间","placeholder":"选择时间范围"},model:{value:(_vm.timeDate),callback:function ($$v) {_vm.timeDate=$$v},expression:"timeDate"}}),_vm._v(" "),_c('el-button',{staticStyle:{"margin-left":"20px"},attrs:{"type":"primary","size":"small"},on:{"click":function($event){_vm.getscheat()}}},[_vm._v("查询")])],1)],1),_vm._v(" "),_c('i',{staticClass:"el-icon-circle-close big_img_i",on:{"click":function($event){_vm.clearBigImg(0)}}})]),_vm._v(" "),(_vm.lineData.length > 0)?_c('div',{staticClass:"figure"},[(_vm.bigImgNum == 1)?_c('bar-top',{staticClass:"bigImg",attrs:{"id":"his3","lineData":_vm.lineData,"name":_vm.name1}}):_vm._e(),_vm._v(" "),(_vm.bigImgNum == 2)?_c('bar-top',{staticClass:"bigImg",attrs:{"id":"his4","lineData":_vm.lineData,"name":_vm.name2}}):_vm._e()],1):_c('div',{directives:[{name:"loading",rawName:"v-loading",value:(true),expression:"true"}],staticClass:"figure loading",attrs:{"element-loading-text":"拼命加载中","element-loading-spinner":"el-icon-loading","element-loading-background":"rgba(255, 255, 255, 0.8)"}})]):_vm._e()])}
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"realTimeData"},[_c('div',{staticClass:"left"},[_c('el-input',{attrs:{"placeholder":"输入关键字进行过滤","size":"small","suffix-icon":"el-icon-search"},model:{value:(_vm.filterText),callback:function ($$v) {_vm.filterText=$$v},expression:"filterText"}}),_vm._v(" "),_c('div',{staticClass:"left_title"},[_vm._v("公司信息")]),_vm._v(" "),_c('el-tree',{ref:"tree",staticClass:"filter-tree",attrs:{"data":_vm.data,"props":_vm.defaultProps,"default-expand-all":"","filter-node-method":_vm.filterNode,"expand-on-click-node":false},on:{"node-click":_vm.nodeClick}})],1),_vm._v(" "),_c('div',{staticClass:"content"},[_c('div',{staticClass:"seach"},[_c('el-input',{staticStyle:{"width":"300px"},attrs:{"placeholder":"请输入测试桩号","size":"small","suffix-icon":"el-icon-search"},model:{value:(_vm.devGuid),callback:function ($$v) {_vm.devGuid=$$v},expression:"devGuid"}}),_vm._v(" "),_c('div',{staticClass:"block"},[_c('el-date-picker',{attrs:{"size":"small","type":"date","placeholder":"选择日期"},model:{value:(_vm.time),callback:function ($$v) {_vm.time=$$v},expression:"time"}}),_vm._v(" "),_c('el-time-picker',{attrs:{"is-range":"","size":"small","range-separator":"至","start-placeholder":"开始时间","end-placeholder":"结束时间","placeholder":"选择时间范围"},model:{value:(_vm.timeDate),callback:function ($$v) {_vm.timeDate=$$v},expression:"timeDate"}}),_vm._v(" "),_c('el-button',{staticStyle:{"margin-left":"20px"},attrs:{"type":"primary","size":"small"},on:{"click":function($event){_vm.getscheat()}}},[_vm._v("查询")])],1)],1),_vm._v(" "),_c('div',{staticClass:"figure1"},[_c('div',{staticStyle:{"height":"90%"}},[_c('el-table',{staticClass:"tableData",attrs:{"data":_vm.tableData,"height":"100%","stripe":true}},[_c('el-table-column',{attrs:{"prop":"id","label":"终端ID"}}),_vm._v(" "),_c('el-table-column',{attrs:{"prop":"stake","label":"测试桩编号"}}),_vm._v(" "),_c('el-table-column',{attrs:{"prop":"stamp","label":"时间"}}),_vm._v(" "),_c('el-table-column',{attrs:{"prop":"a","label":"特征A"}}),_vm._v(" "),_c('el-table-column',{attrs:{"prop":"b","label":"特征B"}}),_vm._v(" "),_c('el-table-column',{attrs:{"prop":"c","label":"特征C"}}),_vm._v(" "),_c('el-table-column',{attrs:{"prop":"d","label":"特征D"}}),_vm._v(" "),_c('el-table-column',{attrs:{"prop":"e","label":"特征E"}}),_vm._v(" "),_c('el-table-column',{attrs:{"prop":"fault","label":"备注"}})],1)],1),_vm._v(" "),_c('el-pagination',{staticStyle:{"float":"none","text-align":"center"},attrs:{"background":"","current-page":_vm.pageNum,"page-size":_vm.$global.pageLimit,"layout":"prev, pager, next","total":_vm.total},on:{"current-change":_vm.handleCurrentChange}})],1),_vm._v(" "),_c('div',{staticClass:"figure2"},[_c('div',{staticClass:"barLists"},[_c('div',{on:{"click":function($event){_vm.bigImg(1)}}},[(_vm.lineData.length > 0)?_c('bar-top',{attrs:{"id":"his1","lineData":_vm.lineData,"name":_vm.name1}}):_vm._e()],1),_vm._v(" "),_c('div',{on:{"click":function($event){_vm.bigImg(2)}}},[(_vm.lineData.length > 0)?_c('bar-top',{attrs:{"id":"his2","lineData":_vm.lineData,"name":_vm.name2}}):_vm._e()],1)])])]),_vm._v(" "),(!!_vm.bigImgNum)?_c('div',{staticClass:"big_img"},[_c('div',{staticClass:"big_img_top"},[_c('div',{staticClass:"seach"},[_c('el-input',{staticStyle:{"width":"300px"},attrs:{"placeholder":"请输入测试桩号","size":"small","suffix-icon":"el-icon-search"},model:{value:(_vm.devGuid),callback:function ($$v) {_vm.devGuid=$$v},expression:"devGuid"}}),_vm._v(" "),_c('div',{staticClass:"block"},[_c('el-date-picker',{attrs:{"size":"small","type":"date","placeholder":"选择日期"},model:{value:(_vm.time),callback:function ($$v) {_vm.time=$$v},expression:"time"}}),_vm._v(" "),_c('el-time-picker',{attrs:{"is-range":"","size":"small","range-separator":"至","start-placeholder":"开始时间","end-placeholder":"结束时间","placeholder":"选择时间范围"},model:{value:(_vm.timeDate),callback:function ($$v) {_vm.timeDate=$$v},expression:"timeDate"}}),_vm._v(" "),_c('el-button',{staticStyle:{"margin-left":"20px"},attrs:{"type":"primary","size":"small"},on:{"click":function($event){_vm.getscheat()}}},[_vm._v("查询")])],1)],1),_vm._v(" "),_c('i',{staticClass:"el-icon-circle-close big_img_i",on:{"click":function($event){_vm.clearBigImg(0)}}})]),_vm._v(" "),(_vm.lineData.length > 0)?_c('div',{staticClass:"figure"},[(_vm.bigImgNum == 1)?_c('bar-top',{staticClass:"bigImg",attrs:{"id":"his3","lineData":_vm.lineData,"name":_vm.name1}}):_vm._e(),_vm._v(" "),(_vm.bigImgNum == 2)?_c('bar-top',{staticClass:"bigImg",attrs:{"id":"his4","lineData":_vm.lineData,"name":_vm.name2}}):_vm._e()],1):_c('div',{directives:[{name:"loading",rawName:"v-loading",value:(true),expression:"true"}],staticClass:"figure loading",attrs:{"element-loading-text":"拼命加载中","element-loading-spinner":"el-icon-loading","element-loading-background":"rgba(255, 255, 255, 0.8)"}})]):_vm._e()])}
 var staticRenderFns = []
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);

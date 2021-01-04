@@ -8,7 +8,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_index_vue__ = __webpack_require__(641);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_index_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_index_vue__);
 /* harmony namespace reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_index_vue__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_index_vue__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3d1c6fb6_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_index_vue__ = __webpack_require__(757);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_74a07621_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_index_vue__ = __webpack_require__(757);
 function injectStyle (ssrContext) {
   __webpack_require__(755)
 }
@@ -23,12 +23,12 @@ var __vue_template_functional__ = false
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = "data-v-3d1c6fb6"
+var __vue_scopeId__ = "data-v-74a07621"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_index_vue___default.a,
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3d1c6fb6_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_index_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_74a07621_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_index_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
@@ -158,7 +158,7 @@ exports.default = {
                 note: ''
             },
             rules: {
-                name: [{ required: true, message: '请输入群组名称', trigger: 'blur' }, { min: 1, max: 7, message: '长度在 1 到 7 个字符', trigger: 'blur' }],
+                name: [{ required: true, message: '请输入群组名称', trigger: 'blur' }, { min: 1, max: 16, message: '长度在 1 到 16 个字符', trigger: 'blur' }],
                 note: [{ required: true, message: '请输入群组描述', trigger: 'blur' }, { min: 1, max: 30, message: '长度在 1 到 30 个字符', trigger: 'blur' }]
             },
             newData: {}
@@ -376,7 +376,7 @@ var content = __webpack_require__(756);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("1b842950", content, true, {});
+var update = __webpack_require__(4)("10fc035a", content, true, {});
 
 /***/ }),
 
@@ -388,7 +388,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, ".mask[data-v-3d1c6fb6]{position:absolute;width:100%;height:100%;margin-left:-10px;background:rgba(0,0,0,.3);z-index:10;right:0}.mask .margin[data-v-3d1c6fb6]{width:400px;background:#fff;border-radius:5px;margin:20% auto;padding:20px;position:relative}.mask .margin .close[data-v-3d1c6fb6]{position:absolute;top:10px;right:10px;font-size:25px;color:#999}.mask .margin .header[data-v-3d1c6fb6]{font-size:18px;color:#333;font-weight:700;text-align:center}.mask .margin .from[data-v-3d1c6fb6]{margin-top:20px}.realTimeData[data-v-3d1c6fb6]{display:-webkit-box;display:-ms-flexbox;display:flex;height:100%;overflow:hidden}.realTimeData .left[data-v-3d1c6fb6]{width:200px;padding:20px 10px;border-right:10px solid #f5f2f2}.realTimeData .left .left_title[data-v-3d1c6fb6]{font-size:18px;margin-bottom:20px;display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex-pack:distribute;justify-content:space-around}.realTimeData .content[data-v-3d1c6fb6]{-webkit-box-flex:1;-ms-flex:1;flex:1;overflow:auto}.realTimeData .content .header[data-v-3d1c6fb6]{padding:20px 20px 10px}.realTimeData .content .header .el-input[data-v-3d1c6fb6]{width:240px}.realTimeData .content .figure[data-v-3d1c6fb6]{height:85%;padding:10px 20px}.realTimeData .content .figure .block[data-v-3d1c6fb6]{text-align:center}.el-pagination[data-v-3d1c6fb6]{float:none;margin:0 auto;text-align:center}", ""]);
+exports.push([module.i, ".mask[data-v-74a07621]{position:absolute;width:100%;height:100%;margin-left:-10px;background:rgba(0,0,0,.3);z-index:10;right:0}.mask .margin[data-v-74a07621]{width:400px;background:#fff;border-radius:5px;margin:20% auto;padding:20px;position:relative}.mask .margin .close[data-v-74a07621]{position:absolute;top:10px;right:10px;font-size:25px;color:#999}.mask .margin .header[data-v-74a07621]{font-size:18px;color:#333;font-weight:700;text-align:center}.mask .margin .from[data-v-74a07621]{margin-top:20px}.realTimeData[data-v-74a07621]{display:-webkit-box;display:-ms-flexbox;display:flex;height:100%;overflow:hidden}.realTimeData .left[data-v-74a07621]{width:200px;padding:20px 10px;border-right:10px solid #f5f2f2;overflow:hidden}.realTimeData .left .left_title[data-v-74a07621]{font-size:18px;margin-bottom:20px;display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex-pack:distribute;justify-content:space-around}.realTimeData .content[data-v-74a07621]{-webkit-box-flex:1;-ms-flex:1;flex:1;overflow:auto}.realTimeData .content .header[data-v-74a07621]{padding:20px 20px 10px}.realTimeData .content .header .el-input[data-v-74a07621]{width:240px}.realTimeData .content .figure[data-v-74a07621]{height:85%;padding:10px 20px}.realTimeData .content .figure .block[data-v-74a07621]{text-align:center}.el-pagination[data-v-74a07621]{float:none;margin:0 auto;text-align:center}", ""]);
 
 // exports
 

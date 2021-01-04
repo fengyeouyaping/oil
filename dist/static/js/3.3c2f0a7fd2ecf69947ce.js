@@ -196,23 +196,22 @@ exports.default = {
         }
       }
 
-      var lists = datas.stakes.filter(function (item) {
-        return item.visitFlag;
-      });
+      // let lists = datas.stakes.filter((item)=>item.visitFlag)
       var result = [];
 
-      if (lists.length > 0) {
-        for (var _i = 0; _i < datas.stakes.length; _i++) {
-          datas.stakes[_i]['stake'] = datas.stakes[_i]['stakeNo'];
-          result.push(datas.stakes[_i]);
-          if (datas.stakes[_i]['visitFlag']) {
-            break;
-          }
+      // if(lists.length > 0){
+      for (var _i = 0; _i < datas.stakes.length; _i++) {
+        datas.stakes[_i]['stake'] = datas.stakes[_i]['stakeNo'];
+        result.push(datas.stakes[_i]);
+        if (datas.stakes[_i]['visitFlag']) {
+          break;
         }
-      } else {
-        datas.stakes[0]['stake'] = datas.stakes[0]['stakeNo'];
-        result.push(datas.stakes[0]);
       }
+      // }else{
+      //   datas.stakes[0]['stake'] = datas.stakes[0]['stakeNo']
+      //   result.push(datas.stakes[0])
+      // }
+      result.reverse();
       this.equipmentNewDate = result;
     }
   }

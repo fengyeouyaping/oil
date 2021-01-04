@@ -192,7 +192,7 @@ export default {
     },
     //处理速度
     getVelocity(velocity){
-      return Math.floor( Number(velocity) * 100) / 100
+      return Math.floor( Number(velocity) * 10) / 10
     },
       getChange(data){
         var params = {

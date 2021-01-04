@@ -8,7 +8,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_index_vue__ = __webpack_require__(635);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_index_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_index_vue__);
 /* harmony namespace reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_index_vue__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_index_vue__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_1cace935_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_index_vue__ = __webpack_require__(703);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_20fa09ee_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_index_vue__ = __webpack_require__(703);
 function injectStyle (ssrContext) {
   __webpack_require__(697)
 }
@@ -23,12 +23,12 @@ var __vue_template_functional__ = false
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = "data-v-1cace935"
+var __vue_scopeId__ = "data-v-20fa09ee"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_index_vue___default.a,
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_1cace935_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_index_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_20fa09ee_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_index_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
@@ -203,23 +203,22 @@ exports.default = {
         }
       }
 
-      var lists = datas.stakes.filter(function (item) {
-        return item.visitFlag;
-      });
+      // let lists = datas.stakes.filter((item)=>item.visitFlag)
       var result = [];
 
-      if (lists.length > 0) {
-        for (var _i = 0; _i < datas.stakes.length; _i++) {
-          datas.stakes[_i]['stake'] = datas.stakes[_i]['stakeNo'];
-          result.push(datas.stakes[_i]);
-          if (datas.stakes[_i]['visitFlag']) {
-            break;
-          }
+      // if(lists.length > 0){
+      for (var _i = 0; _i < datas.stakes.length; _i++) {
+        datas.stakes[_i]['stake'] = datas.stakes[_i]['stakeNo'];
+        result.push(datas.stakes[_i]);
+        if (datas.stakes[_i]['visitFlag']) {
+          break;
         }
-      } else {
-        datas.stakes[0]['stake'] = datas.stakes[0]['stakeNo'];
-        result.push(datas.stakes[0]);
       }
+      // }else{
+      //   datas.stakes[0]['stake'] = datas.stakes[0]['stakeNo']
+      //   result.push(datas.stakes[0])
+      // }
+      result.reverse();
       this.equipmentNewDate = result;
     }
   }
@@ -437,6 +436,15 @@ exports.default = {
   },
 
   methods: {
+    //时间精确到秒
+    getTime: function getTime(time) {
+      return time ? time.split('.')[0] : '';
+    },
+
+    //处理速度
+    getVelocity: function getVelocity(velocity) {
+      return Math.floor(Number(velocity) * 100) / 100;
+    },
     getChange: function getChange(data) {
       var _this2 = this;
 
@@ -566,6 +574,7 @@ exports.default = {
         this.$http.getHttp(this.$API.bigData + "?nodeId=" + nodeId, function (data) {
 
           _this5.equipmentNewDate = data.data ? data.data : [];
+          _this5.equipmentNewDate.reverse();
         });
       }
     },
@@ -617,7 +626,7 @@ exports.default = {
             lineList: [],
             textList: [],
             maps: '',
-            visitFlag: 0,
+            visitFlag: -1,
             text: [],
             polylineOne: '',
             polylineTwo: '',
@@ -625,7 +634,8 @@ exports.default = {
             customLayer: '',
             interval: '',
             pathSimplifierIns: '',
-            navg1: ''
+            navg1: '',
+            isOne: false
         };
     },
     mounted: function mounted() {},
@@ -690,7 +700,6 @@ exports.default = {
                     threeList.push(path[i]);
                 }
             }
-
             this.polylineOne = new AMap.Polyline({
                 path: oneList,
                 isOutline: true,
@@ -743,7 +752,9 @@ exports.default = {
             if (twoList.length > 0) this.polylinetwo.setMap(maps);
             if (threeList.length > 0) this.polylineThree.setMap(maps);
             // 缩放地图到合适的视野级别
-            maps.setFitView([this.polylineOne, this.polylinetwo, this.polylineThree]);
+            if (!this.isOne) {
+                maps.setFitView([this.polylineOne, this.polylinetwo, this.polylineThree]);
+            }
             if (!!this.navg1) {
                 this.navg1.destroy();
             }
@@ -846,7 +857,6 @@ exports.default = {
                 if (item.isOnline == undefined) {
                     item.isOnline = true;
                 }
-
                 if (item.visitFlag) {
                     _this2.visitFlag = key;
                 }
@@ -867,6 +877,7 @@ exports.default = {
             var self = this;
             if (this.newInfo.length > 0) {
                 if (!this.maps) {
+                    this.isOne = false;
                     this.isOk = true;
 
                     this.maps = new AMap.Map('container', {
@@ -880,7 +891,7 @@ exports.default = {
                         resizeEnable: true
                     });
                 } else {
-
+                    this.isOne = true;
                     if (this.text && this.text.length > 0) {
                         for (var i = 0; i < this.text.length; i++) {
                             this.maps.remove(this.text[i]);
@@ -908,12 +919,14 @@ exports.default = {
 
                     _self.pathSimplifierIns = new PathSimplifier({
                         zIndex: 100,
-                        // autoSetFitView:true,
+                        autoSetFitView: false,
                         map: _self.maps, //所属的地图实例
 
                         getPath: function getPath(pathData, pathIndex) {
                             return pathData.path;
                         },
+                        getHoverTitle: function getHoverTitle(pathData, pathIndex, pointIndex) {},
+                        clickToSelectPath: false,
                         renderOptions: {
                             //轨迹线的样式
                             pathLineStyle: {
@@ -934,6 +947,7 @@ exports.default = {
                     });
                 });
             } else {
+                this.isOne = true;
                 this.isOk = true;
 
                 this.maps = new AMap.Map('container', {
@@ -977,7 +991,7 @@ var content = __webpack_require__(698);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("0c1145c6", content, true, {});
+var update = __webpack_require__(4)("ade5c5a4", content, true, {});
 
 /***/ }),
 
@@ -989,7 +1003,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, ".grandSonActive[data-v-1cace935]{font-size:16px!important;font-weight:700!important}.top_header[data-v-1cace935]{height:50px;width:80%;position:relative}.top_header p[data-v-1cace935]{color:#fff;font-weight:700;font-size:18px;height:100%;line-height:50px;padding-left:20px}.top_header img[data-v-1cace935]{width:100%;position:absolute;bottom:0;left:0}.bigNum[data-v-1cace935]{width:100%;height:100%;background:#010443;position:relative}.bigNum .header[data-v-1cace935]{height:80px;width:100%;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;-webkit-box-align:end;-ms-flex-align:end;align-items:flex-end;border-bottom:1px solid #1a38b5;position:absolute;top:0;left:0}.bigNum .header img[data-v-1cace935]{height:35px}.bigNum .header p[data-v-1cace935]{color:#fff;font-size:32px;letter-spacing:10px;font-weight:700}.bigNum .big_content[data-v-1cace935]{border:2px solid hsla(0,0%,39%,.2);border-radius:3px;position:absolute;top:100px;right:20px;bottom:20px;left:20px;display:-webkit-box;display:-ms-flexbox;display:flex}.bigNum .big_content .left_list[data-v-1cace935]{width:72%}.bigNum .big_content .left_list .left_top[data-v-1cace935]{height:80%;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column}.bigNum .big_content .left_list .left_top .top_content[data-v-1cace935]{position:relative;width:100%;height:100%;overflow:auto}.bigNum .big_content .left_list .left_top .top_content .num[data-v-1cace935],.bigNum .big_content .left_list .left_top .top_content .numBottom[data-v-1cace935]{position:absolute;left:150px;top:20px;z-index:10}.bigNum .big_content .left_list .left_top .top_content .num .top_header[data-v-1cace935],.bigNum .big_content .left_list .left_top .top_content .numBottom .top_header[data-v-1cace935]{width:100%}.bigNum .big_content .left_list .left_top .top_content .num .top_header p[data-v-1cace935],.bigNum .big_content .left_list .left_top .top_content .numBottom .top_header p[data-v-1cace935]{width:100%;font-size:14px;padding-left:0;letter-spacing:2px}.bigNum .big_content .left_list .left_top .top_content .num .top_header p span[data-v-1cace935],.bigNum .big_content .left_list .left_top .top_content .numBottom .top_header p span[data-v-1cace935]{font-size:12px}.bigNum .big_content .left_list .left_top .top_content .num .top_header img[data-v-1cace935],.bigNum .big_content .left_list .left_top .top_content .numBottom .top_header img[data-v-1cace935]{bottom:8px;height:2px}.bigNum .big_content .left_list .left_top .top_content .num .num_bottom[data-v-1cace935],.bigNum .big_content .left_list .left_top .top_content .numBottom .num_bottom[data-v-1cace935]{width:130px;height:25px;line-height:28px;font-size:18px;font-weight:700;color:#fff;background:-webkit-gradient(linear,left top,right top,from(#1349ad),to(transparent));background:linear-gradient(90deg,#1349ad,transparent);padding-left:20px}.bigNum .big_content .left_list .left_top .top_content .numBottom[data-v-1cace935]{left:300px}.bigNum .big_content .left_list .left_top .top_content .images[data-v-1cace935],.bigNum .big_content .left_list .left_top .top_content .images img[data-v-1cace935]{width:100%;height:100%}.bigNum .big_content .left_list .left_bottom[data-v-1cace935]{height:20%;width:100%;display:-webkit-box;display:-ms-flexbox;display:flex;color:#fff}.bigNum .big_content .left_list .left_bottom .item[data-v-1cace935]{width:100%;height:100%}.bigNum .big_content .left_list .left_bottom .item .bottom_header[data-v-1cace935]{height:25px;line-height:25px;font-size:12px;padding-left:20px;border-top:1px solid #1a38b5;color:#14c5c2;background:-webkit-gradient(linear,left top,right top,from(#1349ad),to(transparent));background:linear-gradient(90deg,#1349ad,transparent)}.bigNum .big_content .left_list .left_bottom .item .bottom_content_text[data-v-1cace935]{height:147px;overflow:auto;padding:20px 20px 0}.bigNum .big_content .left_list .left_bottom .item .bottom_content_text li[data-v-1cace935]{margin-bottom:10px;list-style:none}.bigNum .big_content .left_list .left_bottom .item .bottom_content_text li>p[data-v-1cace935]{padding:5px 0}.bigNum .big_content .left_list .left_bottom .item .bottom_content_text li>div[data-v-1cace935]{padding-left:80px;display:-webkit-box;display:-ms-flexbox;display:flex;font-size:12px;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between}.bigNum .big_content .left_list .left_bottom .item .bottom_content_text li>div p[data-v-1cace935]{display:inline}.bigNum .big_content .left_list .left_bottom .item .bottom_content_text li>div p span[data-v-1cace935]{color:#14c5c2;padding-left:5px}.bigNum .big_content .left_list .left_bottom .item .bottom_content_text li.right[data-v-1cace935]{padding-top:15px}.bigNum .big_content .right_list[data-v-1cace935]{width:28%;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column}.bigNum .big_content .right_list .right_top[data-v-1cace935]{margin-bottom:30px}.bigNum .big_content .right_list .right_top .top_header p[data-v-1cace935]{padding-left:0}.bigNum .big_content .right_list .right_top .top_header img[data-v-1cace935]{height:3px}.bigNum .big_content .right_list .right_top .info_list[data-v-1cace935]{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;-webkit-box-align:center;-ms-flex-align:center;align-items:center;margin-top:40px;height:140px}.bigNum .big_content .right_list .right_top .info_list>p[data-v-1cace935]{width:80px;font-size:14px;font-weight:700;color:#7dedfe!important;text-align:center}.bigNum .big_content .right_list .right_top .info_list ul[data-v-1cace935]{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;-webkit-box-flex:1;-ms-flex:1;flex:1}.bigNum .big_content .right_list .right_top .info_list ul li[data-v-1cace935]{list-style:none;color:#fff;font-size:12px;text-align:center;-webkit-box-flex:1;-ms-flex:1;flex:1}.bigNum .big_content .right_list .right_top .info_list ul li .info_item[data-v-1cace935]{position:relative;text-align:center}.bigNum .big_content .right_list .right_top .info_list ul li .info_item img[data-v-1cace935]{width:80px;height:80px}.bigNum .big_content .right_list .right_top .info_list ul li .info_item .waterIcon[data-v-1cace935]{position:absolute;z-index:10;width:40px;height:40px;top:10px;left:50%;margin-left:-20px;background:#010443;border-radius:10px}.bigNum .big_content .right_list .right_top .info_list ul li .info_item span[data-v-1cace935]{position:absolute;width:100%;left:0;bottom:15px;color:#fff;font-size:10px}.bigNum .big_content .right_list .right_bottom[data-v-1cace935]{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;overflow-y:auto}.bigNum .big_content .right_list .right_bottom .top_header p[data-v-1cace935]{padding-left:0}.bigNum .big_content .right_list .right_bottom .top_header img[data-v-1cace935]{height:3px}.bigNum .big_content .right_list .right_bottom .right_bottom_info[data-v-1cace935]{padding:20px 0 0;overflow-y:auto}.bigNum .big_content .right_list .right_bottom .right_bottom_info .item[data-v-1cace935]{position:relative;min-height:38px}.bigNum .big_content .right_list .right_bottom .right_bottom_info .item .fontIconEl[data-v-1cace935]{font-size:16px;color:#999;margin-right:5px}.bigNum .big_content .right_list .right_bottom .right_bottom_info .item .left14[data-v-1cace935]{margin-left:22px}.bigNum .big_content .right_list .right_bottom .right_bottom_info .item header[data-v-1cace935]{color:#7dedfe;font-weight:700;font-size:18px;cursor:pointer;opacity:.9}.bigNum .big_content .right_list .right_bottom .right_bottom_info .item .title[data-v-1cace935]{padding-bottom:10px;padding-right:10px;color:#7dedfe;font-weight:700;font-size:18px;cursor:pointer;opacity:.9;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between}.bigNum .big_content .right_list .right_bottom .right_bottom_info .item .title.active[data-v-1cace935]{opacity:1;font-weight:700}.bigNum .big_content .right_list .right_bottom .right_bottom_info .item ul[data-v-1cace935]{padding-left:50px}.bigNum .big_content .right_list .right_bottom .right_bottom_info .item ul li[data-v-1cace935]{margin-bottom:4px;background:-webkit-gradient(linear,left top,right top,from(#1349ad),to(transparent));background:linear-gradient(90deg,#1349ad,transparent);list-style:none;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;height:40px;font-size:14px;color:#fff;cursor:pointer}.bigNum .big_content .right_list .right_bottom .right_bottom_info .item ul li img[data-v-1cace935]{margin-right:25px;margin-left:25px;width:30px;height:30px}.newColorTop[data-v-1cace935]{background:-webkit-gradient(linear,left top,left bottom,from(#7dedfe),to(#0c2676))!important;background:linear-gradient(180deg,#7dedfe,#0c2676)!important;-webkit-background-clip:text!important;color:transparent!important}.newColorContent[data-v-1cace935]{background:-webkit-gradient(linear,left top,right top,from(#7dedfe),to(#0c2676))!important;background:linear-gradient(90deg,#7dedfe,#0c2676)!important;-webkit-background-clip:text!important;color:transparent!important}", ""]);
+exports.push([module.i, ".grandSonActive[data-v-20fa09ee]{font-size:16px!important;font-weight:700!important}.top_header[data-v-20fa09ee]{height:50px;width:80%;position:relative}.top_header p[data-v-20fa09ee]{color:#fff;font-weight:700;font-size:18px;height:100%;line-height:50px;padding-left:20px}.top_header img[data-v-20fa09ee]{width:100%;position:absolute;bottom:0;left:0}.bigNum[data-v-20fa09ee]{width:100%;height:100%;background:#010443;position:relative}.bigNum .header[data-v-20fa09ee]{height:80px;width:100%;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;-webkit-box-align:end;-ms-flex-align:end;align-items:flex-end;border-bottom:1px solid #1a38b5;position:absolute;top:0;left:0}.bigNum .header img[data-v-20fa09ee]{height:35px}.bigNum .header p[data-v-20fa09ee]{color:#fff;font-size:32px;letter-spacing:10px;font-weight:700}.bigNum .big_content[data-v-20fa09ee]{border:2px solid hsla(0,0%,39%,.2);border-radius:3px;position:absolute;top:100px;right:20px;bottom:20px;left:20px;display:-webkit-box;display:-ms-flexbox;display:flex}.bigNum .big_content .left_list[data-v-20fa09ee]{width:72%}.bigNum .big_content .left_list .left_top[data-v-20fa09ee]{height:80%;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column}.bigNum .big_content .left_list .left_top .top_content[data-v-20fa09ee]{position:relative;width:100%;height:100%;overflow:auto}.bigNum .big_content .left_list .left_top .top_content .num[data-v-20fa09ee],.bigNum .big_content .left_list .left_top .top_content .numBottom[data-v-20fa09ee]{position:absolute;left:150px;top:20px;z-index:10}.bigNum .big_content .left_list .left_top .top_content .num .top_header[data-v-20fa09ee],.bigNum .big_content .left_list .left_top .top_content .numBottom .top_header[data-v-20fa09ee]{width:100%}.bigNum .big_content .left_list .left_top .top_content .num .top_header p[data-v-20fa09ee],.bigNum .big_content .left_list .left_top .top_content .numBottom .top_header p[data-v-20fa09ee]{width:100%;font-size:14px;padding-left:0;letter-spacing:2px}.bigNum .big_content .left_list .left_top .top_content .num .top_header p span[data-v-20fa09ee],.bigNum .big_content .left_list .left_top .top_content .numBottom .top_header p span[data-v-20fa09ee]{font-size:12px}.bigNum .big_content .left_list .left_top .top_content .num .top_header img[data-v-20fa09ee],.bigNum .big_content .left_list .left_top .top_content .numBottom .top_header img[data-v-20fa09ee]{bottom:8px;height:2px}.bigNum .big_content .left_list .left_top .top_content .num .num_bottom[data-v-20fa09ee],.bigNum .big_content .left_list .left_top .top_content .numBottom .num_bottom[data-v-20fa09ee]{width:130px;height:25px;line-height:28px;font-size:18px;font-weight:700;color:#fff;background:-webkit-gradient(linear,left top,right top,from(#1349ad),to(transparent));background:linear-gradient(90deg,#1349ad,transparent);padding-left:20px}.bigNum .big_content .left_list .left_top .top_content .numBottom[data-v-20fa09ee]{left:300px}.bigNum .big_content .left_list .left_top .top_content .images[data-v-20fa09ee],.bigNum .big_content .left_list .left_top .top_content .images img[data-v-20fa09ee]{width:100%;height:100%}.bigNum .big_content .left_list .left_bottom[data-v-20fa09ee]{height:20%;width:100%;display:-webkit-box;display:-ms-flexbox;display:flex;color:#fff}.bigNum .big_content .left_list .left_bottom .item[data-v-20fa09ee]{width:100%;height:100%}.bigNum .big_content .left_list .left_bottom .item .bottom_header[data-v-20fa09ee]{height:25px;line-height:25px;font-size:12px;padding-left:20px;border-top:1px solid #1a38b5;color:#14c5c2;background:-webkit-gradient(linear,left top,right top,from(#1349ad),to(transparent));background:linear-gradient(90deg,#1349ad,transparent)}.bigNum .big_content .left_list .left_bottom .item .bottom_content_text[data-v-20fa09ee]{height:147px;overflow:auto;padding:20px 20px 0}.bigNum .big_content .left_list .left_bottom .item .bottom_content_text li[data-v-20fa09ee]{margin-bottom:10px;list-style:none}.bigNum .big_content .left_list .left_bottom .item .bottom_content_text li>p[data-v-20fa09ee]{padding:5px 0}.bigNum .big_content .left_list .left_bottom .item .bottom_content_text li>div[data-v-20fa09ee]{padding-left:80px;display:-webkit-box;display:-ms-flexbox;display:flex;font-size:12px;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between}.bigNum .big_content .left_list .left_bottom .item .bottom_content_text li>div p[data-v-20fa09ee]{-webkit-box-flex:1;-ms-flex:1;flex:1;display:inline}.bigNum .big_content .left_list .left_bottom .item .bottom_content_text li>div p span[data-v-20fa09ee]{color:#14c5c2;padding-left:5px}.bigNum .big_content .left_list .left_bottom .item .bottom_content_text li.right[data-v-20fa09ee]{padding-top:15px}.bigNum .big_content .right_list[data-v-20fa09ee]{width:28%;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column}.bigNum .big_content .right_list .right_top[data-v-20fa09ee]{margin-bottom:30px}.bigNum .big_content .right_list .right_top .top_header p[data-v-20fa09ee]{padding-left:0}.bigNum .big_content .right_list .right_top .top_header img[data-v-20fa09ee]{height:3px}.bigNum .big_content .right_list .right_top .info_list[data-v-20fa09ee]{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;-webkit-box-align:center;-ms-flex-align:center;align-items:center;margin-top:40px;height:140px}.bigNum .big_content .right_list .right_top .info_list>p[data-v-20fa09ee]{width:80px;font-size:14px;font-weight:700;color:#7dedfe!important;text-align:center}.bigNum .big_content .right_list .right_top .info_list ul[data-v-20fa09ee]{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;-webkit-box-flex:1;-ms-flex:1;flex:1}.bigNum .big_content .right_list .right_top .info_list ul li[data-v-20fa09ee]{list-style:none;color:#fff;font-size:12px;text-align:center;-webkit-box-flex:1;-ms-flex:1;flex:1}.bigNum .big_content .right_list .right_top .info_list ul li .info_item[data-v-20fa09ee]{position:relative;text-align:center}.bigNum .big_content .right_list .right_top .info_list ul li .info_item img[data-v-20fa09ee]{width:80px;height:80px}.bigNum .big_content .right_list .right_top .info_list ul li .info_item .waterIcon[data-v-20fa09ee]{position:absolute;z-index:10;width:40px;height:40px;top:10px;left:50%;margin-left:-20px;background:#010443;border-radius:10px}.bigNum .big_content .right_list .right_top .info_list ul li .info_item span[data-v-20fa09ee]{position:absolute;width:100%;left:0;bottom:15px;color:#fff;font-size:10px}.bigNum .big_content .right_list .right_bottom[data-v-20fa09ee]{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;overflow-y:auto}.bigNum .big_content .right_list .right_bottom .top_header p[data-v-20fa09ee]{padding-left:0}.bigNum .big_content .right_list .right_bottom .top_header img[data-v-20fa09ee]{height:3px}.bigNum .big_content .right_list .right_bottom .right_bottom_info[data-v-20fa09ee]{padding:20px 0 0;overflow-y:auto}.bigNum .big_content .right_list .right_bottom .right_bottom_info .item[data-v-20fa09ee]{position:relative;min-height:38px}.bigNum .big_content .right_list .right_bottom .right_bottom_info .item .fontIconEl[data-v-20fa09ee]{font-size:16px;color:#999;margin-right:5px}.bigNum .big_content .right_list .right_bottom .right_bottom_info .item .left14[data-v-20fa09ee]{margin-left:22px}.bigNum .big_content .right_list .right_bottom .right_bottom_info .item header[data-v-20fa09ee]{color:#7dedfe;font-weight:700;font-size:18px;cursor:pointer;opacity:.9}.bigNum .big_content .right_list .right_bottom .right_bottom_info .item .title[data-v-20fa09ee]{padding-bottom:10px;padding-right:10px;color:#7dedfe;font-weight:700;font-size:18px;cursor:pointer;opacity:.9;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between}.bigNum .big_content .right_list .right_bottom .right_bottom_info .item .title.active[data-v-20fa09ee]{opacity:1;font-weight:700}.bigNum .big_content .right_list .right_bottom .right_bottom_info .item ul[data-v-20fa09ee]{padding-left:50px}.bigNum .big_content .right_list .right_bottom .right_bottom_info .item ul li[data-v-20fa09ee]{margin-bottom:4px;background:-webkit-gradient(linear,left top,right top,from(#1349ad),to(transparent));background:linear-gradient(90deg,#1349ad,transparent);list-style:none;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;height:40px;font-size:14px;color:#fff;cursor:pointer}.bigNum .big_content .right_list .right_bottom .right_bottom_info .item ul li img[data-v-20fa09ee]{margin-right:25px;margin-left:25px;width:30px;height:30px}.newColorTop[data-v-20fa09ee]{background:-webkit-gradient(linear,left top,left bottom,from(#7dedfe),to(#0c2676))!important;background:linear-gradient(180deg,#7dedfe,#0c2676)!important;-webkit-background-clip:text!important;color:transparent!important}.newColorContent[data-v-20fa09ee]{background:-webkit-gradient(linear,left top,right top,from(#7dedfe),to(#0c2676))!important;background:linear-gradient(90deg,#7dedfe,#0c2676)!important;-webkit-background-clip:text!important;color:transparent!important}", ""]);
 
 // exports
 
@@ -1004,7 +1018,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_map_vue__ = __webpack_require__(636);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_map_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_map_vue__);
 /* harmony namespace reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_map_vue__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_map_vue__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c12004ac_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_map_vue__ = __webpack_require__(702);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_d292032a_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_map_vue__ = __webpack_require__(702);
 function injectStyle (ssrContext) {
   __webpack_require__(700)
 }
@@ -1019,12 +1033,12 @@ var __vue_template_functional__ = false
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = "data-v-c12004ac"
+var __vue_scopeId__ = "data-v-d292032a"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
   __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_map_vue___default.a,
-  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_c12004ac_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_map_vue__["a" /* default */],
+  __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_d292032a_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_map_vue__["a" /* default */],
   __vue_template_functional__,
   __vue_styles__,
   __vue_scopeId__,
@@ -1046,7 +1060,7 @@ var content = __webpack_require__(701);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("59177712", content, true, {});
+var update = __webpack_require__(4)("1d988560", content, true, {});
 
 /***/ }),
 
@@ -1058,7 +1072,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, ".map[data-v-c12004ac]{position:relative}.map #container[data-v-c12004ac],.map[data-v-c12004ac]{width:100%;height:100%}.map .topStart[data-v-c12004ac]{width:100%;height:100%;background:#010443;position:absolute;top:0;left:0;z-index:5}", ""]);
+exports.push([module.i, ".map[data-v-d292032a]{position:relative}.map #container[data-v-d292032a],.map[data-v-d292032a]{width:100%;height:100%}.map .topStart[data-v-d292032a]{width:100%;height:100%;background:#010443;position:absolute;top:0;left:0;z-index:5}", ""]);
 
 // exports
 
@@ -1080,7 +1094,7 @@ var esExports = { render: render, staticRenderFns: staticRenderFns }
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"bigNum"},[_vm._m(0),_vm._v(" "),_c('div',{staticClass:"big_content"},[_c('div',{staticClass:"left_list"},[_c('div',{staticClass:"left_top"},[_vm._m(1),_vm._v(" "),_c('div',{staticClass:"top_content"},[_c('div',{staticClass:"num"},[_vm._m(2),_vm._v(" "),_c('div',{staticClass:"num_bottom"},[_vm._v(_vm._s(_vm.someDigits))])]),_vm._v(" "),_c('div',{staticClass:"images"},[_c('Map',{ref:"maps"})],1)])]),_vm._v(" "),_c('div',{staticClass:"left_bottom"},[_c('div',{staticClass:"item"},[_vm._m(3),_vm._v(" "),_c('div',{staticClass:"bottom_content_text"},[_c('ul',_vm._l((_vm.equipmentNewDate),function(item){return _c('li',[_c('p',[_vm._v("设备"+_vm._s(item.stakeNo))]),_vm._v(" "),_c('div',[_c('p',[_vm._v("预计到达时间:"),_c('span',[_vm._v(_vm._s(item.evalArrivedTime))])]),_vm._v(" "),_c('p',[_vm._v("实际到达时间:"),_c('span',[_vm._v(_vm._s(item.actArrivedTime))])]),_vm._v(" "),_c('p',[_vm._v("运行速度:"),_c('span',[_vm._v(_vm._s(item.velocity)+"m/s")])])])])}))])])])]),_vm._v(" "),_c('div',{staticClass:"right_list"},[_c('div',{staticClass:"right_top"},[_vm._m(4),_vm._v(" "),_c('div',{staticClass:"info_list"},[_c('p',[_vm._v(_vm._s(_vm.pointInfo.city.name))]),_vm._v(" "),_c('ul',[_c('li',[_vm._m(5),_vm._v(" "),_c('p',[_vm._v("经纬度")]),_vm._v(" "),_c('p',[_vm._v(_vm._s(_vm.pointInfo.basic.lon)+"-"+_vm._s(_vm.pointInfo.basic.lat))])]),_vm._v(" "),_c('li',[_c('div',{staticClass:"info_item"},[_c('img',{attrs:{"src":__webpack_require__(704),"alt":""}}),_vm._v(" "),_c('img',{staticClass:"waterIcon",attrs:{"src":_vm.pointInfo.condition.icon ? __webpack_require__(705)("./W"+_vm.pointInfo.condition.icon+'.png') : '',"alt":""}}),_vm._v(" "),_c('span',[_vm._v(_vm._s(_vm.pointInfo.condition.temp)+"C")])]),_vm._v(" "),_c('p',[_vm._v("天气")]),_vm._v(" "),_c('p',[_vm._v(_vm._s(_vm.pointInfo.condition.condition))])]),_vm._v(" "),_c('li',[_c('div',{staticClass:"info_item"},[_c('img',{attrs:{"src":__webpack_require__(736),"alt":""}}),_vm._v(" "),_c('span',[_vm._v(_vm._s(_vm.pointInfo.condition.windDir))])]),_vm._v(" "),_c('p',[_vm._v("风力")]),_vm._v(" "),_c('p',[_vm._v(_vm._s(_vm.pointInfo.condition.windLevel)+"级")])])])])]),_vm._v(" "),_c('div',{staticClass:"right_bottom"},[_vm._m(6),_vm._v(" "),_c('div',{staticClass:"right_bottom_info"},_vm._l((_vm.equipmentLists),function(item,index){return _c('div',{key:index,staticClass:"item"},_vm._l((item.nodeList),function(ite,inde){return _c('div',{directives:[{name:"show",rawName:"v-show",value:(item.isShow),expression:"item.isShow"}],key:inde},_vm._l((ite.nodeList),function(son,sonIndex){return _c('div',{directives:[{name:"show",rawName:"v-show",value:(ite.isShow),expression:"ite.isShow"}],key:sonIndex},[_c('div',{staticClass:"title",class:_vm.newInfo.id == son.id ? 'active' : '',on:{"click":function($event){_vm.newMap(son)}}},[_c('div',[_c('i',{staticClass:"fontIconEl el",class:!son.devices || (son.devices && son.devices.length == 0) ? 'left14' : son.isShow ? 'el-icon-caret-bottom' : 'el-icon-caret-right',on:{"click":function($event){$event.stopPropagation();_vm.shouitem(son,sonIndex)}}}),_vm._v("\n                    "+_vm._s(son.name)+"\n                  ")]),_vm._v(" "),_c('el-switch',{attrs:{"active-value":1,"inactive-value":2,"active-color":"#13ce66","inactive-color":"#999999"},on:{"change":function($event){_vm.getChange(son)}},model:{value:(son.modelFlag),callback:function ($$v) {_vm.$set(son, "modelFlag", $$v)},expression:"son.modelFlag"}})],1),_vm._v(" "),_c('ul',_vm._l((son.devices),function(grandSon,grandSonIndex){return _c('li',{directives:[{name:"show",rawName:"v-show",value:(son.isShow && grandSon.isShow),expression:"son.isShow && grandSon.isShow"}],key:grandSonIndex,on:{"click":function($event){_vm.newMap(grandSon)}}},[_c('img',{attrs:{"src":__webpack_require__(737),"alt":""}}),_vm._v(" "),_c('span',{class:_vm.pointInfo.basic.devGuid == grandSon.devGuid ? 'grandSonActive' : ''},[_vm._v(_vm._s(grandSon.stake))])])}))])}))}))}))])])])])}
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"bigNum"},[_vm._m(0),_vm._v(" "),_c('div',{staticClass:"big_content"},[_c('div',{staticClass:"left_list"},[_c('div',{staticClass:"left_top"},[_vm._m(1),_vm._v(" "),_c('div',{staticClass:"top_content"},[_c('div',{staticClass:"num"},[_vm._m(2),_vm._v(" "),_c('div',{staticClass:"num_bottom"},[_vm._v(_vm._s(_vm.someDigits))])]),_vm._v(" "),_c('div',{staticClass:"images"},[_c('Map',{ref:"maps"})],1)])]),_vm._v(" "),_c('div',{staticClass:"left_bottom"},[_c('div',{staticClass:"item"},[_vm._m(3),_vm._v(" "),_c('div',{staticClass:"bottom_content_text"},[_c('ul',_vm._l((_vm.equipmentNewDate),function(item){return _c('li',[_c('p',[_vm._v("设备"+_vm._s(item.stakeNo))]),_vm._v(" "),_c('div',[_c('p',[_vm._v("预计到达时间:"),_c('span',[_vm._v(_vm._s(_vm.getTime(item.evalArrivedTime)))])]),_vm._v(" "),_c('p',[_vm._v("实际到达时间:"),_c('span',[_vm._v(_vm._s(_vm.getTime(item.actArrivedTime)))])]),_vm._v(" "),_c('p',[_vm._v("运行速度:"),_c('span',[_vm._v(_vm._s(_vm.getVelocity(item.velocity))+"m/s")])])])])}))])])])]),_vm._v(" "),_c('div',{staticClass:"right_list"},[_c('div',{staticClass:"right_top"},[_vm._m(4),_vm._v(" "),_c('div',{staticClass:"info_list"},[_c('p',[_vm._v(_vm._s(_vm.pointInfo.city.name))]),_vm._v(" "),_c('ul',[_c('li',[_vm._m(5),_vm._v(" "),_c('p',[_vm._v("经纬度")]),_vm._v(" "),_c('p',[_vm._v(_vm._s(_vm.pointInfo.basic.lon)+"-"+_vm._s(_vm.pointInfo.basic.lat))])]),_vm._v(" "),_c('li',[_c('div',{staticClass:"info_item"},[_c('img',{attrs:{"src":__webpack_require__(704),"alt":""}}),_vm._v(" "),_c('img',{staticClass:"waterIcon",attrs:{"src":_vm.pointInfo.condition.icon ? __webpack_require__(705)("./W"+_vm.pointInfo.condition.icon+'.png') : '',"alt":""}}),_vm._v(" "),_c('span',[_vm._v(_vm._s(_vm.pointInfo.condition.temp)+"C")])]),_vm._v(" "),_c('p',[_vm._v("天气")]),_vm._v(" "),_c('p',[_vm._v(_vm._s(_vm.pointInfo.condition.condition))])]),_vm._v(" "),_c('li',[_c('div',{staticClass:"info_item"},[_c('img',{attrs:{"src":__webpack_require__(736),"alt":""}}),_vm._v(" "),_c('span',[_vm._v(_vm._s(_vm.pointInfo.condition.windDir))])]),_vm._v(" "),_c('p',[_vm._v("风力")]),_vm._v(" "),_c('p',[_vm._v(_vm._s(_vm.pointInfo.condition.windLevel)+"级")])])])])]),_vm._v(" "),_c('div',{staticClass:"right_bottom"},[_vm._m(6),_vm._v(" "),_c('div',{staticClass:"right_bottom_info"},_vm._l((_vm.equipmentLists),function(item,index){return _c('div',{key:index,staticClass:"item"},_vm._l((item.nodeList),function(ite,inde){return _c('div',{directives:[{name:"show",rawName:"v-show",value:(item.isShow),expression:"item.isShow"}],key:inde},_vm._l((ite.nodeList),function(son,sonIndex){return _c('div',{directives:[{name:"show",rawName:"v-show",value:(ite.isShow),expression:"ite.isShow"}],key:sonIndex},[_c('div',{staticClass:"title",class:_vm.newInfo.id == son.id ? 'active' : '',on:{"click":function($event){_vm.newMap(son)}}},[_c('div',[_c('i',{staticClass:"fontIconEl el",class:!son.devices || (son.devices && son.devices.length == 0) ? 'left14' : son.isShow ? 'el-icon-caret-bottom' : 'el-icon-caret-right',on:{"click":function($event){$event.stopPropagation();_vm.shouitem(son,sonIndex)}}}),_vm._v("\n                    "+_vm._s(son.name)+"\n                  ")]),_vm._v(" "),_c('el-switch',{attrs:{"active-value":1,"inactive-value":2,"active-color":"#13ce66","inactive-color":"#999999"},on:{"change":function($event){_vm.getChange(son)}},model:{value:(son.modelFlag),callback:function ($$v) {_vm.$set(son, "modelFlag", $$v)},expression:"son.modelFlag"}})],1),_vm._v(" "),_c('ul',_vm._l((son.devices),function(grandSon,grandSonIndex){return _c('li',{directives:[{name:"show",rawName:"v-show",value:(son.isShow && grandSon.isShow),expression:"son.isShow && grandSon.isShow"}],key:grandSonIndex,on:{"click":function($event){_vm.newMap(grandSon)}}},[_c('img',{attrs:{"src":__webpack_require__(737),"alt":""}}),_vm._v(" "),_c('span',{class:_vm.pointInfo.basic.devGuid == grandSon.devGuid ? 'grandSonActive' : ''},[_vm._v(_vm._s(grandSon.stake))])])}))])}))}))}))])])])])}
 var staticRenderFns = [function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"header"},[_c('img',{attrs:{"src":__webpack_require__(738),"alt":""}}),_vm._v(" "),_c('p',{staticClass:"newColorTop"},[_vm._v("油气管道监测大数据看版")]),_vm._v(" "),_c('img',{attrs:{"src":__webpack_require__(739),"alt":""}})])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"top_header"},[_c('p',{staticClass:"newColorContent"},[_vm._v("油气管道监测点分布")]),_vm._v(" "),_c('img',{attrs:{"src":__webpack_require__(523),"alt":""}})])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"top_header"},[_c('p',[_vm._v("点位数"),_c('span',[_vm._v("(个)")])]),_vm._v(" "),_c('img',{attrs:{"src":__webpack_require__(523),"alt":""}})])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"bottom_header"},[_c('p',{staticClass:"newColorContent"},[_vm._v("设备数据")])])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"top_header"},[_c('p',{staticClass:"newColorContent"},[_vm._v("油气管道监测点分布")]),_vm._v(" "),_c('img',{attrs:{"src":__webpack_require__(523),"alt":""}})])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"info_item"},[_c('img',{attrs:{"src":__webpack_require__(740),"alt":""}}),_vm._v(" "),_c('span')])},function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"top_header"},[_c('p',{staticClass:"newColorContent"},[_vm._v("设备列表")]),_vm._v(" "),_c('img',{attrs:{"src":__webpack_require__(523),"alt":""}})])}]
 var esExports = { render: render, staticRenderFns: staticRenderFns }
 /* harmony default export */ __webpack_exports__["a"] = (esExports);
