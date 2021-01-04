@@ -107,7 +107,7 @@ export default {
         rules: {
           name: [
             { required: true, message: '请输入群组名称', trigger: 'blur' },
-            { min: 1, max: 7, message: '长度在 1 到 7 个字符', trigger: 'blur' }
+            { min: 1, max: 16, message: '长度在 1 到 16 个字符', trigger: 'blur' }
           ],
           note: [
             { required: true, message: '请输入群组描述', trigger: 'blur' },
@@ -345,6 +345,7 @@ export default {
         width 200px
         padding 20px 10px 20px 10px
         border-right 10px solid #f5f2f2
+        overflow hidden
         .left_title{
             font-size 18px
             margin-bottom 20px

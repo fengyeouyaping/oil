@@ -7,7 +7,7 @@
         </div>
         <div class="content">
           <div class="seach">
-            <el-input placeholder="请输入设备编码" v-model="devGuid" size="small" suffix-icon="el-icon-search" style="width:300px"></el-input>
+            <el-input placeholder="请输入测试桩号" v-model="devGuid" size="small" suffix-icon="el-icon-search" style="width:300px"></el-input>
             <div class="block">
               <el-date-picker
                size="small"
@@ -31,7 +31,7 @@
               <div style="height:90%">
                 <el-table :data="tableData" class="tableData" height="100%" :stripe="true">
                     <el-table-column prop="id" label="终端ID"></el-table-column>
-                    <el-table-column prop="devGuid" label="测试桩编号"></el-table-column>
+                    <el-table-column prop="stake" label="测试桩编号"></el-table-column>
                     <el-table-column prop="stamp" label="时间"></el-table-column>
                     <el-table-column prop="a" label="特征A"></el-table-column>
                     <el-table-column prop="b" label="特征B"></el-table-column>
@@ -66,7 +66,7 @@
         <div v-if="!!bigImgNum" class="big_img">
             <div class="big_img_top">
                 <div class="seach">
-                  <el-input placeholder="请输入设备编码" v-model="devGuid" size="small" suffix-icon="el-icon-search" style="width:300px"></el-input>
+                  <el-input placeholder="请输入测试桩号" v-model="devGuid" size="small" suffix-icon="el-icon-search" style="width:300px"></el-input>
                   <div class="block">
                     <el-date-picker
                     size="small"
@@ -123,7 +123,6 @@ export default {
         total:0,
         time: new Date(),
         timeDate: [new Date()-3600 * 1000 * 0.5,new Date()],
-        devGuid:'',
         nodeId:'',
         lineData:[],
         name1:"B特征",
@@ -191,7 +190,7 @@ export default {
             endTime :this.timeDate[1]/1000*1000,
             pageNum : this.pageNum,
             pageSize : this.$global.pageLimit,
-            devGuid:this.devGuid
+            stake:this.devGuid
         }
           this.$http.postHttp(this.$API.historyList,params,(rs)=>{
             this.tableData = rs.data.list

@@ -15,7 +15,7 @@ export default {
             lineList:[],
             textList:[],
             maps:'',
-            visitFlag:0,
+            visitFlag:-1,
             text:[],
             polylineOne:'',
             polylineTwo:'',
@@ -23,7 +23,8 @@ export default {
             customLayer:'',
             interval:'',
             pathSimplifierIns:'',
-            navg1:''
+            navg1:'',
+            isOne:false
         };
     },
     mounted() {
@@ -91,7 +92,6 @@ export default {
                     threeList.push(path[i])
                 }
             }
-
             this.polylineOne = new AMap.Polyline({
                 path: oneList,
                 isOutline: true,
@@ -144,7 +144,9 @@ export default {
             if(twoList.length > 0) this.polylinetwo.setMap(maps)
             if(threeList.length > 0) this.polylineThree.setMap(maps)
             // 缩放地图到合适的视野级别
-            maps.setFitView([ this.polylineOne,this.polylinetwo,this.polylineThree ])
+            if(!this.isOne){
+                maps.setFitView([ this.polylineOne,this.polylinetwo,this.polylineThree ])
+            }
             if(!!this.navg1){
                 this.navg1.destroy(); 
             }
@@ -249,7 +251,6 @@ export default {
                 if(item.isOnline == undefined){
                     item.isOnline = true
                 }
-                
                 if(item.visitFlag){
                     this.visitFlag = key
                 }
@@ -272,6 +273,7 @@ export default {
             let self = this
             if(this.newInfo.length > 0){
                 if(!this.maps){
+                    this.isOne = false
                     this.isOk = true
                     
                     this.maps = new AMap.Map('container', {
@@ -286,7 +288,7 @@ export default {
                     })
                 
                 }else{
-
+                    this.isOne = true
                     if(this.text && this.text.length > 0){
                         for(let i=0;i<this.text.length;i++){
                             this.maps.remove(this.text[i])
@@ -312,12 +314,16 @@ export default {
                     
                     _self.pathSimplifierIns = new PathSimplifier({
                         zIndex: 100,
-                        // autoSetFitView:true,
+                        autoSetFitView:false,
                         map: _self.maps, //所属的地图实例
 
                         getPath: function(pathData, pathIndex) {
                             return pathData.path;
                         },
+                        getHoverTitle: function(pathData, pathIndex, pointIndex) {
+                            
+                        },
+                        clickToSelectPath:false,
                         renderOptions: {
                             //轨迹线的样式
                             pathLineStyle: {
@@ -341,6 +347,7 @@ export default {
                     
                 })
             }else{
+                this.isOne = true
                 this.isOk = true
                     
                 this.maps = new AMap.Map('container', {

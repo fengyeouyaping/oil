@@ -46,9 +46,9 @@
                 <li v-for="item in equipmentNewDate">
                   <p>设备{{item.stakeNo}}</p>
                   <div>
-                    <p>预计到达时间:<span>{{item.evalArrivedTime}}</span></p>
-                    <p>实际到达时间:<span>{{item.actArrivedTime}}</span></p>
-                    <p>运行速度:<span>{{item.velocity}}m/s</span></p>
+                    <p>预计到达时间:<span>{{getTime(item.evalArrivedTime)}}</span></p>
+                    <p>实际到达时间:<span>{{getTime(item.actArrivedTime)}}</span></p>
+                    <p>运行速度:<span>{{getVelocity(item.velocity)}}m/s</span></p>
                   </div>
                 </li>
               </ul>
@@ -186,6 +186,14 @@ export default {
     this.equipmentList()
   },
   methods: {
+    //时间精确到秒
+    getTime(time){
+      return time ? time.split('.')[0] : ''
+    },
+    //处理速度
+    getVelocity(velocity){
+      return Math.floor( Number(velocity) * 100) / 100
+    },
       getChange(data){
         var params = {
             comment : data.comment,
@@ -312,6 +320,7 @@ export default {
           this.$http.getHttp(this.$API.bigData+"?nodeId="+nodeId,(data)=>{
             
             this.equipmentNewDate = data.data ? data.data : []
+            this.equipmentNewDate.reverse()
             
           })
         }
@@ -482,6 +491,7 @@ export default {
                 font-size 12px
                 justify-content space-between
                 p{
+                  flex 1
                   display inline
                   span{
                     color #14c5c2

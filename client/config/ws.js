@@ -139,10 +139,10 @@ export default {
           }
         }
         
-        let lists = datas.stakes.filter((item)=>item.visitFlag)
+        // let lists = datas.stakes.filter((item)=>item.visitFlag)
         let result = []
         
-        if(lists.length > 0){
+        // if(lists.length > 0){
           for(let i=0;i<datas.stakes.length;i++){
             datas.stakes[i]['stake'] = datas.stakes[i]['stakeNo']
             result.push(datas.stakes[i])
@@ -150,10 +150,11 @@ export default {
               break;
             }
           }
-        }else{
-          datas.stakes[0]['stake'] = datas.stakes[0]['stakeNo']
-          result.push(datas.stakes[0])
-        }
+        // }else{
+        //   datas.stakes[0]['stake'] = datas.stakes[0]['stakeNo']
+        //   result.push(datas.stakes[0])
+        // }
+        result.reverse()
         this.equipmentNewDate = result
         
       },
