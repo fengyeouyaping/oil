@@ -273,7 +273,7 @@ export default {
       },
       //导出
     fileExport(){
-        window.location = this.$global.httpServer + "/file/download?fileName=template.xls"
+        window.location = this.$global.httpServer+this.$API.fileDownload + "?fileName=template.xls"
     },
       //导入设备列表
       fileUploadImport(){
@@ -416,27 +416,27 @@ export default {
                     });
                     return
                 }  
-                if(this.ruleForm.latitudeLlongitude.split(',').length == 2){
-                    let lonlat = this.ruleForm.latitudeLlongitude.split(',')
-                    let lon = lonlat[0]
-                    let lat = lonlat[1]
-                    if(lon.split('.')[1] && lon.split('.')[1].length > 1){
-                        this.$notify({
-                            title: '经纬度请保持一位小数',
-                            message: '',
-                            type: 'warning'
-                        });
-                        return
-                    }
-                    if(lat.split('.')[1] && lat.split('.')[1].length > 1){
-                        this.$notify({
-                            title: '经纬度请保持一位小数',
-                            message: '',
-                            type: 'warning'
-                        });
-                        return
-                    }
-                } 
+                // if(this.ruleForm.latitudeLlongitude.split(',').length == 2){
+                //     let lonlat = this.ruleForm.latitudeLlongitude.split(',')
+                //     let lon = lonlat[0]
+                //     let lat = lonlat[1]
+                //     if(lon.split('.')[1] && lon.split('.')[1].length > 1){
+                //         this.$notify({
+                //             title: '经纬度请保持一位小数',
+                //             message: '',
+                //             type: 'warning'
+                //         });
+                //         return
+                //     }
+                //     if(lat.split('.')[1] && lat.split('.')[1].length > 1){
+                //         this.$notify({
+                //             title: '经纬度请保持一位小数',
+                //             message: '',
+                //             type: 'warning'
+                //         });
+                //         return
+                //     }
+                // } 
                 let router = this.ruleForm.route[this.ruleForm.route.length-1]
                 if(this.ruleForm.route.length < 3){
                     this.$notify({

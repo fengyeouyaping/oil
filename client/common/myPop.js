@@ -1,4 +1,4 @@
-import { Message,MessageBox } from 'element-ui'
+import { Message,MessageBox,Notification } from 'element-ui'
 
 /** 
  * 封装请求加载方法
@@ -107,6 +107,13 @@ MyPop.HTMLMessage = function(content) {
     showClose: true,
     dangerouslyUseHTMLString: true,
     message: content
+  })
+}
+
+MyPop.WarningNotification = function(content) {
+  Notification.warning({
+    message: content,
+    type: 'warning'
   })
 }
 

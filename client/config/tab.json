@@ -205,6 +205,18 @@
                 "childMenus": [
                     
                 ]
+            },
+            {
+                "fatherId": 0,
+                "id": 3,
+                "level": 0,
+                "menu": "监测记录",
+                "roleId": 1,
+                "visible": true,
+                "url":"/monitorLog",
+                "childMenus": [
+                    
+                ]
             }
         ]
     },

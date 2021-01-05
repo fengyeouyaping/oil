@@ -25,6 +25,8 @@ API.deviceLogList = "/device/log/list"//设备日志列表
 API.deviceLogSend = "/device/log/send"//发送消息
 API.deviceLogDelete = "/device/log/delete"//删除日志
 API.fileExport = "/file/log/export"//导出日志
+API.recordExport = "/file/record/export"//导出监测数据
+API.recordList = "/device/log/record/list"//监测数据列表
 
 //节点
 API.nodeAdd = "/node/add"//添加节点

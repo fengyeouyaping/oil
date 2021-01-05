@@ -110,8 +110,8 @@
                   {{ite.name}}
                 </div> -->
                 <div v-for="(son,sonIndex) in ite.nodeList" :key="sonIndex" v-show="ite.isShow">
-                  <div class="title" @click="newMap(son)" :class="newInfo.id == son.id ? 'active' : ''">
-                    <div>
+                  <div class="title" :class="newInfo.id == son.id ? 'active' : ''">
+                    <div @click="newMap(son)">
                       <i class="fontIconEl el" :class="!son.devices || (son.devices && son.devices.length == 0) ? 'left14' : son.isShow ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" @click.stop="shouitem(son,sonIndex)"></i>
                       {{son.name}}
                     </div>
@@ -119,7 +119,9 @@
                   </div>
                   <ul>
                     <li v-for="(grandSon,grandSonIndex) in son.devices" @click="newMap(grandSon)" :key="grandSonIndex" v-show="son.isShow && grandSon.isShow">
-                      <img src="~BUSSINESS_IMAGE/1604237298752.jpg" alt="">
+                      <img src="~BUSSINESS_IMAGE/images/1.png" alt="" v-if="grandSon.status == 0">
+                      <img src="~BUSSINESS_IMAGE/images/2.png" alt="" v-if="grandSon.status == 1">
+                      <img src="~BUSSINESS_IMAGE/images/3.png" alt="" v-if="grandSon.status == 9">
                       <span :class="pointInfo.basic.devGuid == grandSon.devGuid ? 'grandSonActive' : ''">{{grandSon.stake}}</span>
                     </li>
                   </ul>
@@ -176,7 +178,6 @@ export default {
           }
       }
       setTimeout(() => {
-        
         this.$store.commit('HomeModule/UPDATE_POIN_INFO',this.newInfo.devices ? this.newInfo.devices : [])
         this.$refs.maps.init()
       },500)
@@ -195,7 +196,7 @@ export default {
       return Math.floor( Number(velocity) * 10) / 10
     },
       getChange(data){
-        this.$store.commit('HomeModule/updata_isOne',true)
+        
         var params = {
             comment : data.comment,
             name : data.name,
@@ -203,17 +204,22 @@ export default {
             modelFlag:data.modelFlag
         }
     
-        this.$http.postHttp(this.$API.nodeUpdate,params,(data)=>{
+        this.$http.postHttp(this.$API.nodeUpdate,params,(res)=>{
+          if(res){
             this.$notify({
                 title: '树结构修改成功',
                 message: '',
                 type: 'success'
-                });
-            this.equipmentList()
-
+            });
+          }else{
+            data.modelFlag = data.modelFlag==1?2:1
+          }
+          this.$store.commit('HomeModule/updata_isOne',true)
+          this.equipmentList()
         })
       },
       newMap(item){
+        
         this.newInfo = item
         if(item.devices && item.devices.length > 0 && item.modelFlag == 1){
           this.bigDataLists(this.newInfo.id)
@@ -222,17 +228,9 @@ export default {
           this.someDigits = item.devices.length || 0
           this.getPointInfo(item['devices'][0] ? item['devices'][0]['devGuid'] : '')
           
-        }else if(item.devices && item.devices.length > 0 && item.modelFlag == 2){
-          this.$store.commit('HomeModule/updata_isOne',true)
-          this.equipmentNewDate = []
-          item.devices=[]
-          this.pointInfo.basic = item
-          if(!item.devGuid){
-            this.$store.commit('HomeModule/UPDATE_POIN_INFO',[])
-            this.$refs.maps.init()
-          }
+        }else if(item.devices && item.modelFlag == 2){
+
         }else{
-          this.equipmentNewDate = []
           this.pointInfo.basic = item
           this.getDeviceWeather(item.lat,item.lon)
           if(!item.devGuid){
@@ -265,10 +263,10 @@ export default {
               }
             })
           }
-          
+
           if(this.equipmentLists.length > 0){
             forList(this.equipmentLists)
-            
+
             if(this.newInfo){
               this.bigDataLists(this.newInfo.id)
             
@@ -276,6 +274,10 @@ export default {
               
               this.getPointInfo(this.newInfo['devices'][0] ? this.newInfo['devices'][0]['devGuid'] : '')
           
+            }else{
+              this.$store.commit('HomeModule/UPDATE_POIN_INFO',[])
+              this.equipmentNewDate = []
+              this.$refs.maps.init()
             }
           }else{
             this.$store.commit('HomeModule/UPDATE_POIN_INFO',[])
@@ -655,8 +657,8 @@ export default {
                   img{
                     margin-right 25px
                     margin-left 25px
-                    width 30px
-                    height 30px
+                    width 25px
+                    height 25px
                   }
                 }
               }

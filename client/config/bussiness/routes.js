@@ -53,6 +53,12 @@ var routerData = [
     name:'operationLog',
     component: () => import('../../views/bussinessView/operationLog/index.vue')
   },
+  //监测记录
+  {
+    path: '/monitorLog',
+    name:'monitorLog',
+    component: () => import('../../views/bussinessView/monitorLog/index.vue')
+  },
   //角色管理
   {
     path: '/roleManagement',

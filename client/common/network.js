@@ -34,7 +34,7 @@ axios.interceptors.response.use(function (response) {
   } else {
     if(response.data.code == -1){
       CustomLoading.endLoading()
-      MyPop.alertBox("请求失败",response.data.msg)
+      MyPop.WarningNotification(response.data.msg)
       return false
     }
 
@@ -50,7 +50,7 @@ axios.interceptors.response.use(function (response) {
       messageStr = response.data.result.message
     }
 
-    MyPop.alertBox("请求失败", "失败原因：" + messageStr)
+    MyPop.WarningNotification(messageStr)
     CustomLoading.endLoading()
 
     return Promise.reject(0)
