@@ -2,7 +2,7 @@
   <div class="bigNum">
     <div class="header">
       <img src="~BUSSINESS_IMAGE/images/1604237368117.jpg" alt="">
-      <p class="newColorTop">油气管道监测大数据看版</p>
+      <p class="newColorTop">油气管道监测大数据看板</p>
       <img src="~BUSSINESS_IMAGE/images/1604237434688.jpg" alt="">
     </div>
     <div class="big_content">
@@ -41,7 +41,7 @@
             <div class="bottom_header">
               <p class="newColorContent">设备数据</p>
             </div>
-            <div class="bottom_content_text">
+            <div class="bottom_content_text" ref="messagesContainer">
               <ul>
                 <li v-for="item in equipmentNewDate">
                   <p>设备{{item.stakeNo}}</p>
@@ -168,7 +168,7 @@ export default {
       if(val && val.length > 0){
           for(let i=0;i<val.length;i++){
             for(let j=0;j<this.newInfo.devices.length;j++){
-              
+               
               if(val[i]['stakeNo'] == this.newInfo.devices[j]['stake']){
                 val[i]['devGuid'] = this.newInfo.devices[j]['devGuid'] 
                 this.newInfo.devices[j]['visitFlag'] = val[i]['visitFlag'] ? val[i]['visitFlag'] : false 
@@ -177,10 +177,30 @@ export default {
             }
           }
       }
+     
       setTimeout(() => {
         this.$store.commit('HomeModule/UPDATE_POIN_INFO',this.newInfo.devices ? this.newInfo.devices : [])
         this.$refs.maps.init()
       },500)
+      if(val.length > 0){
+        let messagesContainerTimer = setTimeout(()=>{
+          let allHeight = this.$refs.messagesContainer.scrollHeight
+          let len = 1
+          for(let i=val.length-1;i>=0;i--){
+            if(val[i]['visitFlag']){
+              len = i
+            }
+          }
+          let newHeight = parseInt(allHeight/(val.length)*len)
+
+          this.$refs.messagesContainer.scrollTop = newHeight;
+          // console.log("当前滚动条位置:"+newHeight);
+          // console.log("当前可滚动区域容器的高度:"+allHeight);
+          // 清理定时器
+          clearTimeout(messagesContainerTimer);
+        },0);
+      }
+      
     }
   },
   mounted() {

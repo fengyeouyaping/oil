@@ -49,7 +49,7 @@ export default {
     methods: {
         //导出
         fileExport(){
-            window.location = his.$global.httpServer+this.$API.recordExport + "?stake="+this.filterText
+            window.location = this.$global.httpServer+this.$API.recordExport + "?stake="+this.filterText
         },
         initDatas(){
             this.pageNum = 1
@@ -68,9 +68,8 @@ export default {
             this.total = data.data.total
             this.tableData = data.data.list
             this.tableData.map((item) => {
-                item.actTime = item.actTime ? this.$common.dateFormat("YYYY-MM-dd",item.actTime/1000) : ''
-                item.createTime = item.createTime ? this.$common.dateFormat("YYYY-MM-dd",item.createTime/1000) : ''
-                item.estimatedTime = item.estimatedTime ? this.$common.dateFormat("YYYY-MM-dd",item.estimatedTime/1000) : ''
+                item.actTime = item.actTime ? this.getTime(item.actTime) : ''
+                item.estimatedTime = item.estimatedTime ? this.getTime(item.estimatedTime) : ''
             })
             this.$myLoading.endLoading()
 
@@ -80,8 +79,13 @@ export default {
         handleCurrentChange(val){
             this.pageNum = val
             this.initData()
-        }
+        },
+        //时间精确到秒
+        getTime(time){
+        return time ? time.split('.')[0] : ''
+        },
     },
+    
 }
 </script>
 <style lang="stylus" scoped>

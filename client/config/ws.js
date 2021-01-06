@@ -1,3 +1,5 @@
+import aa from './aa'
+let i=0
 export default {
     name : 'test',
     data() {
@@ -115,8 +117,17 @@ export default {
       },
       //更新设备实时信息
       getEquipmentNewDate(data){
+        // console.log("-----------------------------",i)
+        // data.stakes = aa[i]
+        // if(i==4){
+        //   i=1
+        // }else{
+        //   i++
+        // }
         this.$store.commit('HomeModule/updata_isOne',false)
         let datas = data
+        
+        
         if(!this.newInfo || this.newInfo.modelFlag == 2){
           return false
         }
@@ -138,8 +149,6 @@ export default {
               }
             }
           }
-        
-        
           // let lists = datas.stakes.filter((item)=>item.visitFlag)
           let result = []
           
@@ -147,9 +156,9 @@ export default {
             for(let i=0;i<datas.stakes.length;i++){
               datas.stakes[i]['stake'] = datas.stakes[i]['stakeNo']
               result.push(datas.stakes[i])
-              if(datas.stakes[i]['visitFlag']){
-                break;
-              }
+              // if(datas.stakes[i]['visitFlag']){
+              //   break;
+              // }
             }
           // }else{
           //   datas.stakes[0]['stake'] = datas.stakes[0]['stakeNo']

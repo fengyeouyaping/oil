@@ -247,12 +247,13 @@ export default {
             })
         },
         getData(){
+            let isHave = -1
             this.newInfo.map((item,key) => {
                 if(item.isOnline == undefined){
                     item.isOnline = true
                 }
                 if(item.visitFlag){
-                    this.visitFlag = key
+                    isHave = key
                 }
                 if(item.lat && item.lon){
                     this.dataList.push({
@@ -263,6 +264,7 @@ export default {
                     this.textList.push(item.stake)
                 }
             })
+            this.visitFlag = isHave
             
         },
         init(){

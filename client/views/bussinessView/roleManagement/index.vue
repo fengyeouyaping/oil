@@ -222,11 +222,14 @@ export default {
         params.roleAuthList = this.roleAuthListId
 
         this.$http.postHttp(this.$API.roleAuthUpdate,params,(data)=>{
-          this.$notify({
+          if(data){
+            this.$notify({
               title: '权限分配成功',
               message: '',
               type: 'success'
-          });
+            });
+          
+          }
           this.isShowRote = false
         })
         
@@ -315,13 +318,16 @@ export default {
         }
 
         this.$http.postHttp(this.$API.roleUpdate,params,(data)=>{
-          this.isAddInfo = false
-          this.$notify({
-              title: '角色修改成功',
-              message: '',
-              type: 'success'
-          });
-          this.initDatas()
+          if(data){
+            this.isAddInfo = false
+            this.$notify({
+                title: '角色修改成功',
+                message: '',
+                type: 'success'
+            });
+            this.initDatas()
+          }
+          
         })
       },
       //添加角色信息
@@ -332,13 +338,16 @@ export default {
         }
 
         this.$http.postHttp(this.$API.roleAdd,params,(data)=>{
-          this.isAddInfo = false
-          this.$notify({
-              title: '角色添加成功',
-              message: '',
-              type: 'success'
-          });
-          this.initDatas()
+          if(data){
+            this.isAddInfo = false
+            this.$notify({
+                title: '角色添加成功',
+                message: '',
+                type: 'success'
+            });
+            this.initDatas()
+          }
+          
 
         })
       },

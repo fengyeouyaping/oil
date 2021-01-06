@@ -212,7 +212,7 @@
                 "level": 0,
                 "menu": "监测记录",
                 "roleId": 1,
-                "visible": true,
+                "visible": false,
                 "url":"/monitorLog",
                 "childMenus": [
                     
