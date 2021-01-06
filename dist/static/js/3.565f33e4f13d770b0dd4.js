@@ -183,8 +183,8 @@ exports.default = {
     getEquipmentNewDate: function getEquipmentNewDate(data) {
       // console.log("-----------------------------",i)
       // data.stakes = aa[i]
-      // if(i==2){
-      //   i=2
+      // if(i==4){
+      //   i=1
       // }else{
       //   i++
       // }
@@ -296,6 +296,30 @@ var aa = {
         tsDeviceUpTime: [],
         velocity: 0,
         visitFlag: true
+    }, {
+        devGuid: "01616005",
+        deviceUpTime: "12:15:52.070",
+        isArrived: 0,
+        isOnline: true,
+        lat: 35.4,
+        lon: 109.1,
+        stakeNo: "2号桩",
+        status: 1,
+        tsDeviceUpTime: { Hour: 12, Min: 15, Second: 52 },
+        velocity: 0,
+        visitFlag: false
+    }, {
+        devGuid: "01616005",
+        deviceUpTime: "12:15:52.070",
+        isArrived: 0,
+        isOnline: true,
+        lat: 35.4,
+        lon: 109.1,
+        stakeNo: "2号桩",
+        status: 1,
+        tsDeviceUpTime: { Hour: 12, Min: 15, Second: 52 },
+        velocity: 0,
+        visitFlag: false
     }, {
         devGuid: "01616005",
         deviceUpTime: "12:15:52.070",

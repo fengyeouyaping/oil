@@ -41,7 +41,7 @@
             <div class="bottom_header">
               <p class="newColorContent">设备数据</p>
             </div>
-            <div class="bottom_content_text" ref="messagesContainer">
+            <div class="bottom_content_text" ref="messagesContainer" @mousemove="clear()" @mouseleave="state()" >
               <ul>
                 <li v-for="item in equipmentNewDate">
                   <p>设备{{item.stakeNo}}</p>
@@ -157,6 +157,7 @@ export default {
         condition:{}
       },//点的信息
       equipmentNewDate:[],//设备信息
+      isScroll:true
     }
   },
   watch: {
@@ -182,7 +183,7 @@ export default {
         this.$store.commit('HomeModule/UPDATE_POIN_INFO',this.newInfo.devices ? this.newInfo.devices : [])
         this.$refs.maps.init()
       },500)
-      if(val.length > 0){
+      if(val.length > 0 && this.isScroll){
         let messagesContainerTimer = setTimeout(()=>{
           let allHeight = this.$refs.messagesContainer.scrollHeight
           let len = 1
@@ -207,6 +208,14 @@ export default {
     this.equipmentList()
   },
   methods: {
+    //结束轮询
+    clear(){
+        this.isScroll = false
+    },
+    //开始轮询
+    state(){
+        this.isScroll = true
+    },
     //时间精确到秒
     getTime(time){
       return time ? time.split('.')[0] : ''
