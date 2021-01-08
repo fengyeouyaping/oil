@@ -304,7 +304,7 @@ export default {
         } 
     }
     .left{
-        width 200px
+        min-width 300px
         padding 20px 10px 20px 10px
         border-right 10px solid #f5f2f2
         .left_title{

@@ -31,6 +31,8 @@ export default {
           dir:[]
         },
         equipmentNewDate:[],//设备信息
+        filePath:'',
+        fileName:''
       }
     },
     created() {
@@ -68,6 +70,8 @@ export default {
             this.getDeviceDirInfo(e)
           }else if(JSON.parse(e.data).stakes){
             this.getEquipmentNewDate(JSON.parse(e.data))//大数据看版，设备数据
+          }else if(SON.parse(e.data).cmd == 'svrSetSettings'){//固件上传
+            this.getSvrSetSettings(e)
           }
         }
         
@@ -114,6 +118,12 @@ export default {
         let item = JSON.parse(val.data)
         this.fileList.dir = item.data.dir
         this.fileList.fileNum = item.data.fileNum
+      },
+      //得到固件上传的数据
+      getSvrSetSettings(){
+        let item = JSON.parse(val.data)
+        this.filePath = item.data.filePath
+        this.fileName = item.data.fileName
       },
       //更新设备实时信息
       getEquipmentNewDate(data){

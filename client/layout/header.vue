@@ -3,7 +3,8 @@
     <div class="logo">
       <div @mouseenter="showMoreLanguage" @mouseleave="hideMoreLanguage" class="topImg">
         <img :src="imgSrc" class="image_center" v-if="userInfo.imagePath" @click="updatePass">
-        <img src="~SYSTEM_IMAGE/test/test_header.jpeg" class="image_center" v-else @click="updatePass">
+        <span class="image_center" v-else @click="updatePass">打</span>
+        <!-- <img src="~SYSTEM_IMAGE/test/test_header.jpeg"> -->
         <div class="more_menu_box" v-if="isShowMoreLanguage">
           <div class="more_menu_box_item" @click="updatePass">
             <i class="fa fa-key fa-lg"></i>修改信息
@@ -276,6 +277,17 @@ export default {
     height: 100%
     width: 100px
     margin-left 10px
+    span.image_center{
+      display: block;
+      height: 50px;
+      width: 50px;
+      font-size 24px;
+      line-height: 50px;
+      text-align: center;
+      border-radius: 50px;
+      background: #04229e !important;
+    }
+      
   }
   .isShow{
     position absolute

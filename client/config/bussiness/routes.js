@@ -83,6 +83,12 @@ var routerData = [
     name:'fileBrow',
     component: () => import('../../views/bussinessView/fileBrow/index.vue')
   },
+  //固件升级
+  {
+    path: '/firmware',
+    name:'firmware',
+    component: () => import('../../views/bussinessView/firmware/index.vue')
+  },
 ];
 
 export default routerData

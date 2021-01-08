@@ -71,7 +71,10 @@ axios.interceptors.response.use(function (response) {
 //标准GET请求
 NetTool.getHttp = function (apiName, cb, errCb) {
   axios.get(apiName).then(function (response) {
-    cb(response)
+    if(response && response.code == 0){
+      cb(response)
+    }
+    
   }).catch((err) => {
     if (errCb != undefined) {
       errCb();
@@ -82,7 +85,9 @@ NetTool.getHttp = function (apiName, cb, errCb) {
 //标准POST请求
 NetTool.postHttp = function (apiName, params, cb, errCb) {
   axios.post(apiName, JSON.stringify(params)).then(function (response) {
-    cb(response)
+    if(response && response.code == 0){
+      cb(response)
+    }
   }).catch((err) => {
     if (errCb != undefined) {
       errCb();

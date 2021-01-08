@@ -147,6 +147,16 @@
                 "visible": false,
                 "url":"/fileBrow",
                 "childMenus": []
+            },
+            {
+                "fatherId": 0,
+                "id": 3,
+                "level": 0,
+                "menu": "固件升级",
+                "roleId": 1,
+                "visible": false,
+                "url":"/firmware",
+                "childMenus": []
             }
         ]
     },

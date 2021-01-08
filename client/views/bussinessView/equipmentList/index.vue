@@ -174,12 +174,20 @@ export default {
 
     methods: {
         //导入成功
-        updataSuccess(){
-            this.$notify({
-                title: '文件导入成功',
-                message:'',
-                type: 'success'
-            });
+        updataSuccess(val){
+            if(val.code == -1){
+                this.$notify({
+                    title: '文件导入失败',
+                    message:'',
+                    type: 'error'
+                });
+            }else{
+                this.$notify({
+                    title: '文件导入成功',
+                    message:'',
+                    type: 'success'
+                });
+            }
         },
         //导入失败
         updataError(){
@@ -547,7 +555,7 @@ export default {
     height 100%
     overflow hidden
     .left{
-        min-width 200px
+        min-width 300px
         padding 20px 10px 20px 10px
         border-right 10px solid #f5f2f2
         .left_title{

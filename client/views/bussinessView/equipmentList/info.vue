@@ -16,13 +16,13 @@
             <ul>
                 <li>设备类型</li>
                 <li><el-input v-model="info.devType" placeholder="请输入内容"></el-input></li>
-                <li>设备编号</li>
+                <li>设备唯一码</li>
                 <li><el-input v-model="info.devGuid" placeholder="请输入内容"></el-input></li>
             </ul>
             <ul>
-                <li>硬件版本</li>
+                <li>设备硬件版本</li>
                 <li><el-input v-model="info.hardVer" placeholder="请输入内容"></el-input></li>
-                <li>软件版本</li>
+                <li>设备软件版本</li>
                 <li><el-input v-model="info.softVer" placeholder="请输入内容"></el-input></li>
             </ul>
         </div>
@@ -31,13 +31,13 @@
                 <li class="title">网络信息</li>
             </ul>
             <ul>
-                <li>服务器IP地址</li>
+                <li>服务IP</li>
                 <li><el-input v-model="info.ip" placeholder="请输入内容"></el-input></li>
-                <li>服务器端口</li>
+                <li>服务端口</li>
                 <li><el-input v-model="info.port" placeholder="请输入内容"></el-input></li>
             </ul>
             <ul>
-                <li>时间间隔</li>
+                <li>自动上传时间间隔</li>
                 <li><el-input v-model="info.postIvl" placeholder="请输入内容"></el-input></li>
                 <li></li>
                 <li><el-button type="primary" size="mini" @click="sendCommand('deviceNetInfo')">设置网络信息</el-button></li>
@@ -62,17 +62,17 @@
             <ul>
                 <li>采样频率</li>
                 <li><el-input v-model="info.freq" placeholder="请输入内容"></el-input></li>
-                <li>分析需采样次数</li>
+                <li>1次分析需采样次数</li>
                 <li><el-input v-model="info.aSample" placeholder="请输入内容"></el-input></li>
             </ul>
             <ul>
-                <li>采样次数</li>
+                <li>1个文件采样次数</li>
                 <li><el-input v-model="info.fSample" placeholder="请输入内容"></el-input></li>
                 <li></li>
                 <li></li>
             </ul>
             <ul>
-                <li>阀值</li>
+                <li>数据存储阈值</li>
                 <li>
                     <div><el-input v-model="info.threshold[0]" placeholder="请输入内容"></el-input></div>
                     <div><el-input v-model="info.threshold[1]" placeholder="请输入内容"></el-input></div>
@@ -114,8 +114,8 @@
             </ul>
             <ul>
                 <li class="title" style="text-align:center;display:flex;justify-content: space-between;">
-                    <div style="display:flex;white-space: nowrap;font-size: 14px;">页码：<el-input v-model="fillInput.path" placeholder="请输入内容"></el-input></div>
-                    <div style="display:flex;white-space: nowrap;font-size: 14px;">文件数量：<el-input v-model="fileList.fileNum" disabled></el-input></div>
+                    <div style="display:flex;white-space: nowrap;font-size: 14px;">当前页：<el-input v-model="fillInput.path" placeholder="请输入内容"></el-input></div>
+                    <div style="display:flex;white-space: nowrap;font-size: 14px;">文件数：<el-input v-model="fileList.fileNum" disabled></el-input></div>
                     <div><el-button type="primary" size="mini" @click="getFileList('deviceDirInfo')">查询文件目录</el-button></div>
                     <div><el-button type="primary" size="mini" @click="deviceLogSend('deviceStartSaveFile')">启动保存</el-button></div>
                     <div><el-button type="primary" size="mini" @click="deviceLogSend('deviceDeleteFiles')">清空文件</el-button></div>

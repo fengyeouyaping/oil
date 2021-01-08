@@ -225,14 +225,13 @@ export default {
       return Math.floor( Number(velocity) * 10) / 10
     },
       getChange(data){
-        
         var params = {
             comment : data.comment,
             name : data.name,
             id : data.id,
             modelFlag:data.modelFlag
         }
-    
+        data.modelFlag = 2
         this.$http.postHttp(this.$API.nodeUpdate,params,(res)=>{
           if(res){
             this.$notify({
@@ -241,7 +240,7 @@ export default {
                 type: 'success'
             });
           }else{
-            data.modelFlag = data.modelFlag==1?2:1
+            data.modelFlag = params.modelFlag==1?2:1
           }
           this.$store.commit('HomeModule/updata_isOne',true)
           this.equipmentList()

@@ -288,7 +288,7 @@ export default {
         display flex
     }
     .left{
-        width 200px
+        min-width 300px
         padding 20px 10px 20px 10px
         border-right 10px solid #f5f2f2
         .left_title{
@@ -301,12 +301,13 @@ export default {
         padding 80px 0
         flex 1
         overflow auto
+        position relative
         .seach{
             position absolute
             top 21px
             right 0
             display block
-            left 210px
+            left 10px
         }
         .figure{
             width 100%

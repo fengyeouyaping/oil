@@ -206,3 +206,10 @@ export default {
     text-align center   
 }
 </style>
+<style lang="stylus">
+.tableData{
+    .el-table__row{
+        cursor pointer
+    }
+}
+</style>
