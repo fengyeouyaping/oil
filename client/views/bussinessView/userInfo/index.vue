@@ -60,7 +60,7 @@ export default {
         initData(){
             this.ruleForm = JSON.parse(sessionStorage.getItem("userInfo"))
             if(this.ruleForm.imagePath){
-                this.ruleForm.imagePath = this.$global.httpServerImg + this.ruleForm.imagePath + "?time="+new Date().getTime()*1000/1000
+                this.ruleForm.imagePath = this.$global.httpServerImg + this.ruleForm.imagePath.split(":")[1] + "?time="+new Date().getTime()*1000/1000
                 this.isImagePath = true
             }
             

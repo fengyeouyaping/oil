@@ -85,7 +85,7 @@ export default {
       leftMenuShow       : state => state.HomeModule.leftMenuShow,
     }),
     imgSrc(){
-      return this.$global.httpServerImg + this.userInfo.imagePath + "?time="+new Date().getTime()*1000/1000
+      return this.$global.httpServerImg + this.userInfo.imagePath.split(":")[1] + "?time="+new Date().getTime()*1000/1000
     },
   },
   methods: {
