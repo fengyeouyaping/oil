@@ -104,12 +104,12 @@
                 <i class="fontIconEl el" :class="!item.nodeList || (item.nodeList && item.nodeList.length == 0) ? 'left14' : item.isShow ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" @click="shouitem(item,index)"></i>
                   {{item.name}}
               </header> -->
-              <div v-for="(ite,inde) in item.nodeList" :key="inde" v-show="item.isShow">
+              <div v-for="(ite,inde) in item.nodeList" :key="inde">
                 <!-- <div class="title">
                   <i class="fontIconEl el" :class="!ite.nodeList || (ite.nodeList && ite.nodeList.length == 0) ? 'left14' : ite.isShow ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" @click="shouitem(ite,inde)"></i>
                   {{ite.name}}
                 </div> -->
-                <div v-for="(son,sonIndex) in ite.nodeList" :key="sonIndex" v-show="ite.isShow">
+                <div v-for="(son,sonIndex) in ite.nodeList" :key="sonIndex">
                   <div class="title" :class="newInfo.id == son.id ? 'active' : ''">
                     <div @click="newMap(son)">
                       <i class="fontIconEl el" :class="!son.devices || (son.devices && son.devices.length == 0) ? 'left14' : son.isShow ? 'el-icon-caret-bottom' : 'el-icon-caret-right'" @click.stop="shouitem(son,sonIndex)"></i>
@@ -118,7 +118,7 @@
                     <el-switch v-model="son.modelFlag" :active-value="1" :inactive-value="2" active-color="#13ce66" inactive-color="#999999" @change="getChange(son)"></el-switch>
                   </div>
                   <ul>
-                    <li v-for="(grandSon,grandSonIndex) in son.devices" @click="newMap(grandSon)" :key="grandSonIndex" v-show="son.isShow && grandSon.isShow">
+                    <li v-for="(grandSon,grandSonIndex) in son.devices" @click="newMap(grandSon)" :key="grandSonIndex" v-show="son.isShow">
                       <img src="~BUSSINESS_IMAGE/images/1.png" alt="" v-if="grandSon.status == 0">
                       <img src="~BUSSINESS_IMAGE/images/2.png" alt="" v-if="grandSon.status == 1">
                       <img src="~BUSSINESS_IMAGE/images/3.png" alt="" v-if="grandSon.status == 9">
@@ -279,7 +279,8 @@ export default {
           this.equipmentLists = data.data.nodes
           let forList = (list) => {
             list.map((item) => {
-              item.isShow = true
+              item.isShow = item && item.modelFlag && item.modelFlag == 1 ? true : false
+              
               if(item.devices && item.devices.length > 0 && item.modelFlag == 1 && !this.newInfo){
                 this.newInfo = item
               }
