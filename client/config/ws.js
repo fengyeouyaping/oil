@@ -32,7 +32,8 @@ export default {
         },
         equipmentNewDate:[],//设备信息
         filePath:'',
-        fileName:''
+        fileName:'',
+        isOpen:true
       }
     },
     created() {
@@ -122,6 +123,7 @@ export default {
       //得到固件上传的数据
       getSvrSetSettings(val){
         let item = JSON.parse(val.data)
+        this.isOpen = item.data.isOpen == 1
         this.filePath = item.data.fileName
         this.fileName = item.data.fileName.split("\\")[item.data.fileName.split("\\").length-1]
       },

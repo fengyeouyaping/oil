@@ -9,6 +9,9 @@
                 <p class="right">{{fileName}}</p>
             </div>
             <div class="file">
+                <el-checkbox v-model="isOpen">是否允许更新</el-checkbox>
+            </div>
+            <div class="file">
                 <p>文件地址:</p>
                 <p class="right">{{filePath}}</p>
                 <el-upload
@@ -38,7 +41,8 @@ export default {
     computed: {
         uploadData(){
             return {
-                filePath:this.filePath
+                filePath:this.filePath,
+                isOpen:this.isOpen?1:0
             }
         }
     },
@@ -114,6 +118,7 @@ export default {
             height 36px
             line-height 36px
             display flex
+            align-items center
             .right
                 border 1px solid #eeeeee
                 border-radius 3px
