@@ -15,6 +15,7 @@
                 <p>文件地址:</p>
                 <p class="right">{{filePath}}</p>
                 <el-upload
+                    v-if="isOpen"
                     class="upload-demo"
                     :show-file-list="false"
                     :action="$global.httpServer + $API.fileUpload"
@@ -23,6 +24,7 @@
                     :on-error="updataError">
                     <el-button size="small" type="primary" >文件替换</el-button>
                 </el-upload>
+                <el-button class="upload-demo" v-if="!isOpen" size="small" type="primary" disabled>文件替换</el-button>
             </div>
             
         </div>

@@ -1,4 +1,3 @@
-import aa from './aa'
 let i=0
 export default {
     name : 'test',
@@ -129,13 +128,6 @@ export default {
       },
       //更新设备实时信息
       getEquipmentNewDate(data){
-        // console.log("-----------------------------",i)
-        // data.stakes = aa[i]
-        // if(i==4){
-        //   i=1
-        // }else{
-        //   i++
-        // }
         this.$store.commit('HomeModule/updata_isOne',false)
         let datas = data
         
