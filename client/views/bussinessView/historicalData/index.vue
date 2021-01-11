@@ -30,7 +30,7 @@
             <div class="figure1">
               <div style="height:90%">
                 <el-table :data="tableData" class="tableData" height="100%" :stripe="true">
-                    <el-table-column prop="id" label="终端ID"></el-table-column>
+                    <el-table-column prop="devGuid" label="终端ID"></el-table-column>
                     <el-table-column prop="stake" label="测试桩编号"></el-table-column>
                     <el-table-column prop="stamp" label="时间"></el-table-column>
                     <el-table-column prop="a" label="特征A"></el-table-column>

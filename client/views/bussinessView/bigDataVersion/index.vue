@@ -43,7 +43,7 @@
             </div>
             <div class="bottom_content_text" ref="messagesContainer" @mousemove="clear()" @mouseleave="state()" >
               <ul>
-                <li v-for="item in equipmentNewDate" :key="item">
+                <li v-for="(item,index) in equipmentNewDate" :key="index">
                   <p>设备{{item.stakeNo}}</p>
                   <div>
                     <p>预计到达时间:<span>{{getTime(item.evalArrivedTime)}}</span></p>
@@ -634,7 +634,6 @@ export default {
             overflow-y auto
             .item{
               position relative
-              min-height 38px
               .fontIconEl{
                 font-size 16px
                 color #999999  

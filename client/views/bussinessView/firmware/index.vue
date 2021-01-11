@@ -17,6 +17,7 @@
                 <el-upload
                     v-if="isOpen"
                     class="upload-demo"
+                    :headers="myHeaders"
                     :show-file-list="false"
                     :action="$global.httpServer + $API.fileUpload"
                     :data="uploadData"
@@ -32,18 +33,20 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+import LocalData from '../../../localData/userData'
 import ws from '../../../config/ws'
 export default {
     mixins:[ws],
     data() {
       return {
-
+          myHeaders:{token:LocalData.userToken()},
       };
     },
     computed: {
         uploadData(){
+            console.log(this.filePath.replace(/\\/g,"/"))
             return {
-                filePath:this.filePath,
+                filePath:this.filePath.replace(/\\/g,"/"),
                 isOpen:this.isOpen?1:0
             }
         }
@@ -82,7 +85,7 @@ export default {
     updataSuccess(val){
         if(val.code == -1){
             this.$notify({
-                title: '文件导入失败',
+                title: val.msg,
                 message:'',
                 type: 'error'
             });

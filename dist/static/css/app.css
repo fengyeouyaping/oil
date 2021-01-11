@@ -167,6 +167,8 @@ pre code {
 }
 .loginContent .el-input__inner {
   border-radius: 20px;
+  height: 40px;
+  line-height: 40px;
 }
 .loginContent .el-form-item {
   position: relative;

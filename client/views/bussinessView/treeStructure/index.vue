@@ -316,7 +316,7 @@ export default {
         width 400px
         background #ffffff
         border-radius 5px
-        margin 20% auto  
+        margin 100px auto  
         padding 20px 
         position relative
         .close{

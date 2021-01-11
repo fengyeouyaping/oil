@@ -17,6 +17,7 @@
                     <el-upload
                         class="upload-demo"
                         :show-file-list="false"
+                        :before-upload="beforeUpload"
                         :action="$global.httpServer + $API.fileUploadImport"
                         :data="uploadData"
                         :on-success="updataSuccess"
@@ -72,7 +73,7 @@
                 <div class="from">
                     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                         <el-form-item label="设备ID" prop="id">
-                            <el-input v-model="ruleForm.id"></el-input>
+                            <el-input v-model="ruleForm.id" :disabled="!isAdd"></el-input>
                         </el-form-item>
                         <el-form-item label="测试桩号" prop="name">
                             <el-input v-model="ruleForm.name"></el-input>
@@ -173,6 +174,18 @@ export default {
     },
 
     methods: {
+        //上传文件之前的钩子
+        beforeUpload(){
+            let router = this.ruleForm.route[this.ruleForm.route.length-1]
+            if(this.ruleForm.route.length < 3){
+                this.$notify({
+                    title: '只能在路线下面添加设备，请重新选择路线',
+                    message: '',
+                    type: 'warning'
+                });
+                return false
+            }
+        },
         //导入成功
         updataSuccess(val){
             if(val.code == -1){
@@ -529,7 +542,7 @@ export default {
         width 400px
         background #ffffff
         border-radius 5px
-        margin 20% auto  
+        margin 100px auto  
         padding 20px 
         position relative
         .close{

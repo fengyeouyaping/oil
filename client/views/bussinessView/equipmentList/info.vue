@@ -32,9 +32,9 @@
             </ul>
             <ul>
                 <li>服务IP</li>
-                <li><el-input v-model="info.ip" placeholder="请输入内容"></el-input></li>
+                <li><el-input v-model="info.ip" placeholder="请输入内容" onkeyup="value=value.replace(/[^\d^\.]+/g,'')"></el-input></li>
                 <li>服务端口</li>
-                <li><el-input v-model="info.port" placeholder="请输入内容"></el-input></li>
+                <li><el-input v-model="info.port" placeholder="请输入内容" onkeyup="value=value.replace(/[^\d]+/g,'')"></el-input></li>
             </ul>
             <ul>
                 <li>自动上传时间间隔</li>

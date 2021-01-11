@@ -8,6 +8,7 @@
           
           <el-form-item label="账号：" prop="username">
             <el-input
+            style="height:40px;line-height:40px;"
               placeholder="请输入您的帐号"
               suffix-icon="fa fa-user-circle fa-lg"
               v-model="ruleForm.username"
@@ -308,24 +309,33 @@ export default {
               if(tabs[i]['visible']){
                 this.$store.commit('MenuModule/changeIndex', i+'')
                 let item = tabs[i]['childMenus']
-                for(let j=0;j<item.length;j++){
-                  if(item[j]['visible']){
-                    this.$store.commit('MenuModule/changeSonIndex', j+'')
-                    url = item[j]['url']
+                if(item.length > 0){
+                  for(let j=0;j<item.length;j++){
+                  
+                    if(item[j]['visible']){
+                      this.$store.commit('MenuModule/changeSonIndex', j+'')
+                      url = item[j]['url']
+                      break;
+                    }
+                  }
+                  if(url != '/home'){
+                    break;
+                  }
+                }else{
+                  if(tabs[i].url == '/bigDataVersion'){
+                    url = tabs[i].url 
                     break;
                   }
                 }
-                if(url != '/home'){
-                  break;
-                }
+                
                 
               }
             }
-
             //进入首页
             this.$router.push({
               path: url
             });
+            
           },1000)
         })
 

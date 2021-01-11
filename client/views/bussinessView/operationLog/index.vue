@@ -62,7 +62,7 @@ export default {
             this.total = data.data.total
             this.tableData = data.data.list
             this.tableData.map((item) => {
-                item.time = this.$common.dateFormat("YYYY-MM-dd",item.time/1000)
+                item.time = this.$common.dateFormat("YYYY-MM-dd hh:mm:ss",item.time/1000)
                 item.state = item.state == 1 ? '成功' : '失败'
             })
             this.$myLoading.endLoading()
@@ -101,7 +101,7 @@ export default {
         width 400px
         background #ffffff
         border-radius 5px
-        margin 20% auto  
+        margin 100px auto  
         padding 20px 
         position relative
         .close{
