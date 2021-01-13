@@ -17,6 +17,7 @@
                 <p class="right">{{filePath}}</p>
                 <el-upload
                     v-if="isOpen"
+                    ref="upload"
                     class="upload-demo"
                     :headers="myHeaders"
                     :show-file-list="false"
@@ -55,17 +56,8 @@ export default {
     },
     watch:{
         isOpen(val){
-            let params = {
-                file:'',
-                filePath:this.filePath.replace(/\\/g,"/"),
-                isOpen:this.isOpen?1:0
-                
-            }
-
-            this.$http.postHttp(this.$global.httpServer + this.$API.fileUpload,params,(data)=>{
-                this.deviceLogSend('svrQuerySettings')
-                
-            })
+            let url = `${this.$global.httpServer}${this.$API.fileUpload }?isOpen=${this.isOpen?1:0}`
+            this.$http.postHttp(url,{},(data)=>{}) 
         }
     },
     methods: {
