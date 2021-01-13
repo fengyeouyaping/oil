@@ -5,14 +5,15 @@
         </div>
         <div class="centent" v-if="filePath">
             <div class="file">
-                <p>文件名称:</p>
+                <p class="left">文件名称:</p>
                 <p class="right">{{fileName}}</p>
             </div>
             <div class="file">
-                <el-checkbox v-model="isOpen">是否允许更新</el-checkbox>
+                <p class="left">是否允许更新:</p>
+                <el-switch v-model="isOpen" active-color="#13ce66" inactive-color="#999999"></el-switch>
             </div>
             <div class="file">
-                <p>文件地址:</p>
+                <p class="left">文件地址:</p>
                 <p class="right">{{filePath}}</p>
                 <el-upload
                     v-if="isOpen"
@@ -25,7 +26,6 @@
                     :on-error="updataError">
                     <el-button size="small" type="primary" >文件替换</el-button>
                 </el-upload>
-                <el-button class="upload-demo" v-if="!isOpen" size="small" type="primary" disabled>文件替换</el-button>
             </div>
             
         </div>
@@ -44,7 +44,6 @@ export default {
     },
     computed: {
         uploadData(){
-            console.log(this.filePath.replace(/\\/g,"/"))
             return {
                 filePath:this.filePath.replace(/\\/g,"/"),
                 isOpen:this.isOpen?1:0
@@ -54,7 +53,21 @@ export default {
     mounted(){
         
     },
+    watch:{
+        isOpen(val){
+            let params = {
+                file:'',
+                filePath:this.filePath.replace(/\\/g,"/"),
+                isOpen:this.isOpen?1:0
+                
+            }
 
+            this.$http.postHttp(this.$global.httpServer + this.$API.fileUpload,params,(data)=>{
+                this.deviceLogSend('svrQuerySettings')
+                
+            })
+        }
+    },
     methods: {
     //发送命令
     deviceLogSend(type){
@@ -124,10 +137,13 @@ export default {
             line-height 36px
             display flex
             align-items center
+            .left
+                width 120px
+                text-align right
+                margin-right 20px
             .right
                 border 1px solid #eeeeee
                 border-radius 3px
-                margin-left 10px
                 padding 0 10px
                 min-width 200px
             .upload-demo

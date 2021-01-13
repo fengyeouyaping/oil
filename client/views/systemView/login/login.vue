@@ -8,7 +8,6 @@
           
           <el-form-item label="账号：" prop="username">
             <el-input
-            style="height:40px;line-height:40px;"
               placeholder="请输入您的帐号"
               suffix-icon="fa fa-user-circle fa-lg"
               v-model="ruleForm.username"
