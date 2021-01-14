@@ -184,8 +184,8 @@ export default {
             AMap.plugin('AMap.CustomLayer', () => {
 	            let canvas = document.createElement('canvas');
                 this.customLayer = new AMap.CustomLayer(canvas, {
-                    zooms: [3, 10],
-                    alwaysRender:true,//缩放过程中是否重绘，复杂绘制建议设为false
+                    zooms: [0, 50],
+                    alwaysRender:false,//缩放过程中是否重绘，复杂绘制建议设为false
                     zIndex: 120
                 });
 			let onRender = function(){
@@ -352,7 +352,7 @@ export default {
                 this.maps = new AMap.Map('container', {
                     zoomEnable:true,
                     dragEnable: true,
-                    zooms: [3, 20],
+                    zooms: [3, 10],
                     zoom: 4,
                     center: [105.397428, 35.90923],
                     mapStyle:'amap://styles/1efb475da4687bb48c752ca6db690e75',

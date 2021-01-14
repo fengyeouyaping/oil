@@ -201,7 +201,7 @@ export default {
       //得到图表数据
       getimgData(devGuid){
         var params = {
-            // devGuids:[devGuid],
+            devGuids:[devGuid],
             nodeId:this.nodeId,
             startTime:this.timeDate[0]/1000*1000,
             endTime :this.timeDate[1]/1000*1000,
