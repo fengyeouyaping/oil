@@ -1,0 +1,223 @@
+/*
+ * CSS全局配置
+ */
+* {
+  margin: 0px;
+  padding: 0px;
+}
+a {
+  text-decoration: none;
+  color: #fff;
+}
+html,
+body {
+  width: 100%;
+  height: 100%;
+  font-size: 12px;
+  font-weight: 300;
+  font-family: '\5FAE\8F6F\96C5\9ED1';
+  background: #fff;
+}
+.el-col {
+  line-height: 40px;
+  font-size: 14px;
+}
+.el-pagination {
+  margin-top: 10px;
+  float: right;
+  padding-right: 0px;
+}
+.el-button-group {
+  margin-top: -3px;
+}
+.el-pagination__jump {
+  margin-top: -2px;
+}
+.el-row {
+  margin-bottom: 15px;
+}
+.el-row:last-child {
+  margin-bottom: 0;
+}
+.el-drawer__container {
+  outline: none;
+}
+.el-drawer {
+  outline: none;
+}
+.formTitleBox {
+  height: 40px;
+  background: #eee;
+  font-weight: bold;
+}
+.formTitleBox i {
+  margin-right: 5px;
+  margin-left: 10px;
+}
+.more_info_icon {
+  font-size: 14px;
+  margin-left: 15px;
+  position: relative;
+  top: 1px;
+  color: #999;
+}
+.tableHeader {
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  border-bottom: 1px solid #eee;
+}
+.tableHeader .tableHeaderTitle {
+  width: auto;
+  height: 16px;
+  line-height: 16px;
+  float: left;
+  margin-top: 12px;
+  font-size: 15px;
+  padding-left: 10px;
+  border-left: 3px solid #88b7e0;
+}
+.tableHeader .tableHeaderMenu {
+  width: 200px;
+  height: 40px;
+  float: right;
+  text-align: right;
+}
+.tableBottomMenu {
+  height: 64px;
+  padding-top: 8px;
+}
+.el-scrollbar__wrap {
+  overflow-x: hidden;
+}
+.el-select-dropdown__list {
+  padding-bottom: 20px;
+}
+.el-scrollbar {
+  height: 100%;
+}
+.pageBox {
+  top: 40px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  position: absolute;
+  background: #f0f0f0;
+}
+/*
+ * 通用CSS方法设置
+ */
+/*
+ * 主题配置项
+ */
+.main_bg_color {
+  background: #f5f2f2;
+}
+.header_default_style {
+  background: #252a2f;
+  color: #fff;
+  font-size: 14px;
+}
+.header_default_style .logo:hover,
+.header_default_style .title:hover,
+.header_default_style .language:hover,
+.header_default_style .personal_information:hover {
+  background: #000;
+}
+.header_default_style .header_menus > .header_menus_item:hover {
+  background: #000;
+}
+.header_default_style .search_input > input {
+  border: 1px solid #eee;
+  color: #eee;
+}
+.header_default_style .search_input > input:hover {
+  -webkit-box-shadow: 0px 0px 10px #888;
+          box-shadow: 0px 0px 10px #888;
+}
+/*
+ * 常用公共样式
+ */
+.contentEllipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.active-link {
+  color: #fff;
+  text-decoration: none;
+  background: #000;
+}
+.popInput {
+  width: 99%;
+  height: 40px;
+  margin-bottom: 10px;
+}
+.popInput input {
+  width: 97%;
+  height: 35px;
+  border-radius: 5px;
+  border: 1px solid #eee;
+  outline: none;
+  padding-left: 10px;
+}
+pre code {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.loginContent .el-input__inner {
+  border-radius: 20px;
+  height: 40px;
+  line-height: 40px;
+}
+.loginContent .el-form-item {
+  position: relative;
+}
+.el-checkbox__input.is-checked+.el-checkbox__label {
+  color: #324fc4;
+}
+.el-checkbox__input.is-checked .el-checkbox__inner,
+.el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  background-color: #324fc4;
+  border-color: #324fc4;
+}
+.el-checkbox__input.is-focus .el-checkbox__inner {
+  border-color: #324fc4;
+}
+.el-checkbox__inner:hover {
+  border-color: #324fc4;
+}
+.menus_one .el-menu-item.is-active {
+  background-color: #fff !important;
+}
+.menus_son .el-menu-item.is-active {
+  background: #f5f2f2 !important;
+}
+.el-button--primary {
+  border-color: #324fc4 !important;
+  background: #324fc4 !important;
+}
+.el-table::before {
+  height: 0px;
+}
+.red {
+  color: #f00;
+}
+.fontWeight {
+  font-weight: bold;
+}
+@charset "utf-8";
+::-webkit-scrollbar {
+  width: 0px;
+}
+/*定义滚动条轨道 内阴影+圆角*/
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: rgba(0,0,0,0.1);
+}
+/*定义滑块 内阴影+圆角*/
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 0px rgba(0,0,0,0.3);
+  background-color: rgba(0,0,0,0.1);
+}
