@@ -36,6 +36,7 @@ axios.interceptors.response.use(function (response) {
   } else {
     if(response.data.code == -1){
       MyPop.WarningNotification(response.data.msg)
+      CustomLoading.endLoading()
       return false
     }
 

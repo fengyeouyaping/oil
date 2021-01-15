@@ -44,7 +44,7 @@ if(isDev){
     config = merge(baseConfig,{
         devtool : '#cheap-module-eval-source-map',  
         devServer : {
-            port : 8000,
+            port : 3399,
             host : '0.0.0.0',
             overlay : {
                 errors : true
@@ -54,7 +54,7 @@ if(isDev){
 
                 '/api': {
 
-                    target: 'http://47.97.66.97:8080',
+                    target: 'http://127.0.0.1:9000',
 
                     changeOrigin: true,
 

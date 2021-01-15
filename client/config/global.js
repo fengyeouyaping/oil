@@ -4,9 +4,9 @@
 var GLOBAL = {}
 
 //聚合层服务器地址
-GLOBAL.httpServer = "http://47.97.66.97:8080"
+GLOBAL.httpServer = "http://127.0.0.1:9000"
 //聚合层服务器地址
-GLOBAL.httpServerImg = "http://47.97.66.97:8082"
+GLOBAL.httpServerImg = "http://127.0.0.1:9000"
 
 //列表页每页显示的默认条数
 GLOBAL.pageLimit  = 10
