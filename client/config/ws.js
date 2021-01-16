@@ -1,3 +1,4 @@
+import GLOBAL from './global'
 let i=0
 export default {
     name : 'test',
@@ -45,7 +46,7 @@ export default {
       initWebSocket(){ //初始化weosocket
         let userId = JSON.parse(sessionStorage.getItem("userInfo")).id
         
-        const wsuri = "ws://47.97.66.97:8080/server/"+userId;
+        const wsuri = GLOBAL.wsAdd + "/server/"+userId;
         this.websock = new WebSocket(wsuri);
         this.websock.onmessage = this.websocketonmessage;
         this.websock.onopen = this.websocketonopen;

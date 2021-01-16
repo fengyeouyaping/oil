@@ -5,17 +5,28 @@ var GLOBAL = {}
 
 //聚合层服务器地址
 GLOBAL.httpServer = "http://127.0.0.1:9000"
-//聚合层服务器地址
+//websocket地址
+GLOBAL.wsAdd = 'ws://127.0.0.1:9000'
+//图片文件地址
 GLOBAL.httpServerImg = "http://127.0.0.1:9000"
-
 //列表页每页显示的默认条数
 GLOBAL.pageLimit  = 10
+//网络请求超时时间
+GLOBAL.networkTimeout = 30000
+
+
+
+
+
+
+
+
+
+
+//底层服务 业务相关不需要修改一下内容
 
 //是否记录操作日志
 GLOBAL.isRecordLogs = false
-
-//网络请求超时时间
-GLOBAL.networkTimeout = 30000
 
 //dev-server服务地址
 GLOBAL.devServer  = "http://127.0.0.1:8000"
