@@ -83,7 +83,8 @@ export default {
         this.websock.send(Data);
       },
       websocketclose(e){  //关闭
-        console.log('断开连接',e);
+        // console.log('断开连接',e);
+        this.initWebSocket();
       },
       //设备详情页面信息处理
       equipmentInfoPage(val){
