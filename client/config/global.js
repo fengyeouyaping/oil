@@ -4,11 +4,11 @@
 var GLOBAL = {}
 
 //聚合层服务器地址
-GLOBAL.httpServer = "http://127.0.0.1:9000"
+GLOBAL.httpServer = "http://47.97.66.97:8080"
 //websocket地址
-GLOBAL.wsAdd = 'ws://127.0.0.1:9000'
+GLOBAL.wsAdd = 'ws://47.97.66.97:8080'
 //图片文件地址
-GLOBAL.httpServerImg = "http://127.0.0.1:9000"
+GLOBAL.httpServerImg = "http://47.97.66.97:8082"
 //列表页每页显示的默认条数
 GLOBAL.pageLimit  = 10
 //网络请求超时时间

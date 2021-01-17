@@ -68,10 +68,19 @@ export default {
         handleAvatarSuccess(res, file) {
 
             this.$http.getHttp(this.$API.userDetail+"?id="+this.ruleForm.id,(rs)=>{
-                sessionStorage.setItem("userInfo",JSON.stringify(rs.data))
-                this.$store.commit('HomeModule/UPDATA_USER_INFO',rs.data)
-                this.ruleForm.imagePath =  this.$global.httpServerImg + rs.data.imagePath + "?time="+new Date().getTime()*1000/1000
-                this.isImagePath = true
+                if(rs.code == 0){
+                    sessionStorage.setItem("userInfo",JSON.stringify(rs.data))
+                    this.$store.commit('HomeModule/UPDATA_USER_INFO',rs.data)
+                    this.ruleForm.imagePath =  this.$global.httpServerImg + rs.data.imagePath.split(":")[1] + "?time="+new Date().getTime()*1000/1000
+                    this.isImagePath = true
+                }else{
+                    this.$notify({
+                        title: rs.msg,
+                        message: '',
+                        type: 'warning'
+                    });
+                }
+                
             })
         },
         beforeAvatarUpload(file) {
@@ -79,10 +88,18 @@ export default {
             const isLt2M = file.size / 1024 / 1024 < 2;
 
             if (!isJPG) {
-            this.$message.error('上传头像图片只能是 JPG/PNG 格式!');
+                this.$notify({
+                        title: '上传头像图片只能是 JPG/PNG 格式!',
+                        message: '',
+                        type: 'warning'
+                    });
             }
             if (!isLt2M) {
-            this.$message.error('上传头像图片大小不能超过 2MB!');
+                this.$notify({
+                        title: '上传头像图片大小不能超过 2MB!',
+                        message: '',
+                        type: 'warning'
+                    });
             }
             return isJPG && isLt2M;
         },
