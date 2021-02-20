@@ -22,7 +22,6 @@ export default {
             polylineThree:'',
             customLayer:'',
             interval:'',
-            pathSimplifierIns:'',
             navg1:'',
         };
     },
@@ -144,26 +143,29 @@ export default {
             if(twoList.length > 0) this.polylinetwo.setMap(maps)
             if(threeList.length > 0) this.polylineThree.setMap(maps)
             // 缩放地图到合适的视野级别
-            if(this.isOne){
-                maps.setFitView([ this.polylineOne,this.polylinetwo,this.polylineThree ])
-            }
-            if(!!this.navg1){
+            // if(this.isOne){
+            //     maps.setFitView([ this.polylineOne,this.polylinetwo,this.polylineThree ])
+            // }
+            
+            if(!!this.navg1){ 
                 this.navg1.destroy(); 
             }
-            if(twoList.length > 1 && !!this.pathSimplifierIns){
+            if(twoList.length > 1 && window.pathSimplifierIns){
                 //设置数据
-                this.pathSimplifierIns.setData([{
+
+                pathSimplifierIns.setData([{
                     name: '路线0',
                     path: twoList
                 }]);
 
-                //对第一条线路（即索引 0）创建一个巡航器
-                this.navg1 = this.pathSimplifierIns.createPathNavigator(0, {
+                //创建一个巡航器
+                this.navg1 = pathSimplifierIns.createPathNavigator(0, {
                     loop: true, //循环播放
-                    speed: 200000 //巡航速度，单位千米/小时
+                    speed: 5000 //巡航速度，单位千米/小时
                 });
                 this.navg1.start();
             }
+            maps.setFitView()
             
             
         },
@@ -273,6 +275,7 @@ export default {
             this.textList=[],
             this.getData()
             let self = this
+
             if(this.newInfo.length > 0){
                 if(!this.maps){
                     this.isOk = true
@@ -304,51 +307,58 @@ export default {
                     this.polylineThree = ''
                     this.customLayer = ''
                 }
-                let _self = this   
-            
-                AMapUI.load(['ui/misc/PathSimplifier', 'lib/$'], function(PathSimplifier, $) {
-                    if (!PathSimplifier.supportCanvas) {
-                        alert('当前环境不支持 Canvas！');
-                        return;
-                    }
-                    
-                    _self.pathSimplifierIns = new PathSimplifier({
-                        zIndex: 100,
-                        autoSetFitView:false,
-                        map: _self.maps, //所属的地图实例
+                let _self = this 
 
-                        getPath: function(pathData, pathIndex) {
-                            return pathData.path;
-                        },
-                        getHoverTitle: function(pathData, pathIndex, pointIndex) {
-                            
-                        },
-                        clickToSelectPath:false,
-                        renderOptions: {
-                            //轨迹线的样式
-                            pathLineStyle: {
-                                fillStyle:'rgba(0,0,0,0)',
-                                strokeStyle: 'rgba(0,0,0,0)',
-                                lineWidth: 0,
+                //判断是否已有轨迹，进行清除!!!注意，就是在此处清除了轨迹
+                if(window.pathSimplifierIns){
+                    pathSimplifierIns.setData([]);
+                }else{
+
+                    AMapUI.load(['ui/misc/PathSimplifier', 'lib/$'], function(PathSimplifier, $) {
+                        if (!PathSimplifier.supportCanvas) {
+                            alert('当前环境不支持 Canvas！');
+                            return;
+                        }
+                        
+                        let pathSimplifierIns = new PathSimplifier({
+                            zIndex: 100,
+                            autoSetFitView:false,
+                            map: _self.maps, //所属的地图实例
+
+                            getPath: function(pathData, pathIndex) {
+                                return pathData.path;
                             },
-                            pathNavigatorStyle:{
-                                fillStyle:'#f7f478',
-                                strokeStyle: '#f7f478',
-                                lineWidth: 0,
-                                pathLinePassedStyle:{
-                                    strokeStyle: 'rgba(0,0,0,0)',
+                            getHoverTitle: function(pathData, pathIndex, pointIndex) {
+                                
+                            },
+                            clickToSelectPath:false,
+                            renderOptions: {
+                                //轨迹线的样式
+                                pathLineStyle: {
+                                    fillStyle:'rgba(0,0,0,0)',
                                     strokeStyle: 'rgba(0,0,0,0)',
                                     lineWidth: 0,
-                                }
-                            },
+                                },
+                                pathNavigatorStyle:{
+                                    fillStyle:'#f7f478',
+                                    strokeStyle: '#f7f478',
+                                    lineWidth: 0,
+                                    pathLinePassedStyle:{
+                                        strokeStyle: 'rgba(0,0,0,0)',
+                                        strokeStyle: 'rgba(0,0,0,0)',
+                                        lineWidth: 0,
+                                    }
+                                },
                             
-                        }
-                    })
+                            }
+                        })
+                        window.pathSimplifierIns = pathSimplifierIns;
                     
-                })
+                    })
+                }
             }else{
                 this.isOk = true
-                    
+                window.pathSimplifierIns = ''
                 this.maps = new AMap.Map('container', {
                     zoomEnable:true,
                     dragEnable: true,
@@ -359,7 +369,6 @@ export default {
                     viewMode: '2D',
                     resizeEnable: true
                 })
-                this.pathSimplifierIns = ''
             }   
 
             this.maps.on('complete', function(){

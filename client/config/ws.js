@@ -1,4 +1,5 @@
 import GLOBAL from './global'
+import aa from './aa'
 let i=0
 export default {
     name : 'test',
@@ -132,8 +133,15 @@ export default {
       getEquipmentNewDate(data){
         this.$store.commit('HomeModule/updata_isOne',false)
         let datas = data
-        
-        
+        // 测试代码 打开面几行，模拟管道运行
+        // let datas = {}
+        // datas.nodeId = 52
+        // datas.stakes = aa[i]
+        // i++
+        // if(i == 5){
+        //   i=0
+        // }
+
         if(!this.newInfo || this.newInfo.modelFlag == 2){
           return false
         }
@@ -155,23 +163,37 @@ export default {
               }
             }
           }
-          // let lists = datas.stakes.filter((item)=>item.visitFlag)
+
           let result = []
           
-          // if(lists.length > 0){
-            for(let i=0;i<datas.stakes.length;i++){
-              datas.stakes[i]['stake'] = datas.stakes[i]['stakeNo']
-              result.push(datas.stakes[i])
-              // if(datas.stakes[i]['visitFlag']){
-              //   break;
-              // }
-            }
-          // }else{
-          //   datas.stakes[0]['stake'] = datas.stakes[0]['stakeNo']
-          //   result.push(datas.stakes[0])
-          // }
+          for(let i=0;i<datas.stakes.length;i++){
+            datas.stakes[i]['stake'] = datas.stakes[i]['stakeNo']
+            result.push(datas.stakes[i])
+          }
+
           result.reverse()
           this.equipmentNewDate = result
+        }
+        if(this.equipmentLists.length > 0 && this.newInfo){
+          this.equipmentLists.map((itemss) => {
+            if(itemss.nodeList){
+              itemss.nodeList.map((items) => {
+                if(items.nodeList){
+                  items.nodeList.map((item) => {
+                    if(item.id == this.newInfo.id && item.devices.length > 0){
+                      for(let i=0;i<item.devices.length;i++){
+                        for(let j=0;j<this.newInfo.length;j++){
+                          if(item.devices[i]['devGuid'] == this.newInfo[j]['devGuid']){
+                            item.devices[i]['isOnline'] = this.newInfo[j]['isOnline']
+                          }
+                        }
+                      }
+                    }
+                  })
+                }
+              })
+            }
+          })
         }
         
       },
