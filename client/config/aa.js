@@ -1,7 +1,7 @@
 const aa = {
 0:[
     {
-        devGuid: "42511086",
+        devGuid: "19854232",
         isArrived: 0,
         isOnline: true,
         lat: 34.3813667,
@@ -13,7 +13,7 @@ const aa = {
         visitFlag: false
     },
     {
-        devGuid: "01616005",
+        devGuid: "28078207",
         isArrived: 0,
         isOnline: true,
         lat: 35.4,
@@ -25,7 +25,7 @@ const aa = {
         visitFlag: false,
     },
     {
-        devGuid: "59354227",
+        devGuid: "21393013",
         deviceUpTime: "12:32:31.475",
         isArrived: 0,
         isOnline: true,
@@ -37,12 +37,26 @@ const aa = {
         tsDeviceUpTime: [],
         velocity: 0,
         visitFlag: false,
+    },
+    {
+        devGuid: "38463144",
+        deviceUpTime: "12:32:31.475",
+        isArrived: 0,
+        isOnline: true,
+        lat: 35.8,
+        lon: 109.4,
+        stake: "#4",
+        stakeNo: "#4",
+        status: 1,
+        tsDeviceUpTime: [],
+        velocity: 0,
+        visitFlag: false,
     }
 ],
 1:[
     {
         actArrivedTime: "12:12:04.296",
-        devGuid: "42511086",
+        devGuid: "19854232",
         deviceUpTime: "12:15:46.889",
         isArrived: 0,
         isOnline: true,
@@ -57,7 +71,7 @@ const aa = {
         visitFlag: true,
     },
     {
-        devGuid: "01616005",
+        devGuid: "28078207",
         deviceUpTime: "12:15:52.070",
         isArrived: 0,
         isOnline: true,
@@ -70,7 +84,7 @@ const aa = {
         visitFlag: false,
     },
     {
-        devGuid: "01616005",
+        devGuid: "28078207",
         deviceUpTime: "12:15:52.070",
         isArrived: 0,
         isOnline: true,
@@ -83,7 +97,7 @@ const aa = {
         visitFlag: false,
     },
     {
-        devGuid: "01616005",
+        devGuid: "28078207",
         deviceUpTime: "12:15:52.070",
         isArrived: 0,
         isOnline: true,
@@ -96,7 +110,7 @@ const aa = {
         visitFlag: false,
     },
     {
-        devGuid: "59354227",
+        devGuid: "21393013",
         deviceUpTime: "12:15:47.159",
         isArrived: 0,
         isOnline: true,
@@ -114,7 +128,7 @@ const aa = {
 2:[
     {
         actArrivedTime: "12:12:04.296",
-        devGuid: "42511086",
+        devGuid: "19854232",
         deviceUpTime: "12:17:46.822",
         isArrived: 0,
         isOnline: true,
@@ -130,7 +144,7 @@ const aa = {
     },
     {
         actArrivedTime: "12:17:43.686",
-        devGuid: "01616005",
+        devGuid: "28078207",
         deviceUpTime: "12:17:43.686",
         evalArrivedTime: "12:21:34",
         isArrived: 1,
@@ -146,7 +160,7 @@ const aa = {
         visitFlag: true,
     },
     {
-        devGuid: "59354227",
+        devGuid: "21393013",
         deviceUpTime: "12:17:47.042",
         evalArrivedTime: "12:21:15",
         isArrived: 0,
@@ -159,6 +173,20 @@ const aa = {
         tsEstArrivedTime: {Hour: 12, Min: 21, Second: 15},
         velocity: 0,
         visitFlag: false,
+    },
+    {
+        devGuid: "38463144",
+        deviceUpTime: "12:32:31.475",
+        isArrived: 0,
+        isOnline: true,
+        lat: 35.8,
+        lon: 109.4,
+        stake: "#4",
+        stakeNo: "#4",
+        status: 1,
+        tsDeviceUpTime: [],
+        velocity: 0,
+        visitFlag: false,
     }
 ],
 
@@ -166,7 +194,7 @@ const aa = {
 3:[
     {
         actArrivedTime: "12:12:04.296",
-        devGuid: "42511086",
+        devGuid: "19854232",
         deviceUpTime: "12:20:16.737",
         isArrived: 0,
         isOnline: true,
@@ -182,7 +210,7 @@ const aa = {
     },
     {
         actArrivedTime: "12:18:14.682",
-        devGuid: "01616005",
+        devGuid: "28078207",
         deviceUpTime: "12:20:16.643",
         evalArrivedTime: "12:22:26",
         isArrived: 0,
@@ -199,7 +227,7 @@ const aa = {
     },
     {
         actArrivedTime: "12:19:28.943",
-        devGuid: "59354227",
+        devGuid: "21393013",
         deviceUpTime: "12:20:18.046",
         evalArrivedTime: "12:21:15",
         isArrived: 0,
@@ -213,11 +241,25 @@ const aa = {
         tsEstArrivedTime: {Hour: 12, Min: 21, Second: 15},
         velocity: 635.6,
         visitFlag: true,
+    },
+    {
+        devGuid: "38463144",
+        deviceUpTime: "12:32:31.475",
+        isArrived: 0,
+        isOnline: true,
+        lat: 35.8,
+        lon: 109.4,
+        stake: "#4",
+        stakeNo: "#4",
+        status: 1,
+        tsDeviceUpTime: [],
+        velocity: 0,
+        visitFlag: false,
     }
 ],
 4:[
     {
-        devGuid: "42511086",
+        devGuid: "19854232",
         isArrived: 0,
         isOnline: true,
         lat: 34.3813667,
@@ -229,7 +271,7 @@ const aa = {
         visitFlag: false
     },
     {
-        devGuid: "01616005",
+        devGuid: "28078207",
         isArrived: 0,
         isOnline: true,
         lat: 35.4,
@@ -241,7 +283,7 @@ const aa = {
         visitFlag: false,
     },
     {
-        devGuid: "59354227",
+        devGuid: "21393013",
         deviceUpTime: "12:32:31.475",
         isArrived: 0,
         isOnline: true,
@@ -253,6 +295,20 @@ const aa = {
         tsDeviceUpTime: [],
         velocity: 0,
         visitFlag: false,
+    },
+    {
+        devGuid: "38463144",
+        deviceUpTime: "12:32:31.475",
+        isArrived: 0,
+        isOnline: true,
+        lat: 35.8,
+        lon: 109.4,
+        stake: "#4",
+        stakeNo: "#4",
+        status: 1,
+        tsDeviceUpTime: [],
+        velocity: 0,
+        visitFlag: true,
     }
 ],
 }

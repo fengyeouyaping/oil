@@ -37,7 +37,7 @@ export default {
     methods:{
 
         mapDestroy(maps){
-            map.destroy( );
+            maps.destroy( );
         },
         configTest(maps){
             let self = this
@@ -139,13 +139,14 @@ export default {
                 lineCap: 'round',
                 zIndex: 50,
             })
+        
             if(oneList.length > 0) this.polylineOne.setMap(maps)
             if(twoList.length > 0) this.polylinetwo.setMap(maps)
             if(threeList.length > 0) this.polylineThree.setMap(maps)
             // 缩放地图到合适的视野级别
-            // if(this.isOne){
-            //     maps.setFitView([ this.polylineOne,this.polylinetwo,this.polylineThree ])
-            // }
+            if(this.isOne){
+                maps.setFitView([ this.polylineOne,this.polylinetwo,this.polylineThree ])
+            }
             
             if(!!this.navg1){ 
                 this.navg1.destroy(); 
@@ -297,9 +298,7 @@ export default {
                             this.maps.remove(this.text[i])
                         }
                     }
-                    this.maps.remove(this.polylineOne)
-                    this.maps.remove(this.polylineTwo)
-                    this.maps.remove(this.polylineThree)
+                    this.maps.clearMap()
                     this.maps.remove(this.customLayer)
                     this.text = []
                     this.polylineOne = ''
@@ -381,7 +380,7 @@ export default {
             })
             //线
             this.configLineData(this.maps)
-            //字
+            // //字
             this.configTest(this.maps)
         },
     }
