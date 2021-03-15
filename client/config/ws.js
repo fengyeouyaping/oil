@@ -134,7 +134,7 @@ export default {
         this.$store.commit('HomeModule/updata_isOne',false)
         let datas = data
         // 测试代码 打开面几行，模拟管道运行
-
+        
         // let datas = {}
         // datas.nodeId = 84
         // datas.stakes = aa[i]
